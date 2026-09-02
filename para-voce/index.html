@@ -52,49 +52,12 @@
 
     <div class="nav-backdrop"></div>
 
-    <ul class="mainnav-menu" id="mainMenu">
+    <ul class="mainnav-menu" id="mainMenu" role="tablist">
       <li>
-        <a href="#" aria-haspopup="true" aria-expanded="false">Institucional<i class="fa-solid fa-chevron-down chev"></i></a>
-        <div class="mega-panel cols-2">
-          <div class="mega-panel-col">
-            <h6>SENAI</h6>
-            <ul>
-              <li><a href="#">Quem somos</a></li>
-              <li><a href="#">Missão, Visão e Valores</a></li>
-              <li><a href="#">Trabalhe Conosco</a></li>
-            </ul>
-          </div>
-          <div class="mega-panel-col">
-            <h6>Acesso Rápido</h6>
-            <ul>
-              <li><a href="#">Validador de Diplomas e Certificados</a></li>
-              <li><a href="#">Fale Conosco</a></li>
-            </ul>
-          </div>
-        </div>
+        <button type="button" class="navtab active" data-panel="institucional" role="tab" aria-selected="true">Institucional</button>
       </li>
       <li>
-        <a href="#" aria-haspopup="true" aria-expanded="false">Cursos<i class="fa-solid fa-chevron-down chev"></i></a>
-        <div class="mega-panel cols-2">
-          <div class="mega-panel-col">
-            <h6>Formação Profissional</h6>
-            <ul>
-                <li><a href="formacao-profissional/index.html">Entenda onde começar</a></li>
-                <li><a href="formacao-profissional/index.html">Iniciação Profissional</a></li>
-                <li><a href="formacao-profissional/index.html">Qualificação Profissional</a></li>
-                <li><a href="formacao-profissional/index.html">Aperfeiçoamento Profissional</a></li>
-                <li><a href="formacao-profissional/index.html">Aprendizagem Industrial</a></li>
-            </ul>
-          </div>
-          <div class="mega-panel-col">
-            <h6>Modalidades</h6>
-            <ul>
-              <li><a href="#">Semipresencial</a></li>
-              <li><a href="#">Educação à Distãncia (EAD)</a></li>
-              <li><a href="#">Técnico de Nível Médio</a></li>
-            </ul>
-          </div>
-        </div>
+        <button type="button" class="navtab" data-panel="cursos" role="tab" aria-selected="false">Cursos</button>
       </li>
       <!--<li>
         <a href="formacao-profissional/index.html" aria-haspopup="true" aria-expanded="false">Formação Profissional<i class="fa-solid fa-chevron-down chev"></i></a>
@@ -127,49 +90,10 @@
         </div>
       </li>-->
       <li>
-        <a href="#" aria-haspopup="true" aria-expanded="false">Programas e Eventos<i class="fa-solid fa-chevron-down chev"></i></a>
-        <div class="mega-panel cols-2">
-          <div class="mega-panel-col">
-            <h6>Programas e Iniciativas</h6>
-            <ul>
-              <li><a href="#">WorldSkills</a></li>
-              <li><a href="#">Saga SENAI</a></li>
-              <li><a href="#">PSAI</a></li>
-              <li><a href="#">Programa + Aprendiz</a></li>
-            </ul>
-          </div>
-          <div class="mega-panel-col">
-            <h6>Eventos</h6>
-            <ul>
-                <li><a href="#">Agenda de Eventos</a></li>
-                <li><a href="#">Feirão da Empregabilidade</a></li>
-                <li><a href="#">Inova SENAI</a></li>
-                <li><a href="#">Mundo SENAI</a></li>
-            </ul>
-          </div>
-        </div>
+        <button type="button" class="navtab" data-panel="programas" role="tab" aria-selected="false">Programas e Eventos</button>
       </li>
       <li>
-        <a href="#" aria-haspopup="true" aria-expanded="false">Informações<i class="fa-solid fa-chevron-down chev"></i></a>
-        <div class="mega-panel cols-2">
-          <div class="mega-panel-col">
-            <h6>Unidades</h6>
-            <ul>
-              <li><a href="#">Macapá</a></li>
-              <li><a href="#">A Banda</a></li>
-              <li><a href="#">Santana</a></li>
-            </ul>
-          </div>
-          <div class="mega-panel-col">
-            <h6>Contato e Redes Sociais</h6>
-            <ul>
-              <li><a href="#">Número para contato</a></li>
-              <li><a href="#">Whatsapp</a></li>
-              <li><a href="#">Instagram</a></li>
-              <li><a href="#">Youtube</a></li>
-            </ul>
-          </div>
-        </div>
+        <button type="button" class="navtab" data-panel="informacoes" role="tab" aria-selected="false">Informações</button>
       </li>
     </ul>
     <div class="cta-buttons">
@@ -208,20 +132,10 @@
   </div>
 </header>
 
-<!-- ===================== BREADCRUMB ===================== -->
-<section class="breadcrumb-bar">
-  <div class="container-xl">
-    <ul class="breadcrumb-modern">
-      <li><a href="../index.html">Início</a></li>
-      <li class="current">Para você</li>
-    </ul>
-  </div>
-</section>
-
 <!-- ===================== SHORTCUTS ROW ===================== -->
 <div class="shortcuts-row">
   <div class="container-xl">
-    <div class="shortcuts-grid">
+    <div class="shortcuts-grid active" data-panel="institucional">
       <a class="shortcut-card" href="#"><i class="fa-solid fa-bag-shopping"></i>Portal do Aluno</a>
       <a class="shortcut-card" href="#"><i class="fa-solid fa-graduation-cap"></i>Portal Docente</a>
       <a class="shortcut-card" href="#"><i class="fa-solid fa-file-lines"></i>Editais de Cursos</a>
@@ -232,8 +146,47 @@
       <a class="shortcut-card" href="#"><i class="fa-solid fa-leaf"></i>Amazônia+21</a>
       <a class="shortcut-card" href="#"><i class="fa-solid fa-cube"></i>HUB de Inovação</a>
     </div>
+    <div class="shortcuts-grid" data-panel="cursos">
+      <a class="shortcut-card" href="formacao-profissional/index.html"><i class="fa-solid fa-compass"></i>Entenda onde começar</a>
+      <a class="shortcut-card" href="formacao-profissional/index.html"><i class="fa-solid fa-industry"></i>Aprendizagem Industrial</a>
+      <a class="shortcut-card" href="formacao-profissional/index.html"><i class="fa-solid fa-seedling"></i>Iniciação Profissional</a>
+      <a class="shortcut-card" href="formacao-profissional/index.html"><i class="fa-solid fa-award"></i>Qualificação Profissional</a>
+      <a class="shortcut-card" href="formacao-profissional/index.html"><i class="fa-solid fa-chalkboard-user"></i>Aperfeiçoamento Profissional</a>
+      <a class="shortcut-card" href="modalidades-e-suporte/index.html"><i class="fa-solid fa-user-graduate"></i>Técnico de Nível Médio</a>
+      <a class="shortcut-card" href="modalidades-e-suporte/index.html"><i class="fa-solid fa-house-laptop"></i>Semipresencial</a>
+      <a class="shortcut-card" href="modalidades-e-suporte/index.html"><i class="fa-solid fa-laptop"></i>Educação a Distância (EAD)</a>
+    </div>
+    <div class="shortcuts-grid" data-panel="programas">
+      <a class="shortcut-card" href="#"><i class="fa-solid fa-medal"></i>WorldSkills</a>
+      <a class="shortcut-card" href="#"><i class="fa-solid fa-route"></i>Saga SENAI</a>
+      <a class="shortcut-card" href="#"><i class="fa-solid fa-people-group"></i>PSAI</a>
+      <a class="shortcut-card" href="#"><i class="fa-solid fa-user-plus"></i>Programa + Aprendiz</a>
+      <a class="shortcut-card" href="#"><i class="fa-solid fa-calendar-days"></i>Agenda de Eventos</a>
+      <a class="shortcut-card" href="#"><i class="fa-solid fa-store"></i>Feirão da Empregabilidade</a>
+      <a class="shortcut-card" href="#"><i class="fa-solid fa-lightbulb"></i>Inova SENAI</a>
+      <a class="shortcut-card" href="#"><i class="fa-solid fa-earth-americas"></i>Mundo SENAI</a>
+    </div>
+    <div class="shortcuts-grid" data-panel="informacoes">
+      <a class="shortcut-card" href="#"><i class="fa-solid fa-location-dot"></i>Unidade Macapá</a>
+      <a class="shortcut-card" href="#"><i class="fa-solid fa-location-dot"></i>Unidade A Banda</a>
+      <a class="shortcut-card" href="#"><i class="fa-solid fa-location-dot"></i>Unidade Santana</a>
+      <a class="shortcut-card" href="#"><i class="fa-solid fa-phone"></i>Número para contato</a>
+      <a class="shortcut-card" href="#"><i class="fa-brands fa-whatsapp"></i>Whatsapp</a>
+      <a class="shortcut-card" href="#"><i class="fa-brands fa-instagram"></i>Instagram</a>
+      <a class="shortcut-card" href="#"><i class="fa-brands fa-youtube"></i>Youtube</a>
+    </div>
   </div>
 </div>
+
+<!-- ===================== BREADCRUMB ===================== -->
+<section class="breadcrumb-bar">
+  <div class="container-xl">
+    <ul class="breadcrumb-modern">
+      <li><a href="../index.html">Início</a></li>
+      <li class="current">Para você</li>
+    </ul>
+  </div>
+</section>
 
 <main id="main" class="page-surface">
 

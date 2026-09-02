@@ -59,6 +59,30 @@
       });
     });
 
+    /* ---------------- Abas de navegação -> painéis de acesso rápido ---------------- */
+    var navTabs = document.querySelectorAll(".navtab");
+    var quickPanels = document.querySelectorAll(".shortcuts-grid[data-panel]");
+
+    if (navTabs.length && quickPanels.length) {
+      function activatePanel(panelId) {
+        navTabs.forEach(function (btn) {
+          var isMatch = btn.getAttribute("data-panel") === panelId;
+          btn.classList.toggle("active", isMatch);
+          btn.setAttribute("aria-selected", String(isMatch));
+        });
+        quickPanels.forEach(function (panel) {
+          panel.classList.toggle("active", panel.getAttribute("data-panel") === panelId);
+        });
+      }
+
+      navTabs.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          activatePanel(btn.getAttribute("data-panel"));
+          if (typeof closeMobileMenu === "function") closeMobileMenu();
+        });
+      });
+    }
+
     /* ---------------- Busca (mega-panel) ---------------- */
     var searchWrap = document.querySelector(".nav-search");
     if (searchWrap) {
