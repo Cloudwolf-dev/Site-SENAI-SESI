@@ -376,8 +376,7 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
 
 .mainnav-menu {
   display: flex;
-  align-items: stretch;
-  align-self: stretch;
+  align-items: center;
   gap: 0.25rem;
   list-style: none;
   margin: 0 0 0 0.5rem;
@@ -409,42 +408,6 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
 }
 
 .mainnav-menu > li > a i.chev { font-size: 0.4rem; opacity: 0.8; }
-
-/* Botões de navegação em modo "aba" — alternam o painel de acesso rápido
-   em vez de abrir um dropdown (usado na Institucional/Serviços/Programas/Informações
-   das home "Para você" e "Para empresas"). */
-.navtab {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  height: 100%;
-  background: none;
-  border: none;
-  color: var(--color-blue);
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
-  padding: 0.65rem 0.9rem;
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-  cursor: pointer;
-  position: relative;
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-.navtab:hover,
-.navtab:focus-visible,
-.navtab.active {
-  background-color: var(--brand);
-  color: var(--color-bg-soft);
-}
-/* A aba ativa "cresce" até a borda inferior do header, ficando da mesma cor
-   e sem intervalo em relação à caixa de atalhos logo abaixo — as duas peças
-   somem uma na outra, como uma aba realmente presa à caixa. */
-.navtab.active {
-  margin-bottom: -0.75rem;
-  padding-bottom: calc(0.65rem + 0.75rem);
-}
 
 .mega-panel {
   position: absolute;
@@ -544,34 +507,15 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
    6. Fileira de atalhos ("topo de conteúdo")
    ----------------------------------------------------------------------- */
 .shortcuts-row {
-  padding-top: 0;
-  padding-bottom: 1.25rem;
-}
-
-/* Caixa sólida na cor da marca — os botões de navegação "entram" nela por
-   cima, como abas presas à própria caixa (ver .navtab.active). Largura
-   igual à do header (.mainnav .container-xl) para os dois ficarem alinhados. */
-.shortcuts-row .container-xl {
-  min-width: 90% !important;
-  max-width: 90% !important;
-  background: var(--brand);
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-  padding: 1.25rem;
-  box-shadow: var(--shadow-soft-hover);
+  padding-block: 1.25rem;
+  background: linear-gradient(0deg, var(--color-blue-darker) 0%, var(--color-blue-dark) 100%);
+  border-bottom: 0px solid var(--color-border);
 }
 
 .shortcuts-grid {
-  display: none;
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 0.75rem;
-}
-.shortcuts-grid.active {
-  display: grid;
-  animation: quickpanel-in 0.28s ease;
-}
-@keyframes quickpanel-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .shortcut-card {
@@ -585,8 +529,8 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
   padding: 0.9rem 0.6rem;
   border-radius: var(--radius-sm);
   border: 1.5px solid transparent;
-  background: #fff;
-  color: var(--color-blue);
+  background: var(--brand-dark);
+  color: #fff;
   font-size: 0.78rem;
   font-weight: 700;
   box-shadow: var(--shadow-soft);
@@ -1274,11 +1218,6 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
   .mainnav-menu > li > a { color: var(--color-ink); justify-content: space-between; }
   .mainnav-menu > li > a:hover,
   .mainnav-menu > li.open > a { background: var(--color-bg-soft);}
-
-  .mainnav-menu > li .navtab { color: var(--color-ink); justify-content: space-between; width: 100%; height: auto; border-radius: var(--radius-sm); }
-  .mainnav-menu > li .navtab:hover,
-  .mainnav-menu > li .navtab.active { background: var(--color-bg-soft); color: var(--brand); }
-  .navtab.active { margin-bottom: 0; padding-bottom: 0.65rem; }
 
   .mega-panel {
     position: static;
