@@ -49,10 +49,15 @@ body {
    quatro valores, não duplicar regras.
    ----------------------------------------------------------------------- */
 body {
-  --superficie: #ffffff;
-  --superficie-tinta: #4a505e;
-  --superficie-forte: #16181d;
+  /* Cinza claro, e não branco puro: o relevo precisa de espaço para a luz
+     (mais clara que a superfície) e para a sombra. Sobre branco puro, o
+     realce de cima simplesmente não aparece. */
+  --superficie: #e8ecf3;
+  --superficie-tinta: #5b6377;
+  --superficie-forte: #1f2430;
   --superficie-borda: #e4e7ee;
+  --luz: rgba(255, 255, 255, 0.95);
+  --sombra: rgba(38, 52, 84, 0.26);
   /* O menu ativo tem duas cores, uma por superfície: --acento sobre o navbar
      branco e --acento-claro sobre o azul escuro. Clarear a primeira por
      cálculo dava cores lavadas, com cara de botão desabilitado. */
@@ -62,10 +67,14 @@ body {
 }
 
 body[data-publico="empresa"] {
-  --superficie: #0f2444;
-  --superficie-tinta: rgba(255, 255, 255, 0.72);
+  /* Azul um pouco acima do #0f2444 anterior, pela mesma razão: no escuro
+     quase absoluto não sobra contraste para a face iluminada. */
+  --superficie: #16325d;
+  --superficie-tinta: rgba(255, 255, 255, 0.7);
   --superficie-forte: #ffffff;
   --superficie-borda: rgba(255, 255, 255, 0.16);
+  --luz: rgba(120, 170, 235, 0.16);
+  --sombra: rgba(2, 10, 28, 0.62);
   --acento-uso: var(--acento-claro);
   --acento-tinta: #0f2444;
 }
@@ -73,6 +82,33 @@ body[data-publico="empresa"] {
 body[data-menu="2"] { --grad-topo: #3ec46f; --grad-base: #10357f; --tinta: #0a2b18; --acento: #10357f; --acento-claro: #35d17e; }
 body[data-menu="3"] { --grad-topo: #f3a712; --grad-base: #5b1d8f; --tinta: #3d2503; --acento: #5b1d8f; --acento-claro: #c48bf0; }
 body[data-menu="4"] { --grad-topo: #14b8c4; --grad-base: #9b1d5e; --tinta: #06323a; --acento: #9b1d5e; --acento-claro: #ff6fa8; }
+
+/* -----------------------------------------------------------------------
+   Relevo (neumorfismo)
+   Duas sombras em diagonais opostas — a clara em cima à esquerda, a escura
+   embaixo à direita — sobre um elemento da mesma cor da superfície. É isso
+   que faz a peça parecer moldada no material em vez de colada por cima, e é
+   também por isso que não há bordas em lugar nenhum daqui para baixo.
+
+   As três composições cobrem os três estados: saliente, saliente discreto e
+   afundado (o "pressionado", usado no que está ativo). Como são var() dentro
+   de var(), basta --luz e --sombra mudarem com o público para todas as peças
+   se reajustarem.
+   ----------------------------------------------------------------------- */
+body {
+  --relevo: -5px -5px 11px var(--luz), 5px 5px 13px var(--sombra);
+  --relevo-sutil: -2px -2px 5px var(--luz), 2px 3px 7px var(--sombra);
+  --afundado: inset -4px -4px 9px var(--luz), inset 4px 4px 9px var(--sombra);
+
+  /* O topbar é escuro nos dois públicos, então tem o par dele. Fica aqui, e
+     não numa regra `.topbar`, porque a aba de público mora dentro do topbar
+     mas é feita da cor do navbar: se o par fosse herdado, ela receberia o
+     relevo errado. */
+  --luz-topo: rgba(255, 255, 255, 0.07);
+  --sombra-topo: rgba(0, 0, 0, 0.62);
+  --relevo-topo: -3px -3px 7px var(--luz-topo), 3px 3px 8px var(--sombra-topo);
+  --afundado-topo: inset -2px -2px 5px var(--luz-topo), inset 2px 2px 5px var(--sombra-topo);
+}
 
 /* -----------------------------------------------------------------------
    Base
@@ -91,6 +127,14 @@ body {
 }
 
 a { color: inherit; text-decoration: none; }
+
+/* Sem bordas em lugar nenhum, o foco de teclado precisa de um anel próprio:
+   o relevo sozinho não diz onde está o cursor. */
+:focus-visible {
+  outline: 2px solid var(--acento-uso);
+  outline-offset: 3px;
+  border-radius: 14px;
+}
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
 
 .faixa {
@@ -115,7 +159,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
    TOPBAR
    ========================================================================== */
 .topbar {
-  background-color: #16181d;
+  background-color: #1c1f27;
   color: rgba(255, 255, 255, 0.78);
   font-size: 0.78rem;
 }
@@ -155,19 +199,22 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   align-self: stretch;
   gap: 0.5rem;
   margin: 5px 0 -1px;
-  padding: 0 1rem;
-  border-radius: 10px 10px 0 0;
+  padding: 0 1.1rem;
+  border-radius: 14px 14px 0 0;
   background-color: var(--superficie);
   color: var(--superficie-forte);
   font-size: 0.78rem;
   font-weight: 600;
   white-space: nowrap;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  /* Só as sombras de cima e dos lados: uma sombra embaixo descolaria a aba
+     do navbar, que é justamente o que não pode acontecer. */
+  box-shadow: -4px -3px 8px var(--luz-topo), 4px -3px 9px var(--sombra-topo);
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.2s ease;
 }
-/* A aba branca não muda com `filter: brightness`, então o retorno do hover é
-   um contorno por dentro, que funciona nas duas superfícies. */
+/* No hover a aba sobe um pouco mais, em vez de ganhar contorno: sem bordas,
+   o relevo é o único vocabulário disponível. */
 .publico:hover {
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--superficie-forte) 25%, transparent);
+  box-shadow: -6px -5px 12px var(--luz-topo), 6px -4px 13px var(--sombra-topo);
 }
 .publico .publico-troca { font-size: 0.65rem; opacity: 0.45; }
 
@@ -179,12 +226,18 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.35rem 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.4rem 0.85rem;
   border-radius: 999px;
   font-size: 0.75rem;
+  box-shadow: var(--relevo-topo);
+  transition: box-shadow 0.2s ease, color 0.2s ease;
 }
-.acessibilidade-btn:hover { border-color: rgba(255, 255, 255, 0.6); color: #fff; }
+.acessibilidade-btn:hover { color: #fff; }
+/* Aberto, o botão fica afundado: é o mesmo gesto de apertar uma tecla. */
+.acessibilidade[aria-expanded="true"] .acessibilidade-btn {
+  box-shadow: var(--afundado-topo);
+  color: #fff;
+}
 
 .acessibilidade-menu {
   display: none;
@@ -193,12 +246,11 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   top: calc(100% + 0.4rem);
   z-index: 60;
   min-width: 220px;
-  padding: 0.35rem;
-  background: #fff;
-  color: #16181d;
-  border: 1px solid #d9dde5;
-  border-radius: 10px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  padding: 0.4rem;
+  background: var(--superficie);
+  color: var(--superficie-forte);
+  border-radius: 16px;
+  box-shadow: var(--relevo), 0 18px 36px rgba(0, 0, 0, 0.22);
 }
 .acessibilidade[aria-expanded="true"] .acessibilidade-menu { display: block; }
 
@@ -208,13 +260,14 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   align-items: center;
   gap: 0.6rem;
   width: 100%;
-  padding: 0.5rem 0.6rem;
-  border-radius: 6px;
+  padding: 0.55rem 0.7rem;
+  border-radius: 10px;
   font-size: 0.82rem;
   text-align: left;
+  transition: box-shadow 0.15s ease;
 }
 .acessibilidade-menu a:hover,
-.acessibilidade-menu button:hover { background-color: #f1f3f7; }
+.acessibilidade-menu button:hover { box-shadow: var(--relevo-sutil); }
 
 /* ==========================================================================
    NAVBAR — logo | menus | CTA
@@ -224,8 +277,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   top: 0;
   z-index: 50;
   background-color: var(--superficie);
-  border-bottom: 1px solid var(--superficie-borda);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .navbar .faixa {
@@ -255,35 +307,48 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 
 .menu > li > a {
   display: block;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
+  padding: 0.6rem 1.15rem;
+  border-radius: 14px;
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--superficie-tinta);
-  transition: background-color 0.15s ease, color 0.15s ease;
+  box-shadow: var(--relevo-sutil);
+  transition: box-shadow 0.2s ease, color 0.2s ease;
 }
 .menu > li > a:hover {
-  background-color: color-mix(in srgb, var(--superficie-forte) 8%, transparent);
+  box-shadow: var(--relevo);
   color: var(--superficie-forte);
 }
 
+/* Ativo é afundado, não preenchido: no neumorfismo o que está selecionado
+   afunda no material. A cor do menu sai do preenchimento e vai para o texto,
+   que é o que sobra para diferenciar um menu do outro. */
 .menu > li > a[aria-current="true"],
 .menu > li > a[aria-current="true"]:hover {
-  color: var(--acento-tinta);
-  background-color: var(--acento-uso);
+  box-shadow: var(--afundado);
+  color: var(--acento-uso);
 }
 
 .cta {
   flex: 0 0 auto;
-  padding: 0.65rem 1.4rem;
-  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  border-radius: 14px;
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--acento-tinta);
   background-color: var(--acento-uso);
-  transition: background-color 0.55s ease, color 0.3s ease, filter 0.15s ease;
+  /* O único elemento colorido que continua saliente: a sombra escura é
+     tingida com o próprio acento, senão o botão parecia recortado e colado
+     sobre a superfície em vez de moldado nela. */
+  box-shadow: -4px -4px 10px var(--luz),
+              5px 5px 14px color-mix(in srgb, var(--acento-uso) 40%, var(--sombra));
+  transition: background-color 0.55s ease, color 0.3s ease, box-shadow 0.2s ease;
 }
-.cta:hover { filter: brightness(1.15); }
+.cta:hover {
+  box-shadow: -6px -6px 13px var(--luz),
+              7px 7px 18px color-mix(in srgb, var(--acento-uso) 45%, var(--sombra));
+}
+.cta:active { box-shadow: var(--afundado); }
 
 .navbar-toggler { display: none; }
 
@@ -300,9 +365,15 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
   z-index: 49;
   /* A cor do menu, bem diluída: a barra pertence ao menu ativo, mas não
      pode competir com o palco logo abaixo. */
-  background-color: color-mix(in srgb, var(--acento-uso) 12%, var(--superficie));
-  border-bottom: 1px solid color-mix(in srgb, var(--acento-uso) 26%, var(--superficie));
-  transition: background-color 0.55s ease, border-color 0.55s ease;
+  /* Mesma cor do navbar, e escavada nele: a sub bar deixa de ser uma faixa
+     colorida por cima para ser um sulco no material. A cor do menu, que
+     antes tingia o fundo, foi para o texto das opções. A sombra externa de
+     baixo é a que separa o bloco de barras do palco. */
+  background-color: var(--superficie);
+  box-shadow: inset 0 6px 10px -7px var(--sombra),
+              inset 0 -6px 10px -7px var(--luz),
+              0 10px 20px -10px var(--sombra);
+  transition: background-color 0.3s ease;
 }
 
 .submenu {
@@ -333,22 +404,26 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 
 .submenu > li > a {
   display: block;
-  padding: 0.35rem 0.85rem;
+  padding: 0.4rem 0.95rem;
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--acento-uso);
+  color: var(--superficie-tinta);
   white-space: nowrap;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: box-shadow 0.2s ease, color 0.2s ease;
 }
 .submenu > li > a:hover {
-  background-color: color-mix(in srgb, var(--acento-uso) 22%, var(--superficie));
+  box-shadow: var(--relevo-sutil);
+  color: var(--superficie-forte);
 }
 
+/* Dentro de um sulco, a opção ativa é o que sobe — o inverso do menu de
+   cima, onde o ativo afunda. É o que evita dois afundados encaixados, que
+   na prática viram uma mancha só. */
 .submenu > li > a[aria-current="true"],
 .submenu > li > a[aria-current="true"]:hover {
-  color: var(--acento-tinta);
-  background-color: var(--acento-uso);
+  box-shadow: var(--relevo);
+  color: var(--acento-uso);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -383,14 +458,73 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
   opacity: 0.55 !important;
 }
 
+/* -----------------------------------------------------------------------
+   Amostra — as peças em relevo fora das barras, para julgar o efeito sobre
+   o degradê e não só sobre a superfície do navbar.
+   ----------------------------------------------------------------------- */
+.amostra {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  max-width: 44rem;
+  border-radius: 22px;
+  background-color: var(--superficie);
+  color: var(--superficie-tinta);
+  box-shadow: var(--relevo);
+  transition: background-color 0.3s ease;
+}
+
+.amostra-titulo {
+  margin: 0 0 1rem !important;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6 !important;
+}
+
+.amostra-linha { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+
+.btn-relevo {
+  padding: 0.7rem 1.4rem;
+  border-radius: 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--superficie-tinta);
+  background-color: var(--superficie);
+  box-shadow: var(--relevo);
+  transition: box-shadow 0.2s ease, color 0.2s ease;
+}
+.btn-relevo:hover { color: var(--superficie-forte); }
+.btn-relevo:active,
+.btn-relevo.esta-pressionado {
+  box-shadow: var(--afundado);
+  color: var(--acento-uso);
+}
+
+.btn-relevo-acento {
+  color: var(--acento-tinta);
+  background-color: var(--acento-uso);
+  box-shadow: -4px -4px 10px var(--luz),
+              5px 5px 14px color-mix(in srgb, var(--acento-uso) 40%, var(--sombra));
+}
+.btn-relevo-acento:hover { color: var(--acento-tinta); }
+
+/* Campos e trilhos são o outro lado do vocabulário: vazios afundados. */
+.campo-afundado {
+  padding: 0.7rem 1.4rem;
+  border-radius: 14px;
+  font-size: 0.88rem;
+  box-shadow: var(--afundado);
+}
+
 .nota {
-  margin-top: 3rem;
+  margin-top: 1.5rem;
   padding: 1rem 1.25rem;
-  border: 1px dashed currentColor;
-  border-radius: 10px;
+  border-radius: 16px;
   max-width: 60ch;
   font-size: 0.85rem;
   opacity: 0.6;
+  box-shadow: var(--afundado);
 }
 
 /* ==========================================================================

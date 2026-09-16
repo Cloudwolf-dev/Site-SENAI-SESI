@@ -21,8 +21,8 @@
      Aba de público — "Para você" / "Para empresa"
      -------------------------------------------------------------------- */
   var PUBLICOS = {
-    voce: { rotulo: "Para você", icone: "fa-solid fa-user", outro: "empresa" },
-    empresa: { rotulo: "Para empresa", icone: "fa-solid fa-building", outro: "voce" }
+    voce: { rotulo: "Para empresa", icone: "fa-solid fa-user", outro: "empresa" },
+    empresa: { rotulo: "Para você", icone: "fa-solid fa-building", outro: "voce" }
   };
 
   var abaPublico = document.querySelector(".publico");
@@ -38,10 +38,9 @@
       abaPublico.querySelector(".publico-rotulo").textContent = def.rotulo;
       abaPublico.querySelector("i").className = def.icone;
       abaPublico.setAttribute("data-publico-alvo", def.outro);
-      // A aba mostra onde se está, como a aba ativa de um navegador; o que
-      // o clique faz só é dito aqui, para quem não vê o ícone de troca.
-      abaPublico.setAttribute("aria-label",
-        def.rotulo + ". Trocar para " + PUBLICOS[def.outro].rotulo + ".");
+      // O rótulo da aba é o destino, não o público atual: o aria-label
+      // repete isso em voz alta para quem não vê o ícone de troca.
+      abaPublico.setAttribute("aria-label", "Trocar para " + def.rotulo + ".");
     }
     if (empurrarHash !== false) escreverHash();
   }
