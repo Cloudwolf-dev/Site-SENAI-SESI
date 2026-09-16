@@ -218,6 +218,72 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .navbar-toggler { display: none; }
 
 /* ==========================================================================
+   SUB BAR — o segundo nível, preso ao menu ativo do navbar
+   ========================================================================== */
+.subbar {
+  position: sticky;
+  /* Encosta no navbar quando a página rola: as duas barras sobem juntas e o
+     segundo nível nunca fica órfão do primeiro. O valor exato é a altura
+     medida do navbar, escrita pelo conceito.js; este é só o palpite para
+     quando não houver JS. */
+  top: 72px;
+  z-index: 49;
+  /* A cor do menu, bem diluída: a barra pertence ao menu ativo, mas não
+     pode competir com o palco logo abaixo. */
+  background-color: color-mix(in srgb, var(--acento) 10%, #fff);
+  border-bottom: 1px solid color-mix(in srgb, var(--acento) 22%, #fff);
+  transition: background-color 0.55s ease, border-color 0.55s ease;
+}
+
+.submenu {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.submenu::-webkit-scrollbar { display: none; }
+
+/* Só o conjunto do menu ativo existe; a entrada é o que mostra que a barra
+   trocou de conteúdo, e não só de rótulos. */
+.submenu.ativo {
+  display: flex;
+  animation: submenu-entra 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes submenu-entra {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.submenu > li { flex: 0 0 auto; }
+
+.submenu > li > a {
+  display: block;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--acento);
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.submenu > li > a:hover { background-color: color-mix(in srgb, var(--acento) 18%, #fff); }
+
+.submenu > li > a[aria-current="true"],
+.submenu > li > a[aria-current="true"]:hover {
+  color: #fff;
+  background-color: var(--acento);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .submenu.ativo { animation: none; }
+}
+
+/* ==========================================================================
    PALCO — o corpo da página é só o degradê, à espera do conteúdo
    ========================================================================== */
 .palco {
@@ -233,6 +299,17 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   letter-spacing: -0.02em;
 }
 .palco p { margin: 0; max-width: 60ch; opacity: 0.8; }
+
+/* Onde o clique na sub bar aparece — sem conteúdo ainda, é o único retorno
+   visível de qual par (menu, opção) está selecionado. */
+.estado {
+  margin-bottom: 1.25rem !important;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.55 !important;
+}
 
 .nota {
   margin-top: 3rem;
@@ -290,4 +367,8 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   .menu::-webkit-scrollbar { display: none; }
   .menu > li { flex: 0 0 auto; }
   .cta { margin-left: auto; }
+
+  /* Palpite de reserva para o navbar de duas linhas do celular; com JS, o
+     valor certo vem medido. */
+  .subbar { top: 132px; }
 }
