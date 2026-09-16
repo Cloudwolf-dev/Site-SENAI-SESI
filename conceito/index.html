@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conceito — SENAI Amapá</title>
+<meta name="description" content="Protótipo em branco: topbar, navbar e um palco em degradê que muda de cor a cada menu.">
+<link rel="icon" href="../assets/img/favicon.png">
+<!-- Só os ícones vêm do site; nenhum CSS da identidade atual é carregado. -->
+<link rel="stylesheet" href="../assets/vendor/fontawesome/css/all.min.css">
+<link rel="stylesheet" href="conceito.css">
+</head>
+<body data-menu="1">
+<a class="pular" href="#palco">Pular para o conteúdo</a>
+
+<!-- ===================== TOPBAR ===================== -->
+<div class="topbar">
+  <div class="faixa">
+    <div class="topbar-menu">
+      <button class="topbar-toggler" type="button" aria-expanded="false" aria-label="Abrir links institucionais">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul class="topbar-links">
+        <li><a href="#">SESI</a></li>
+        <li><a href="#">LGPD</a></li>
+        <li><a href="#">Transparência</a></li>
+        <li><a href="#">Sustentabilidade</a></li>
+        <li><a href="#">Portal ESG</a></li>
+        <li><a href="#">Intranet</a></li>
+      </ul>
+    </div>
+
+    <div class="acessibilidade" aria-expanded="false">
+      <button class="acessibilidade-btn" type="button" aria-expanded="false">
+        <i class="fa-solid fa-universal-access"></i> Acessibilidade
+        <i class="fa-solid fa-chevron-down" style="font-size:.6rem"></i>
+      </button>
+      <div class="acessibilidade-menu">
+        <button type="button" data-acao="font-increase"><i class="fa-solid fa-magnifying-glass-plus"></i> Aumentar fonte</button>
+        <button type="button" data-acao="font-decrease"><i class="fa-solid fa-magnifying-glass-minus"></i> Diminuir fonte</button>
+        <button type="button" data-acao="contrast"><i class="fa-solid fa-circle-half-stroke"></i> Contraste</button>
+        <a href="#"><i class="fa-solid fa-hands-asl-interpreting"></i> Libras</a>
+        <a href="#"><i class="fa-solid fa-volume-high"></i> Leitor de Tela</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== NAVBAR =====================
+     Logo | 4 menus | 1 CTA. Cada menu troca o degradê do palco; é o único
+     efeito por enquanto (assets do conceito em conceito.js/conceito.css).
+================================================== -->
+<header class="navbar">
+  <div class="faixa">
+    <a class="marca" href="#menu-1" aria-label="SENAI Amapá">
+      <img src="../assets/img/senai_branco.png" alt="SENAI Amapá">
+    </a>
+
+    <ul class="menu">
+      <li><a href="#menu-1" data-menu="1">Menu 1</a></li>
+      <li><a href="#menu-2" data-menu="2">Menu 2</a></li>
+      <li><a href="#menu-3" data-menu="3">Menu 3</a></li>
+      <li><a href="#menu-4" data-menu="4">Menu 4</a></li>
+    </ul>
+
+    <a class="cta" href="#">Botão de ação</a>
+  </div>
+</header>
+
+<!-- ===================== PALCO ===================== -->
+<main id="palco" class="palco">
+  <div class="faixa">
+    <h1>Conceito em branco</h1>
+    <p>O corpo da página é só o degradê. Clique em Menu 1 a 4 no navbar e ele
+       troca de par de cores; role até o fim para ver a base.</p>
+    <p class="nota">Nada de identidade visual por aqui ainda: tipografia do
+       sistema, cinzas neutros e a logo da instituição. Topbar e navbar são a
+       estrutura do site atual, refeita do zero neste conceito.</p>
+  </div>
+</main>
+
+<script src="conceito.js"></script>
+</body></html>

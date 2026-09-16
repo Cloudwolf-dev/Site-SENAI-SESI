@@ -1,0 +1,293 @@
+/* ==========================================================================
+   Conceito — do zero
+   Sem identidade visual por enquanto: nada de style.css, das variáveis de
+   marca ou da Neo Sans. Só a logo vem do site. O que existe aqui é a
+   estrutura do topbar e do navbar e um palco em degradê no corpo da página.
+
+   A cor do degradê é o estado do protótipo: cada menu do navbar troca o par
+   de cores, e é o único efeito de clicar por enquanto.
+   ========================================================================== */
+
+/* -----------------------------------------------------------------------
+   Paleta por menu
+   As cores são propriedades registradas (@property) e não variáveis comuns
+   porque só assim o navegador sabe interpolar entre duas cores: um
+   `transition` num `linear-gradient()` normal trocaria de uma vez, sem
+   passar pelo meio. Onde @property não existe, a troca é seca — que é a
+   degradação aceitável.
+   ----------------------------------------------------------------------- */
+@property --grad-topo {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --grad-base {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #000000;
+}
+
+body {
+  --grad-topo: #ffffff;
+  --grad-base: #000000;
+  /* Cor do texto sobre a metade de cima do degradê, que é a clara. */
+  --tinta: #16181d;
+  /* Cor do menu ativo e do CTA — o degradê sozinho não serve, porque no
+     menu 1 o topo é branco e sumiria sobre o header. */
+  --acento: #16181d;
+  /* Só as duas cores registradas entram aqui: --tinta e --acento são
+     variáveis comuns, que não interpolam — quem suaviza a troca delas é o
+     `transition` de `color`/`background-color` em quem as usa. */
+  transition: --grad-topo 0.55s ease, --grad-base 0.55s ease, color 0.55s ease;
+}
+
+body[data-menu="2"] { --grad-topo: #3ec46f; --grad-base: #10357f; --tinta: #0a2b18; --acento: #10357f; }
+body[data-menu="3"] { --grad-topo: #f3a712; --grad-base: #5b1d8f; --tinta: #3d2503; --acento: #5b1d8f; }
+body[data-menu="4"] { --grad-topo: #14b8c4; --grad-base: #9b1d5e; --tinta: #06323a; --acento: #9b1d5e; }
+
+/* -----------------------------------------------------------------------
+   Base
+   ----------------------------------------------------------------------- */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--tinta);
+  background-color: #fff;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+
+.faixa {
+  width: min(1320px, 92vw);
+  margin-inline: auto;
+}
+
+.pular {
+  position: absolute;
+  left: -9999px;
+}
+.pular:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: #fff;
+  border: 2px solid #16181d;
+}
+
+/* ==========================================================================
+   TOPBAR
+   ========================================================================== */
+.topbar {
+  background-color: #16181d;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.78rem;
+}
+
+.topbar .faixa {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 40px;
+}
+
+.topbar-links {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.topbar-links a:hover { color: #fff; }
+
+.topbar-toggler { display: none; }
+
+/* Acessibilidade — o menu abre pelo botão (conceito.js), não pelo :hover,
+   para funcionar igual no toque e no teclado. */
+.acessibilidade { position: relative; }
+
+.acessibilidade-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+.acessibilidade-btn:hover { border-color: rgba(255, 255, 255, 0.6); color: #fff; }
+
+.acessibilidade-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.4rem);
+  z-index: 60;
+  min-width: 220px;
+  padding: 0.35rem;
+  background: #fff;
+  color: #16181d;
+  border: 1px solid #d9dde5;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+.acessibilidade[aria-expanded="true"] .acessibilidade-menu { display: block; }
+
+.acessibilidade-menu a,
+.acessibilidade-menu button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  text-align: left;
+}
+.acessibilidade-menu a:hover,
+.acessibilidade-menu button:hover { background-color: #f1f3f7; }
+
+/* ==========================================================================
+   NAVBAR — logo | menus | CTA
+   ========================================================================== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: #fff;
+  border-bottom: 1px solid #e4e7ee;
+}
+
+.navbar .faixa {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 72px;
+}
+
+.marca { flex: 0 0 auto; }
+.marca img { display: block; height: 40px; width: auto; }
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1 1 auto;
+}
+
+.menu > li > a {
+  display: block;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4a505e;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.menu > li > a:hover { background-color: #f1f3f7; color: #16181d; }
+
+.menu > li > a[aria-current="true"] {
+  color: #fff;
+  background-color: var(--acento);
+}
+
+.cta {
+  flex: 0 0 auto;
+  padding: 0.65rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--acento);
+  transition: background-color 0.55s ease, filter 0.15s ease;
+}
+.cta:hover { filter: brightness(1.15); }
+
+.navbar-toggler { display: none; }
+
+/* ==========================================================================
+   PALCO — o corpo da página é só o degradê, à espera do conteúdo
+   ========================================================================== */
+.palco {
+  min-height: 180vh;
+  padding-block: 5rem;
+  background-image: linear-gradient(180deg, var(--grad-topo) 0%, var(--grad-base) 100%);
+}
+
+.palco h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.palco p { margin: 0; max-width: 60ch; opacity: 0.8; }
+
+.nota {
+  margin-top: 3rem;
+  padding: 1rem 1.25rem;
+  border: 1px dashed currentColor;
+  border-radius: 10px;
+  max-width: 60ch;
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+@media (max-width: 860px) {
+  .topbar-links {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    z-index: 55;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 0.5rem 4vw;
+    background-color: #16181d;
+  }
+  .topbar-links a { display: block; padding: 0.5rem 0; }
+  .topbar .faixa { position: relative; }
+  .topbar-menu[aria-expanded="true"] .topbar-links { display: flex; }
+
+  .topbar-toggler {
+    display: block;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+  }
+
+  .navbar .faixa {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-block: 0.75rem;
+  }
+  .marca img { height: 32px; }
+
+  /* Os menus passam para uma faixa rolável abaixo da logo — a barra de abas
+     de aplicativo fica para quando o conceito tiver conteúdo. */
+  .menu {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .menu::-webkit-scrollbar { display: none; }
+  .menu > li { flex: 0 0 auto; }
+  .cta { margin-left: auto; }
+}
