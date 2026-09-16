@@ -41,9 +41,38 @@ body {
   transition: --grad-topo 0.55s ease, --grad-base 0.55s ease, color 0.55s ease;
 }
 
-body[data-menu="2"] { --grad-topo: #3ec46f; --grad-base: #10357f; --tinta: #0a2b18; --acento: #10357f; }
-body[data-menu="3"] { --grad-topo: #f3a712; --grad-base: #5b1d8f; --tinta: #3d2503; --acento: #5b1d8f; }
-body[data-menu="4"] { --grad-topo: #14b8c4; --grad-base: #9b1d5e; --tinta: #06323a; --acento: #9b1d5e; }
+/* -----------------------------------------------------------------------
+   Superfície do navbar por público
+   "Para você" deixa o navbar branco; "Para empresa" o pinta de azul escuro.
+   Tudo que mora sobre essa superfície — logo, menus, CTA, sub bar e a aba de
+   público no topbar — lê estas variáveis, então trocar de público é trocar
+   quatro valores, não duplicar regras.
+   ----------------------------------------------------------------------- */
+body {
+  --superficie: #ffffff;
+  --superficie-tinta: #4a505e;
+  --superficie-forte: #16181d;
+  --superficie-borda: #e4e7ee;
+  /* O menu ativo tem duas cores, uma por superfície: --acento sobre o navbar
+     branco e --acento-claro sobre o azul escuro. Clarear a primeira por
+     cálculo dava cores lavadas, com cara de botão desabilitado. */
+  --acento-uso: var(--acento);
+  --acento-tinta: #ffffff;
+  --acento-claro: #e9ecf2;
+}
+
+body[data-publico="empresa"] {
+  --superficie: #0f2444;
+  --superficie-tinta: rgba(255, 255, 255, 0.72);
+  --superficie-forte: #ffffff;
+  --superficie-borda: rgba(255, 255, 255, 0.16);
+  --acento-uso: var(--acento-claro);
+  --acento-tinta: #0f2444;
+}
+
+body[data-menu="2"] { --grad-topo: #3ec46f; --grad-base: #10357f; --tinta: #0a2b18; --acento: #10357f; --acento-claro: #35d17e; }
+body[data-menu="3"] { --grad-topo: #f3a712; --grad-base: #5b1d8f; --tinta: #3d2503; --acento: #5b1d8f; --acento-claro: #c48bf0; }
+body[data-menu="4"] { --grad-topo: #14b8c4; --grad-base: #9b1d5e; --tinta: #06323a; --acento: #9b1d5e; --acento-claro: #ff6fa8; }
 
 /* -----------------------------------------------------------------------
    Base
@@ -94,10 +123,13 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .topbar .faixa {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   min-height: 40px;
 }
+
+/* A acessibilidade continua encostada à direita; o resto do topbar cresce
+   da esquerda para a direita, a partir da aba de público. */
+.topbar .acessibilidade { margin-left: auto; }
 
 .topbar-links {
   display: flex;
@@ -110,6 +142,34 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .topbar-links a:hover { color: #fff; }
 
 .topbar-toggler { display: none; }
+
+/* -----------------------------------------------------------------------
+   Aba de público
+   Recebe a cor do navbar e encosta nele: o -1px come a borda do navbar e
+   o canto arredondado só em cima é o que faz a peça ler como aba, e não
+   como botão solto no topbar.
+   ----------------------------------------------------------------------- */
+.publico {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  gap: 0.5rem;
+  margin: 5px 0 -1px;
+  padding: 0 1rem;
+  border-radius: 10px 10px 0 0;
+  background-color: var(--superficie);
+  color: var(--superficie-forte);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+/* A aba branca não muda com `filter: brightness`, então o retorno do hover é
+   um contorno por dentro, que funciona nas duas superfícies. */
+.publico:hover {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--superficie-forte) 25%, transparent);
+}
+.publico .publico-troca { font-size: 0.65rem; opacity: 0.45; }
 
 /* Acessibilidade — o menu abre pelo botão (conceito.js), não pelo :hover,
    para funcionar igual no toque e no teclado. */
@@ -163,8 +223,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: #fff;
-  border-bottom: 1px solid #e4e7ee;
+  background-color: var(--superficie);
+  border-bottom: 1px solid var(--superficie-borda);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .navbar .faixa {
@@ -176,6 +237,11 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 
 .marca { flex: 0 0 auto; }
 .marca img { display: block; height: 40px; width: auto; }
+
+/* Duas versões da logo em vez de uma trocada por JS: sem troca de `src` não
+   há o piscar do carregamento ao mudar de público. */
+body[data-publico="voce"] .marca-sobre-escuro,
+body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 
 .menu {
   display: flex;
@@ -193,14 +259,18 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   border-radius: 8px;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #4a505e;
+  color: var(--superficie-tinta);
   transition: background-color 0.15s ease, color 0.15s ease;
 }
-.menu > li > a:hover { background-color: #f1f3f7; color: #16181d; }
+.menu > li > a:hover {
+  background-color: color-mix(in srgb, var(--superficie-forte) 8%, transparent);
+  color: var(--superficie-forte);
+}
 
-.menu > li > a[aria-current="true"] {
-  color: #fff;
-  background-color: var(--acento);
+.menu > li > a[aria-current="true"],
+.menu > li > a[aria-current="true"]:hover {
+  color: var(--acento-tinta);
+  background-color: var(--acento-uso);
 }
 
 .cta {
@@ -209,9 +279,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   border-radius: 8px;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #fff;
-  background-color: var(--acento);
-  transition: background-color 0.55s ease, filter 0.15s ease;
+  color: var(--acento-tinta);
+  background-color: var(--acento-uso);
+  transition: background-color 0.55s ease, color 0.3s ease, filter 0.15s ease;
 }
 .cta:hover { filter: brightness(1.15); }
 
@@ -230,8 +300,8 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   z-index: 49;
   /* A cor do menu, bem diluída: a barra pertence ao menu ativo, mas não
      pode competir com o palco logo abaixo. */
-  background-color: color-mix(in srgb, var(--acento) 10%, #fff);
-  border-bottom: 1px solid color-mix(in srgb, var(--acento) 22%, #fff);
+  background-color: color-mix(in srgb, var(--acento-uso) 12%, var(--superficie));
+  border-bottom: 1px solid color-mix(in srgb, var(--acento-uso) 26%, var(--superficie));
   transition: background-color 0.55s ease, border-color 0.55s ease;
 }
 
@@ -267,16 +337,18 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--acento);
+  color: var(--acento-uso);
   white-space: nowrap;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
-.submenu > li > a:hover { background-color: color-mix(in srgb, var(--acento) 18%, #fff); }
+.submenu > li > a:hover {
+  background-color: color-mix(in srgb, var(--acento-uso) 22%, var(--superficie));
+}
 
 .submenu > li > a[aria-current="true"],
 .submenu > li > a[aria-current="true"]:hover {
-  color: #fff;
-  background-color: var(--acento);
+  color: var(--acento-tinta);
+  background-color: var(--acento-uso);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -341,6 +413,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   .topbar-links a { display: block; padding: 0.5rem 0; }
   .topbar .faixa { position: relative; }
   .topbar-menu[aria-expanded="true"] .topbar-links { display: flex; }
+
+  .publico { padding: 0 0.7rem; font-size: 0.72rem; }
+  .publico .publico-troca { display: none; }
 
   .topbar-toggler {
     display: block;

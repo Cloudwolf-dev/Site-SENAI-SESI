@@ -1,13 +1,16 @@
 /**
  * Conceito — comportamento mínimo
  *
- * O estado é um par (menu, opção): o menu do navbar troca a cor do degradê
- * do palco e o conjunto de opções da sub bar; a opção da sub bar é o segundo
- * nível dentro do menu. Fora isso, só o menu de acessibilidade abre e fecha
- * e o topbar recolhe no celular.
+ * O estado é um par (menu, opção) dentro de um público: o menu do navbar
+ * troca a cor do degradê do palco e o conjunto de opções da sub bar; a opção
+ * da sub bar é o segundo nível dentro do menu; e o público — "Para você" ou
+ * "Para empresa" — troca a superfície do navbar (branco ou azul escuro) e,
+ * com ela, a versão da logo. Fora isso, só o menu de acessibilidade abre e
+ * fecha e o topbar recolhe no celular.
  *
  * A cor não é escolhida aqui: o clique só escreve o número do menu em
- * <body data-menu="N"> e o conceito.css diz o que aquele número significa.
+ * <body data-menu="N">, e o público em <body data-publico="...">; o
+ * conceito.css diz o que cada valor significa.
  * Os rótulos também não: quantas opções cada menu tem e como se chamam está
  * no HTML, em <ul class="submenu" data-de="N">.
  */
@@ -15,10 +18,56 @@
   "use strict";
 
   /* --------------------------------------------------------------------
+     Aba de público — "Para você" / "Para empresa"
+     -------------------------------------------------------------------- */
+  var PUBLICOS = {
+    voce: { rotulo: "Para você", icone: "fa-solid fa-user", outro: "empresa" },
+    empresa: { rotulo: "Para empresa", icone: "fa-solid fa-building", outro: "voce" }
+  };
+
+  var abaPublico = document.querySelector(".publico");
+  var publico = "voce";
+
+  function trocarPublico(id, empurrarHash) {
+    if (!PUBLICOS[id]) id = "voce";
+    publico = id;
+    document.body.setAttribute("data-publico", id);
+
+    if (abaPublico) {
+      var def = PUBLICOS[id];
+      abaPublico.querySelector(".publico-rotulo").textContent = def.rotulo;
+      abaPublico.querySelector("i").className = def.icone;
+      abaPublico.setAttribute("data-publico-alvo", def.outro);
+      // A aba mostra onde se está, como a aba ativa de um navegador; o que
+      // o clique faz só é dito aqui, para quem não vê o ícone de troca.
+      abaPublico.setAttribute("aria-label",
+        def.rotulo + ". Trocar para " + PUBLICOS[def.outro].rotulo + ".");
+    }
+    if (empurrarHash !== false) escreverHash();
+  }
+
+  if (abaPublico) {
+    abaPublico.addEventListener("click", function () {
+      trocarPublico(abaPublico.getAttribute("data-publico-alvo"));
+    });
+  }
+
+  /* --------------------------------------------------------------------
      Navbar e sub bar — o par (menu, opção)
      -------------------------------------------------------------------- */
   var menu = document.querySelector(".menu");
   var subbar = document.querySelector(".subbar");
+
+  /* A URL guarda o estado inteiro — público, menu e opção — para recarregar
+     e compartilhar caírem no mesmo lugar. */
+  function escreverHash() {
+    var b = document.body;
+    var partes = [b.getAttribute("data-publico") || "voce",
+                  "menu-" + (b.getAttribute("data-menu") || "1")];
+    var op = document.querySelector('.submenu.ativo a[aria-current="true"]');
+    if (op) partes.push("sub-" + op.getAttribute("data-sub"));
+    history.replaceState(null, "", "#" + partes.join("/"));
+  }
 
   if (menu) {
     var itens = menu.querySelectorAll("a[data-menu]");
@@ -75,7 +124,7 @@
                              (rotuloSub ? " › " + rotuloSub.textContent : "");
       }
 
-      history.replaceState(null, "", "#menu-" + id + (escolhida ? "/sub-" + escolhida : ""));
+      escreverHash();
     };
 
     menu.addEventListener("click", function (e) {
@@ -105,9 +154,12 @@
     encaixarSubbar();
     window.addEventListener("resize", encaixarSubbar);
 
-    var doHash = location.hash.match(/^#menu-(\d+)(?:\/sub-(\d+))?$/) || [];
-    var inicial = doHash[1] && document.querySelector('a[data-menu="' + doHash[1] + '"]') ? doHash[1] : "1";
-    ativar(inicial, doHash[2] || null);
+    var doHash = location.hash.match(/^#(?:(voce|empresa)\/)?menu-(\d+)(?:\/sub-(\d+))?$/) || [];
+    // O público entra antes do menu porque quem ativa o menu já escreve o
+    // hash completo, e escreveria o público errado se viesse depois.
+    trocarPublico(doHash[1] || "voce", false);
+    var inicial = doHash[2] && document.querySelector('a[data-menu="' + doHash[2] + '"]') ? doHash[2] : "1";
+    ativar(inicial, doHash[3] || null);
   }
 
   /* --------------------------------------------------------------------

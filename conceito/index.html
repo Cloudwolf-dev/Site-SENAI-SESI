@@ -9,12 +9,21 @@
 <link rel="stylesheet" href="../assets/vendor/fontawesome/css/all.min.css">
 <link rel="stylesheet" href="conceito.css">
 </head>
-<body data-menu="1">
+<body data-menu="1" data-publico="voce">
 <a class="pular" href="#palco">Pular para o conteúdo</a>
 
 <!-- ===================== TOPBAR ===================== -->
 <div class="topbar">
   <div class="faixa">
+    <!-- Aba de público: a única peça do topbar que não é um link de texto.
+         Ela usa a cor do navbar e encosta nele, como a aba ativa de um
+         navegador encosta na barra de ferramentas. Clicar troca de público. -->
+    <button class="publico" type="button" data-publico-alvo="empresa">
+      <i class="fa-solid fa-user" aria-hidden="true"></i>
+      <span class="publico-rotulo">Para você</span>
+      <i class="fa-solid fa-arrow-right-arrow-left publico-troca" aria-hidden="true"></i>
+    </button>
+
     <div class="topbar-menu">
       <button class="topbar-toggler" type="button" aria-expanded="false" aria-label="Abrir links institucionais">
         <i class="fa-solid fa-bars"></i>
@@ -52,7 +61,8 @@
 <header class="navbar">
   <div class="faixa">
     <a class="marca" href="#menu-1" aria-label="SENAI Amapá">
-      <img src="../assets/img/senai_branco.png" alt="SENAI Amapá">
+      <img class="marca-sobre-claro" src="../assets/img/senai_branco.png" alt="">
+      <img class="marca-sobre-escuro" src="../assets/img/senai_negativa.png" alt="">
     </a>
 
     <ul class="menu">
