@@ -1,0 +1,408 @@
+/* ==========================================================================
+   SENAI/SESI Amapá — Camada "glass"
+   Cenário de fundo fixo (foto borrada) + botões translúcidos, na mesma ideia
+   aplicada ao template do site.
+
+   Carregado DEPOIS de assets/css/style.css em cada página: só sobrescreve o
+   que precisa, e sai do ar removendo o <link> — o style.css fica intacto.
+   ========================================================================== */
+
+:root {
+  --glass-blur: blur(18px) saturate(160%);
+  --glass-edge: rgba(255, 255, 255, 0.6);
+  --glass-shadow: rgba(13, 44, 102, 0.14);
+
+  /* Brilho no topo + sombra interna embaixo = "espessura" do vidro. */
+  --glass-bevel: inset 0 1px 0 rgba(255, 255, 255, 0.55),
+                 inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* Vidro na cor da marca — reaproveitado pelos botões, pela lupa, pelo chip de
+   filtro ativo e pela aba selecionada do menu (esta última no
+   nav-secoes.css, que carrega depois e herda estas variáveis).
+
+   Declarado no `body`, e não no `:root`, de propósito: o `var(--brand-rgb)`
+   aqui dentro é substituído onde a variável é declarada, e no `:root` o
+   --brand-rgb ainda é o azul institucional (a marca laranja/verde só entra
+   em `body.site-senai` / `body.site-sesi`). No `:root` os botões saíam azuis.
+
+   O texto é branco: abaixo de ~0.75 de alfa ele começa a sumir sobre o fundo
+   claro, então o gradiente fica entre 0.72 e 0.88. */
+body {
+  --glass-brand: linear-gradient(150deg,
+      rgba(var(--brand-rgb), 0.88) 0%,
+      rgba(var(--brand-rgb), 0.72) 55%,
+      rgba(var(--brand-rgb), 0.82) 100%);
+  --glass-brand-hover: linear-gradient(150deg,
+      rgba(var(--brand-rgb), 0.96) 0%,
+      rgba(var(--brand-rgb), 0.84) 55%,
+      rgba(var(--brand-rgb), 0.92) 100%);
+}
+
+/* -----------------------------------------------------------------------
+   Cenário de fundo — a foto fica fixa atrás de tudo, borrada e clareada,
+   com um véu claro por cima para o texto do site continuar legível.
+   O `inset` negativo compensa a borda transparente que o blur cria.
+   O url() é relativo a este arquivo, então vale para páginas em qualquer
+   nível de subpasta sem precisar de caminho por página.
+   ----------------------------------------------------------------------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -4vmax;
+  z-index: -2;
+  /*background: url(../img/fabrica.jpg) center / cover no-repeat;*/
+  filter: blur(9px) saturate(1.05) brightness(1.04);
+  pointer-events: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  /*background:
+    radial-gradient(120% 90% at 100% 0%, rgba(var(--brand-rgb), 0.2) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(240, 244, 250, 0.96) 100%);*/
+  pointer-events: none;
+}
+
+/* As faixas de conteúdo eram brancas/opacas e tapariam o cenário inteiro.
+   Ficam transparentes; quem garante a leitura é o véu do body::after. */
+.page-surface,
+.shortcuts-row,
+.breadcrumb-bar { background: transparent; }
+
+/* O header não tem cor nenhuma no topo da página: a marca e o menu ficam
+   direto sobre o cenário. A cor só entra quando ele encosta no topo
+   (`position: sticky`), porque aí passa a ter conteúdo rolando por baixo e
+   precisa de fundo para o texto não se misturar.
+
+   CSS não expõe um estado "sticky ativo", então a classe `is-stuck` vem do
+   assets/js/glass.js. Sem esse JS, o header fica sempre transparente — o que
+   degrada de forma aceitável, já que é o estado do topo da página. */
+.mainnav {
+  background-color: transparent;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  transition: background-color 0.25s ease, border-color 0.25s ease,
+              box-shadow 0.25s ease, backdrop-filter 0.25s ease;
+}
+
+.mainnav.is-stuck {
+  background-color: rgba(255, 255, 255, 0.72);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 6px 20px var(--glass-shadow);
+}
+
+/* Sentinela criada pelo glass.js logo antes do header: some do layout e só
+   serve para o observer saber quando o header colou. */
+.mainnav-sentinel {
+  height: 1px;
+  margin-bottom: -1px;
+  pointer-events: none;
+}
+
+/* -----------------------------------------------------------------------
+   Botões em vidro — mantêm a cor da marca (via --brand-rgb, que já muda
+   entre SENAI e SESI), só passam a ser translúcidos, com blur por trás e
+   um brilho especular na borda de cima.
+   ----------------------------------------------------------------------- */
+/* O style-empresa.css arredonda os botões com --radius-sm (0.5rem) enquanto o
+   style.css usa --radius-lg (1.1rem) — era só por isso que os botões de
+   "Para empresas" pareciam menos redondos. Igualado aqui, para os dois lados
+   ficarem com o mesmo raio sem precisar editar os dois CSS de produção. */
+.btn-brand,
+.btn.btn-brand,
+.btn-brand-alt { border-radius: var(--radius-sm); }
+
+/* `background-color: transparent` é o pulo do gato: o style.css pinta o botão
+   com a cor cheia da marca, e sem zerar isso o gradiente translúcido fica
+   apoiado num fundo opaco — ou seja, nada de vidro. O text-shadow devolve a
+   legibilidade que o texto branco perde ao ficar sobre um laranja mais claro. */
+.btn-brand,
+.btn.btn-brand,
+.nav-search-toggle,
+.course-filter-chip.is-active,
+.mainnav-menu > li > a:hover,
+.mainnav-menu > li.open > a {
+  background-color: transparent;
+  background-image: var(--glass-brand);
+  border: 1px solid var(--glass-edge);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: 0 6px 18px rgba(var(--brand-rgb), 0.22), var(--glass-bevel);
+  text-shadow: 0 1px 2px rgba(90, 25, 0, 0.35);
+}
+
+.btn-brand:hover,
+.btn-brand:focus,
+.btn.btn-brand:hover,
+.btn.btn-brand:focus,
+.nav-search-toggle:hover,
+.course-filter-chip.is-active:hover {
+  background-color: transparent;
+  background-image: var(--glass-brand-hover);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 10px 26px rgba(var(--brand-rgb), 0.3), var(--glass-bevel);
+}
+
+.btn-brand-alt {
+  background-color: transparent;
+  background-image: linear-gradient(150deg,
+      rgba(0, 139, 210, 0.78) 0%,
+      rgba(0, 117, 176, 0.56) 55%,
+      rgba(0, 139, 210, 0.68) 100%);
+  border: 1px solid var(--glass-edge);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: 0 6px 18px rgba(0, 139, 210, 0.2), var(--glass-bevel);
+  text-shadow: 0 1px 2px rgba(0, 40, 65, 0.35);
+}
+.btn-brand-alt:hover,
+.btn-brand-alt:focus {
+  background-color: transparent;
+  background-image: linear-gradient(150deg,
+      rgba(0, 139, 210, 0.9) 0%,
+      rgba(0, 117, 176, 0.7) 55%,
+      rgba(0, 139, 210, 0.8) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 10px 26px rgba(0, 139, 210, 0.28), var(--glass-bevel);
+}
+
+/* Botões claros (contorno, chips de filtro não selecionados, dropdown de área):
+   o branco sólido vira branco translúcido com blur — aqui o texto é escuro,
+   então dá para ser bem mais transparente que nos botões de marca. */
+.btn-outline-brand,
+.course-filter-chip,
+.course-area-toggle {
+  background-color: rgba(255, 255, 255, 0.45);
+  background-image: linear-gradient(150deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 60%);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: 0 4px 14px var(--glass-shadow), var(--glass-bevel);
+}
+.btn-outline-brand:hover,
+.course-filter-chip:hover,
+.course-area-toggle:hover { background-color: rgba(255, 255, 255, 0.68); }
+
+/* Acesso rápido (.shortcut-card) — mesma lógica dos cards de notícia: quase
+   transparente em repouso (12%), opaco no hover. Nas páginas "Para você" o
+   vidro é azul (--color-blue) e o hover vira laranja da marca.
+
+   O `:not(.glass-dark)` mantém isto fora das páginas de "Para empresas", que
+   têm a própria versão mais abaixo. Sem essa exclusão o `color` daqui venceria
+   o `color: #fff` do style-empresa.css (mesma especificidade, e este arquivo
+   carrega depois), e o texto de lá viraria azul sobre laranja. */
+body:not(.glass-dark) .shortcut-card {
+  background-color: var(--color-blue);
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  color: #fff;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: 0 4px 14px var(--glass-shadow), var(--glass-bevel);
+}
+
+/* Duas coisas precisam ser ditas no hover:
+   - `background-image: none`, senão o gradiente translúcido continua por cima
+     do laranja e o card não fica realmente opaco;
+   - `color: #fff`, porque o hover do style.css deixa o texto em var(--brand) —
+     laranja sobre laranja cheio desapareceria. O branco dá ~4.2:1 aqui. */
+body:not(.glass-dark) .shortcut-card:hover {
+  background-color: var(--brand);
+  background-image: none;
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff;
+}
+
+/* -----------------------------------------------------------------------
+   Demais cards de conteúdo ("Para você") — mesmo vidro azul do acesso rápido:
+   notícias e serviços.
+
+   Os cards da página de cursos (.course-card / .course-highlight-card) ficaram
+   de fora de propósito: ali o azul não funcionou bem — são cards densos, com
+   tags e status coloridos, e o catálogo inteiro virava um bloco azul. Eles
+   seguem com o fundo claro do style.css.
+   ----------------------------------------------------------------------- */
+body:not(.glass-dark) .news-card,
+body:not(.glass-dark) .service-card {
+  background-color: var(--color-blue);
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  color: #fff;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: 0 4px 14px var(--glass-shadow), var(--glass-bevel);
+}
+
+/* Hover laranja, opaco — mesma lógica do acesso rápido. */
+body:not(.glass-dark) a.news-card:hover,
+body:not(.glass-dark) a.service-card:hover {
+  background-color: var(--brand);
+  background-image: none;
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff;
+}
+
+/* Texto interno: sobre o azul, tudo que era escuro passa a claro. */
+body:not(.glass-dark) .news-card h3,
+body:not(.glass-dark) .news-card h4 { color: #fff; }
+
+/* No .service-card a imagem cobre o card e a faixa do título tinha fundo
+   laranja sólido próprio — ou seja, o vidro do card não aparecia em lugar
+   nenhum. Zerando o fundo da faixa, ela passa a mostrar o mesmo vidro azul
+   da faixa de título das notícias. */
+body:not(.glass-dark) .service-card .service-title {
+  background: transparent;
+  color: #fff;
+}
+
+/* Os botões sobre a topbar azul já eram translúcidos; só ganham o blur. */
+.topbar-toggler,
+.accessibility-toggle {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* -----------------------------------------------------------------------
+   Variante escura — as páginas de "Para empresas" (style-empresa.css) têm
+   tema escuro por design; ali o véu claro apagaria o texto branco. Mesma
+   foto, véu azul-escuro: elas ganham o cenário sem perder a identidade.
+   Acionada por `class="site-senai glass-dark"` no <body>.
+   ----------------------------------------------------------------------- */
+body.glass-dark::before { filter: blur(16px) saturate(1.1) brightness(0.55); }
+
+body.glass-dark::after {
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(var(--brand-rgb), 0.22) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(7, 22, 51, 0.74) 0%, rgba(7, 22, 51, 0.9) 100%);
+}
+
+body.glass-dark .mainnav { background-color: transparent; }
+body.glass-dark .mainnav.is-stuck {
+  background-color: rgba(7, 22, 51, 0.62);
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* Sobre fundo escuro o bevel claro do tema claro fica invisível e a borda
+   branca fica dura: aqui o brilho é mais suave e a sombra externa mais funda. */
+body.glass-dark .btn-brand,
+body.glass-dark .btn.btn-brand,
+body.glass-dark .btn-brand-alt,
+body.glass-dark .nav-search-toggle,
+body.glass-dark .mainnav-menu > li > a:hover,
+body.glass-dark .mainnav-menu > li.open > a {
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.3),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+body.glass-dark .btn-outline-brand,
+body.glass-dark .course-filter-chip,
+body.glass-dark .course-area-toggle {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+body.glass-dark .btn-outline-brand:hover,
+body.glass-dark .course-filter-chip:hover,
+body.glass-dark .course-area-toggle:hover { background: rgba(255, 255, 255, 0.2); }
+
+/* Cards de notícia em vidro, na cor --color-blue-alt (definida no
+   style-empresa.css, que é justamente o CSS destas páginas).
+
+   O `color-mix` é o que permite tirar a transparência da própria variável em
+   vez de repetir o hex aqui. E dá a degradação certa de graça: onde ele não
+   for suportado, as duas declarações abaixo são descartadas e vale o
+   `background: var(--color-blue-alt)` sólido do style-empresa.css — ou seja,
+   o card volta a ser exatamente o que é hoje, em vez de ficar sem fundo. */
+body.glass-dark .news-card {
+  background-color: color-mix(in srgb, var(--color-blue-alt) 12%, transparent);
+  background-image: linear-gradient(150deg,
+      color-mix(in srgb, var(--color-blue-alt) 32%, transparent) 0%,
+      color-mix(in srgb, var(--color-blue-alt) 8%, transparent) 55%,
+      color-mix(in srgb, var(--color-blue-alt) 24%, transparent) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28),
+              inset 0 1px 0 rgba(255, 255, 255, 0.26),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+}
+
+body.glass-dark .news-card:hover {
+  background-color: var(--color-blue-alt);
+  border-color: rgba(255, 255, 255, 0.34);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.34),
+              inset 0 1px 0 rgba(255, 255, 255, 0.3),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+}
+
+/* O texto do card é branco e agora fica sobre um azul mais claro. */
+body.glass-dark .news-card h3,
+body.glass-dark .news-card h4 { text-shadow: 0 1px 2px rgba(0, 30, 55, 0.4); }
+
+/* Acesso rápido no tema escuro: aqui a cor cheia do card é --brand-dark (o
+   style-empresa.css pinta assim), então é dela que sai o 12%. O hover volta à
+   cor cheia, seguindo a mesma lógica dos cards de notícia — no template ele
+   era branco, o que dava um salto grande de cor vindo do laranja. */
+body.glass-dark .shortcut-card {
+  background-color: color-mix(in srgb, var(--brand-dark) 12%, transparent);
+  background-image: linear-gradient(150deg,
+      color-mix(in srgb, var(--brand) 60%, transparent) 0%,
+      color-mix(in srgb, var(--brand-dark) 46%, transparent) 55%,
+      color-mix(in srgb, var(--brand) 42%, transparent) 100%);
+  border-color: rgba(255, 255, 255, 0.22);
+  /* O blur precisa ser declarado aqui: a regra clara agora é escopada com
+     :not(.glass-dark), então este seletor não a herda mais. */
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28),
+              inset 0 1px 0 rgba(255, 255, 255, 0.26),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+}
+
+body.glass-dark .shortcut-card:hover {
+    background-color: color-mix(in srgb, var(--brand) 12%, transparent);
+    background-image: linear-gradient(150deg,
+        color-mix(in srgb, var(--brand) 90%, transparent) 0%,
+        color-mix(in srgb, var(--brand-dark) 66%, transparent) 55%,
+        color-mix(in srgb, var(--brand) 82%, transparent) 100%);
+  border-color: rgba(255, 255, 255, 0.4);
+  /* o hover do template deixa o texto laranja, que sobre o laranja cheio
+     desapareceria */
+  color: #fff;
+}
+
+/* -----------------------------------------------------------------------
+   Alto contraste (botão de acessibilidade) precisa vencer o vidro: nada de
+   translucidez ou blur quando o usuário pediu contraste máximo.
+   ----------------------------------------------------------------------- */
+body.high-contrast::before,
+body.high-contrast::after { display: none; }
+body.high-contrast .mainnav,
+body.high-contrast .btn-brand,
+body.high-contrast .btn.btn-brand,
+body.high-contrast .btn-brand-alt,
+body.high-contrast .btn-outline-brand,
+body.high-contrast .course-filter-chip,
+body.high-contrast .course-area-toggle,
+body.high-contrast .nav-search-toggle,
+body.high-contrast .mainnav-menu > li > a:hover,
+body.high-contrast .mainnav-menu > li.open > a,
+body.high-contrast .mainnav-menu > li > a.is-active,
+body.high-contrast .mainnav-tab-indicator,
+body.high-contrast .news-card,
+body.high-contrast .shortcut-card,
+body.high-contrast .service-card {
+  background-color: #000 !important;
+  background-image: none !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  border: 1px solid #fff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}

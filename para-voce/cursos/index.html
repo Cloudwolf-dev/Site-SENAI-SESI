@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cursos — SENAI Amapá</title>
+<meta name="description" content="Encontre o curso certo para você: filtre por categoria, modalidade, cursos abertos ou gratuitos no catálogo do SENAI Amapá.">
+<link rel="icon" href="../../assets/img/favicon.png">
+<link rel="stylesheet" href="../../assets/vendor/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="../../assets/vendor/fontawesome/css/all.min.css">
+<link rel="stylesheet" href="../../assets/css/style.css">
+<link rel="stylesheet" href="../../assets/css/glass.css">
+<link rel="stylesheet" href="../../assets/css/nav-secoes.css">
+<link rel="stylesheet" href="../../assets/css/mobile.css">
+</head>
+<body class="site-senai" data-nav-current="cursos">
+<a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+<!-- ===================== TOPBAR ===================== -->
+<div class="topbar">
+  <div class="container-xl">
+    <div class="topbar-menu">
+      <button class="topbar-toggler" type="button" aria-expanded="false" aria-controls="topbarInstitutional" aria-label="Abrir links institucionais">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul class="topbar-links institutional" id="topbarInstitutional">
+      <li><a href="../../sesi-home.html"><img class="sesi-icon-min" src="../../assets/img/sesi_branco.png" alt="SESI Amapá"></a></li>
+      <li><a href="#">LGPD</a></li>
+      <li><a href="#">Transparência</a></li>
+      <li><a href="#">Sustentabilidade</a></li>
+      <li><a href="#">Portal ESG</a></li>
+      <li><a href="#">Intranet</a></li>
+      </ul>
+    </div>
+    <div class="accessibility-dropdown">
+      <button class="accessibility-toggle" type="button" aria-expanded="false">
+        <i class="fa-solid fa-universal-access"></i> Acessibilidade <i class="fa-solid fa-chevron-down" style="font-size:.6rem"></i>
+      </button>
+      <div class="accessibility-menu">
+        <button type="button" data-action="font-increase"><i class="fa-solid fa-magnifying-glass-plus"></i> Aumentar fonte</button>
+        <button type="button" data-action="font-decrease"><i class="fa-solid fa-magnifying-glass-minus"></i> Diminuir fonte</button>
+        <button type="button" data-action="contrast"><i class="fa-solid fa-circle-half-stroke"></i> Contraste</button>
+        <a href="#" target="_blank"><i class="fa-solid fa-hands-asl-interpreting"></i> Libras</a>
+        <a href="#" target="_blank"><i class="fa-solid fa-volume-high"></i> Leitor de Tela</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MAIN NAV ===================== -->
+<header class="mainnav">
+  <div class="container-xl" id="mainNav">
+    <a class="mainnav-brand" href="../index.html">
+      <img src="../../assets/img/senai_branco.png" alt="SENAI Amapá">
+    </a>
+
+    <div class="nav-backdrop"></div>
+
+    <!-- As mesmas abas da index. Aqui elas são links de verdade (esta página
+         é um documento próprio); a aba ativa vem de `data-nav-current` no
+         <body>. -->
+    <ul class="mainnav-menu is-tabs" id="mainMenu">
+      <li><a href="../index.html#inicio" data-nav="inicio">Início</a></li>
+      <li><a href="../index.html#institucional" data-nav="institucional">Institucional</a></li>
+      <li><a href="index.html" data-nav="cursos">Cursos</a></li>
+      <li><a href="../index.html#programas" data-nav="programas">Programas</a></li>
+      <li><a href="../index.html#eventos" data-nav="eventos">Eventos</a></li>
+      <li><a href="../index.html#informacoes" data-nav="informacoes">Informações</a></li>
+      <li class="mainnav-tab-indicator" aria-hidden="true"></li>
+    </ul>
+    <div class="cta-buttons">
+        <a class="btn-brand-alt" href="../../para-empresa/index.html">
+            Para empresas
+        </a>
+        <a class="btn-brand" href="index.html">
+            Cursos Disponíveis
+        </a>
+    </div>
+    <div class="nav-search">
+      <button class="nav-search-toggle" type="button" aria-expanded="false" aria-label="Buscar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+      <div class="search-panel">
+        <form action="#" method="get">
+          <label class="form-label small fw-bold text-uppercase" for="search-input">O que você procura?</label>
+          <div class="input-group mb-2">
+            <input id="search-input" type="search" class="form-control" placeholder="Pesquisar...">
+            <button class="btn btn-brand" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+          </div>
+          <select class="form-select form-select-sm" name="categoria" aria-label="Categoria da busca">
+            <option selected="">Todas as categorias</option>
+            <option>Notícias</option>
+            <option>Cursos</option>
+            <option>Editais</option>
+            <option>Unidades</option>
+          </select>
+        </form>
+      </div>
+    </div>
+
+    <button class="mainnav-toggler" type="button" aria-expanded="false" aria-controls="mainMenu" aria-label="Abrir menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+</header>
+
+<!-- ===================== BREADCRUMB ===================== -->
+<section class="breadcrumb-bar">
+  <div class="container-xl">
+    <ul class="breadcrumb-modern">
+      <li><a href="../../index.html">Início</a></li>
+      <li><a href="../index.html#inicio">Para você</a></li>
+      <li class="current">Cursos</li>
+    </ul>
+  </div>
+</section>
+
+<main id="main" class="page-surface">
+
+<section class="section pt-0">
+  <div class="container-xl">
+    <div class="section-heading">
+      <h2>Encontre o curso certo para você</h2>
+    </div>
+    <p style="max-width:760px;color:var(--color-body);font-size:1.05rem;">Filtre por modalidade, oferta ou o que for mais importante agora — sem precisar ler curso por curso.</p>
+
+    <div class="courses-toolbar" role="group" aria-label="Filtros rápidos">
+      <button type="button" class="course-filter-chip is-active" data-facet-group="status" data-facet="all">Todos <span class="count"></span></button>
+      <button type="button" class="course-filter-chip" data-facet-group="status" data-facet="aberto"><i class="fa-solid fa-lock-open"></i> Inscrições abertas <span class="count"></span></button>
+      <button type="button" class="course-filter-chip" data-facet-group="status" data-facet="gratuito"><i class="fa-solid fa-sack-dollar"></i> Gratuito <span class="count"></span></button>
+      <button type="button" class="course-filter-chip" data-facet-group="status" data-facet="pago"><i class="fa-solid fa-coins"></i> Pago <span class="count"></span></button>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- Coluna esquerda: área + modalidade + oferta -->
+      <div class="col-lg-3">
+        <div class="course-area-dropdown" id="areaDropdown">
+          <button type="button" class="course-area-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="areaMenu">
+            <i class="fa-solid fa-layer-group"></i>
+            <span class="course-area-toggle-text">Escolha uma àrea</span>
+            <i class="fa-solid fa-chevron-down chev"></i>
+          </button>
+          <ul class="course-area-menu" id="areaMenu">
+            <li><button type="button" class="is-active" data-facet-group="area" data-facet="all" data-label="Área">Todas as áreas <span class="count"></span></button></li>
+            <li><button type="button" data-facet-group="area" data-facet="ti-software" data-label="TI - Software"><i class="fa-solid fa-code"></i> TI - Software <span class="count"></span></button></li>
+            <li><button type="button" data-facet-group="area" data-facet="ti-hardware" data-label="TI - Hardware"><i class="fa-solid fa-microchip"></i> TI - Hardware <span class="count"></span></button></li>
+            <li><button type="button" data-facet-group="area" data-facet="eletrica" data-label="Elétrica"><i class="fa-solid fa-bolt"></i> Elétrica <span class="count"></span></button></li>
+            <li><button type="button" data-facet-group="area" data-facet="mecanica" data-label="Mecânica"><i class="fa-solid fa-gears"></i> Mecânica <span class="count"></span></button></li>
+            <li><button type="button" data-facet-group="area" data-facet="construcao-civil" data-label="Construção Civil"><i class="fa-solid fa-trowel-bricks"></i> Construção Civil <span class="count"></span></button></li>
+            <li><button type="button" data-facet-group="area" data-facet="logistica" data-label="Logística"><i class="fa-solid fa-truck"></i> Logística <span class="count"></span></button></li>
+            <li><button type="button" data-facet-group="area" data-facet="administracao" data-label="Administração"><i class="fa-solid fa-briefcase"></i> Administração <span class="count"></span></button></li>
+            <li><button type="button" data-facet-group="area" data-facet="seguranca" data-label="Segurança do Trabalho"><i class="fa-solid fa-helmet-safety"></i> Segurança do Trabalho <span class="count"></span></button></li>
+            <li><button type="button" data-facet-group="area" data-facet="petroleo-gas" data-label="Petróleo e Gás"><i class="fa-solid fa-oil-well"></i> Petróleo e Gás <span class="count"></span></button></li>
+            <li><button type="button" data-facet-group="area" data-facet="madeira-moveis" data-label="Madeira e Móveis"><i class="fa-solid fa-tree"></i> Madeira e Móveis <span class="count"></span></button></li>
+            <li><button type="button" data-facet-group="area" data-facet="alimentos" data-label="Alimentos"><i class="fa-solid fa-utensils"></i> Alimentos <span class="count"></span></button></li>
+          </ul>
+        </div>
+
+        <h6 class="text-uppercase fw-bold" style="font-size:.78rem;letter-spacing:.08em;color:var(--color-body);margin-bottom:.9rem;">Modalidade</h6>
+        <ul class="courses-categories">
+          <li><button type="button" data-facet-group="modalidade" data-facet="iniciacao"><i class="fa-solid fa-seedling"></i> Iniciação Profissional <span class="count"></span></button></li>
+          <li><button type="button" data-facet-group="modalidade" data-facet="qualificacao"><i class="fa-solid fa-award"></i> Qualificação Profissional <span class="count"></span></button></li>
+          <li><button type="button" data-facet-group="modalidade" data-facet="aperfeicoamento"><i class="fa-solid fa-chalkboard-user"></i> Aperfeiçoamento Profissional <span class="count"></span></button></li>
+          <li><button type="button" data-facet-group="modalidade" data-facet="tecnico-padrao"><i class="fa-solid fa-user-graduate"></i> Técnico <span class="count"></span></button></li>
+          <li><button type="button" data-facet-group="modalidade" data-facet="tecnico">
+            <i class="fa-solid fa-user-graduate"></i> Ensino Médio Técnico
+            <span class="sesi-flag" title="Programa SESI + SENAI" aria-label="Programa SESI + SENAI"></span>
+            <span class="count"></span>
+          </button></li>
+          <li><button type="button" data-facet-group="modalidade" data-facet="aprendizagem"><i class="fa-solid fa-industry"></i> Aprendizagem Industrial <span class="count"></span></button></li>
+        </ul>
+
+        <h6 class="text-uppercase fw-bold" style="font-size:.78rem;letter-spacing:.08em;color:var(--color-body);margin:1.6rem 0 .9rem;">Oferta</h6>
+        <ul class="courses-categories">
+          <li><button type="button" data-facet-group="oferta" data-facet="presencial"><i class="fa-solid fa-building"></i> Presencial <span class="count"></span></button></li>
+          <li><button type="button" data-facet-group="oferta" data-facet="semipresencial"><i class="fa-solid fa-house-laptop"></i> Semipresencial <span class="count"></span></button></li>
+          <li><button type="button" data-facet-group="oferta" data-facet="ead"><i class="fa-solid fa-laptop"></i> EAD <span class="count"></span></button></li>
+        </ul>
+      </div>
+
+      <!-- Centro: grade de cursos -->
+      <div class="col-lg-6">
+        <p class="courses-results"><span id="coursesCount">25</span> cursos encontrados</p>
+
+        <div class="courses-grid" id="coursesGrid">
+
+          <article class="course-card" data-facets="iniciacao presencial aberto gratuito ti-software">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-seedling"></i> Iniciação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Informática Básica</h3>
+            <p>Introdução ao computador, internet e pacote office para o primeiro contato com o mundo do trabalho.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+              <span class="course-status course-status-free"><i class="fa-solid fa-sack-dollar"></i> Gratuito</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="iniciacao semipresencial aberto gratuito eletrica">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-seedling"></i> Iniciação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-house-laptop"></i> Semipresencial</span>
+            </div>
+            <h3>Elétrica Básica</h3>
+            <p>Primeiros conceitos de instalações elétricas residenciais, com segurança.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+              <span class="course-status course-status-free"><i class="fa-solid fa-sack-dollar"></i> Gratuito</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="qualificacao presencial aberto pago eletrica">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-award"></i> Qualificação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Eletricista Instalador Predial</h3>
+            <p>Instalações elétricas de baixa tensão em edificações residenciais e comerciais.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="qualificacao semipresencial aberto gratuito administracao">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-award"></i> Qualificação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-house-laptop"></i> Semipresencial</span>
+            </div>
+            <h3>Assistente Administrativo</h3>
+            <p>Rotinas administrativas, atendimento e documentação para o mercado de trabalho.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+              <span class="course-status course-status-free"><i class="fa-solid fa-sack-dollar"></i> Gratuito</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="qualificacao presencial pago mecanica">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-award"></i> Qualificação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Solda MIG/MAG</h3>
+            <p>Técnicas de soldagem para atuação em indústria metalmecânica.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-closed"><i class="fa-solid fa-circle"></i> Próxima turma em breve</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="qualificacao ead aberto gratuito ti-hardware">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-award"></i> Qualificação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-laptop"></i> EAD</span>
+            </div>
+            <h3>Manutenção de Computadores</h3>
+            <p>Montagem, manutenção e diagnóstico de problemas em microcomputadores.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+              <span class="course-status course-status-free"><i class="fa-solid fa-sack-dollar"></i> Gratuito</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="aperfeicoamento ead aberto gratuito administracao">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-chalkboard-user"></i> Aperfeiçoamento Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-laptop"></i> EAD</span>
+            </div>
+            <h3>Excel Avançado</h3>
+            <p>Fórmulas, tabelas dinâmicas e automação de planilhas para o dia a dia.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+              <span class="course-status course-status-free"><i class="fa-solid fa-sack-dollar"></i> Gratuito</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="aperfeicoamento semipresencial aberto pago seguranca">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-chalkboard-user"></i> Aperfeiçoamento Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-house-laptop"></i> Semipresencial</span>
+            </div>
+            <h3>Segurança do Trabalho (NRs)</h3>
+            <p>Atualização nas Normas Regulamentadoras para quem já atua na indústria.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="tecnico presencial pago ti-software">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-user-graduate"></i> Ensino Médio Técnico</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Técnico em Jogos Digitais</h3>
+            <p>Formação técnica completa em instalações e sistemas elétricos industriais.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-closed"><i class="fa-solid fa-circle"></i> Matrículas encerradas</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="tecnico presencial aberto pago petroleo-gas">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-user-graduate"></i> Ensino Médio Técnico</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Técnico em Petróleo e Gás</h3>
+            <p>Formação técnica voltada para a cadeia produtiva de óleo e gás no Amapá.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="aprendizagem presencial edital pago mecanica">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-industry"></i> Aprendizagem Industrial</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Aprendizagem — Mecânica Industrial</h3>
+            <p>Vaga aberta por empresa parceira via edital de aprendizagem. Depende de contratação.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-edital"><i class="fa-solid fa-file-signature"></i> Depende de edital</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="aprendizagem presencial aberto edital pago administracao">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-industry"></i> Aprendizagem Industrial</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Aprendizagem — Administrativo</h3>
+            <p>Vaga aberta por empresa parceira via edital de aprendizagem. Depende de contratação.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-file-signature"></i> Edital aberto</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="iniciacao presencial aberto gratuito madeira-moveis">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-seedling"></i> Iniciação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Iniciação à Marcenaria</h3>
+            <p>Primeiros passos na marcenaria: manuseio de ferramentas, medidas e montagem de peças simples em madeira.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+              <span class="course-status course-status-free"><i class="fa-solid fa-sack-dollar"></i> Gratuito</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="qualificacao presencial aberto pago alimentos">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-award"></i> Qualificação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Confeiteiro</h3>
+            <p>Técnicas de confeitaria para produção de bolos, doces e sobremesas com padrão profissional.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="qualificacao presencial aberto pago construcao-civil">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-award"></i> Qualificação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Pedreiro</h3>
+            <p>Fundamentos de alvenaria, revestimentos e acabamentos para a construção civil.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="qualificacao presencial aberto gratuito ti-software">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-award"></i> Qualificação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Operador de Computador</h3>
+            <p>Uso de sistemas operacionais, editores de texto e planilhas para o dia a dia no trabalho.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+              <span class="course-status course-status-free"><i class="fa-solid fa-sack-dollar"></i> Gratuito</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="qualificacao semipresencial aberto pago logistica">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-award"></i> Qualificação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-house-laptop"></i> Semipresencial</span>
+            </div>
+            <h3>Almoxarife</h3>
+            <p>Controle de estoque, recebimento e expedição de materiais em ambientes industriais e comerciais.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="aperfeicoamento presencial aberto pago eletrica">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-chalkboard-user"></i> Aperfeiçoamento Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Instalação Elétrica Residencial</h3>
+            <p>Execução de instalações elétricas residenciais dentro das normas de segurança.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="aperfeicoamento ead aberto pago eletrica">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-chalkboard-user"></i> Aperfeiçoamento Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-laptop"></i> EAD</span>
+            </div>
+            <h3>AutoCAD — Projetos Elétricos</h3>
+            <p>Elaboração de projetos elétricos em AutoCAD, do desenho técnico à documentação final.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="aperfeicoamento ead aberto gratuito administracao">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-chalkboard-user"></i> Aperfeiçoamento Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-laptop"></i> EAD</span>
+            </div>
+            <h3>Gestão de Pessoas e Equipes</h3>
+            <p>Ferramentas práticas de liderança para coordenar equipes e melhorar resultados no trabalho.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+              <span class="course-status course-status-free"><i class="fa-solid fa-sack-dollar"></i> Gratuito</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="aperfeicoamento semipresencial aberto pago logistica">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-chalkboard-user"></i> Aperfeiçoamento Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-house-laptop"></i> Semipresencial</span>
+            </div>
+            <h3>Logística de Petróleo e Gás Natural do Pré-Sal</h3>
+            <p>Fundamentos da cadeia logística do setor de óleo e gás, do pré-sal à distribuição.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="tecnico presencial aberto pago construcao-civil">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-user-graduate"></i> Ensino Médio Técnico</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Técnico em Edificações</h3>
+            <p>Formação técnica em projetos, orçamentos e execução de obras civis.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="tecnico presencial aberto pago ti-hardware">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-user-graduate"></i> Ensino Médio Técnico</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Técnico em Redes de Computadores</h3>
+            <p>Formação técnica em desenvolvimento, redes e suporte de sistemas de informação.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="aprendizagem presencial aberto edital pago logistica">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-industry"></i> Aprendizagem Industrial</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Aprendizagem — Assistente de Logística e Produção</h3>
+            <p>Vaga aberta por empresa parceira via edital de aprendizagem. Depende de contratação.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-file-signature"></i> Edital aberto</span>
+            </div>
+          </article>
+
+          <article class="course-card" data-facets="aprendizagem presencial edital pago construcao-civil">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-industry"></i> Aprendizagem Industrial</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Aprendizagem — Construtor de Alvenaria</h3>
+            <p>Vaga aberta por empresa parceira via edital de aprendizagem. Depende de contratação.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-edital"><i class="fa-solid fa-file-signature"></i> Depende de edital</span>
+            </div>
+          </article>
+
+        </div>
+
+        <p class="courses-empty" id="coursesEmpty">Nenhum curso encontrado para esse filtro. <button type="button" data-reset-filters>Ver todos os cursos</button></p>
+      </div>
+
+      <!-- Coluna direita: destaques -->
+      <div class="col-lg-3">
+        <a href="#" class="course-highlight-card">
+          <div class="course-highlight-head">
+            <span class="course-highlight-icon"><i class="fa-solid fa-file-signature"></i></span>
+            <h3>Sobre a Aprendizagem Industrial</h3>
+          </div>
+          <p>Diferente dos demais, ela depende de editais abertos por empresas parceiras — por isso nem sempre está disponível para inscrição direta.</p>
+          <span class="course-highlight-link">Conhecer o programa<i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+        <a href="#" class="course-highlight-card">
+          <div class="course-highlight-head">
+            <span class="course-highlight-icon"><i class="fa-solid fa-comments"></i></span>
+            <h3>Não sabe por onde começar?</h3>
+          </div>
+          <p>Fale com um orientador e descubra o curso ideal para o seu momento.</p>
+          <span class="course-highlight-link">Falar com a gente <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-footer">
+  <div class="container-xl footer-links">
+    <div class="row g-4">
+      <div class="col-6 col-md-4 footer-col">
+        <h5>Cursos</h5>
+        <ul>
+          <li><a href="../cursos/index.html">Cursos disponíveis</a></li>
+          <li><a href="../formacao-profissional/index.html">Formação Profissional</a></li>
+          <li><a href="../modalidades-e-suporte/index.html">Modalidades e Suporte</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-4 footer-col">
+        <h5>Institucional</h5>
+        <ul>
+          <li><a href="../index.html#institucional">Quem somos</a></li>
+          <li><a href="../index.html#programas">Programas</a></li>
+          <li><a href="../index.html#eventos">Eventos</a></li>
+          <li><a href="../index.html#informacoes">Unidades e contato</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-4 footer-col">
+        <h5>Para empresas</h5>
+        <ul>
+          <li><a href="../../para-empresa/index.html">Serviços para a indústria</a></li>
+          <li><a href="../../para-empresa/educacao-corporativa/index.html">Educação Corporativa</a></li>
+          <li><a href="../../para-empresa/servicos-de-tecnologia-e-inovacao/index.html">Tecnologia e Inovação</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-units">
+    <div class="container-xl">
+      <div class="row g-4 justify-content-center text-center text-md-start">
+        <div class="col-md-4">
+          <h6><i class="fa-solid fa-location-dot"></i>Macapá</h6>
+          <p>Centro de Formação Profissional<br>Rua Professor Tostes, 1294 - Sta. Rita<br><i class="fa-solid fa-phone"></i> (96) 3084-8923</p>
+        </div>
+        <div class="col-md-4">
+          <h6><i class="fa-solid fa-location-dot"></i>Santana</h6>
+          <p>Centro de Formação Profissional<br>Av. B1, S/N - Vila Amazonas<br><i class="fa-solid fa-phone"></i> (96) 3084-8984</p>
+        </div>
+        <div class="col-md-4">
+          <h6><i class="fa-solid fa-location-dot"></i>Unidade Integrada</h6>
+          <p>Unidade Integrada SESI/SENAI - A Banda<br>Av. Ernestino Borges, 257 - Centro<br><i class="fa-solid fa-phone"></i> (96) 3084-8923</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-xl">
+    <div class="footer-social">
+      <a href="https://www.facebook.com/SENAIamapa/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://twitter.com/senaiamapa" target="_blank" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://instagram.com/amapasenai" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#" target="_blank" aria-label="E-mail"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+    <div class="footer-copy">
+      <p class="mb-1">Copyright 2026. Todos os Direitos Reservados. SENAI AMAPÁ.</p>
+      <a href="#">Política de Privacidade</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== BARRA DE ABAS (MOBILE) ===================== -->
+<nav class="mobile-tabbar" aria-label="Navegação principal">
+  <a class="mobile-tab is-active" href="index.html">
+    <i class="fa-solid fa-graduation-cap"></i><span>Cursos</span>
+  </a>
+  <a class="mobile-tab" href="../index.html#programas">
+    <i class="fa-solid fa-medal"></i><span>Programas</span>
+  </a>
+  <a class="mobile-tab mobile-tab-home" href="../index.html#inicio">
+    <span class="tab-home-circle"><img src="../../assets/img/favicon.png" alt=""></span>
+    <span class="tab-home-label">Início</span>
+  </a>
+  <a class="mobile-tab" href="../index.html#eventos">
+    <i class="fa-solid fa-calendar-days"></i><span>Eventos</span>
+  </a>
+  <a class="mobile-tab" href="../index.html#informacoes">
+    <i class="fa-solid fa-circle-info"></i><span>Informações</span>
+  </a>
+</nav>
+
+<script src="../../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../../assets/js/main.js"></script>
+<script src="../../assets/js/glass.js"></script>
+<script src="../../assets/js/nav-secoes.js"></script>
+
+</body></html>

@@ -234,5 +234,124 @@
         }, 80);
       });
     });
+
+    /* ---------------- Filtros de cursos (página /cursos) ----------------
+       Cada grupo (status / modalidade / oferta) filtra numa dimensão própria;
+       os grupos combinam entre si (E lógico), então dá pra usar os filtros
+       de cima e o painel lateral ao mesmo tempo. */
+    var coursesGrid = document.getElementById("coursesGrid");
+    if (coursesGrid) {
+      var courseCards = Array.prototype.slice.call(coursesGrid.querySelectorAll(".course-card"));
+      var facetControls = document.querySelectorAll("[data-facet-group]");
+      var coursesCountEl = document.getElementById("coursesCount");
+      var coursesEmptyEl = document.getElementById("coursesEmpty");
+      var activeFacets = {};
+
+      var cardHasFacet = function (card, facet) {
+        return (card.getAttribute("data-facets") || "").split(" ").indexOf(facet) !== -1;
+      };
+      var countFor = function (facet) {
+        if (facet === "all") return courseCards.length;
+        return courseCards.filter(function (card) { return cardHasFacet(card, facet); }).length;
+      };
+      var applyFilters = function () {
+        var groups = Object.keys(activeFacets);
+        var visible = 0;
+        courseCards.forEach(function (card) {
+          var match = groups.every(function (group) { return cardHasFacet(card, activeFacets[group]); });
+          card.classList.toggle("is-hidden", !match);
+          if (match) visible++;
+        });
+        if (coursesCountEl) coursesCountEl.textContent = visible;
+        if (coursesEmptyEl) coursesEmptyEl.classList.toggle("is-visible", visible === 0);
+      };
+      var syncGroupButtons = function (group) {
+        facetControls.forEach(function (el) {
+          if (el.getAttribute("data-facet-group") !== group) return;
+          var elFacet = el.getAttribute("data-facet");
+          var isActive = elFacet === "all" ? !activeFacets[group] : activeFacets[group] === elFacet;
+          el.classList.toggle("is-active", isActive);
+        });
+      };
+      var setGroupFacet = function (group, facet) {
+        if (facet === "all") {
+          delete activeFacets[group];
+        } else {
+          activeFacets[group] = facet;
+        }
+        syncGroupButtons(group);
+        applyFilters();
+      };
+
+      facetControls.forEach(function (el) {
+        var count = el.querySelector(".count");
+        if (count) count.textContent = "(" + countFor(el.getAttribute("data-facet")) + ")";
+      });
+
+      document.addEventListener("click", function (e) {
+        if (e.target.closest("[data-reset-filters]")) {
+          e.preventDefault();
+          activeFacets = {};
+          facetControls.forEach(function (el) {
+            el.classList.toggle("is-active", el.getAttribute("data-facet") === "all");
+          });
+          if (areaDropdown) {
+            areaToggleText.textContent = "Área";
+            areaDropdown.classList.remove("has-selection");
+          }
+          applyFilters();
+          return;
+        }
+
+        var chip = e.target.closest("[data-facet-group]");
+        if (!chip) return;
+        e.preventDefault();
+        var group = chip.getAttribute("data-facet-group");
+        var facet = chip.getAttribute("data-facet");
+
+        if (facet === "all") {
+          setGroupFacet(group, "all");
+          return;
+        }
+        var isSame = activeFacets[group] === facet;
+        setGroupFacet(group, isSame ? "all" : facet);
+      });
+
+      applyFilters();
+
+      /* ---------------- Dropdown de área ---------------- */
+      var areaDropdown = document.getElementById("areaDropdown");
+      if (areaDropdown) {
+        var areaToggle = areaDropdown.querySelector(".course-area-toggle");
+        var areaToggleText = areaDropdown.querySelector(".course-area-toggle-text");
+        var areaMenu = areaDropdown.querySelector(".course-area-menu");
+
+        var closeAreaDropdown = function () {
+          areaDropdown.classList.remove("is-open");
+          areaToggle.setAttribute("aria-expanded", "false");
+        };
+
+        areaToggle.addEventListener("click", function (e) {
+          e.stopPropagation();
+          var isOpen = areaDropdown.classList.toggle("is-open");
+          areaToggle.setAttribute("aria-expanded", String(isOpen));
+        });
+
+        areaMenu.addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-facet]");
+          if (!btn) return;
+          areaToggleText.textContent = btn.getAttribute("data-label") || "Área";
+          areaDropdown.classList.toggle("has-selection", btn.getAttribute("data-facet") !== "all");
+          closeAreaDropdown();
+        });
+
+        document.addEventListener("click", function (e) {
+          if (!areaDropdown.contains(e.target)) closeAreaDropdown();
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") closeAreaDropdown();
+        });
+      }
+    }
   });
 })();

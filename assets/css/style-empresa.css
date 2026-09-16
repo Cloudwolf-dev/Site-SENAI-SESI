@@ -70,8 +70,8 @@
   --color-border: #e3e8f0;
 
   --radius-sm: 0.5rem;
-  --radius-md: 1rem;
-  --radius-lg: 1.5rem;
+  --radius-md: 0.8rem;
+  --radius-lg: 1.1rem;
   --shadow-soft: 0 0.5rem 1.5rem rgba(22, 65, 148, 0.08);
   --shadow-soft-hover: 0 1rem 2rem rgba(22, 65, 148, 0.14);
 
@@ -226,7 +226,7 @@ img { max-width: 100%; height: auto; }
    4. Barra institucional (topo) — accessibility + institutional links
    ----------------------------------------------------------------------- */
 .topbar {
-  background-color: var(--color-blue-alt);
+  background-color: var(--color-blue);
   color: #fff;
   font-size: 0.8rem;
   box-shadow: inset 0px -4px 5px 1px #00000045;

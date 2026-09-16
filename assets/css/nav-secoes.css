@@ -1,0 +1,116 @@
+/* ==========================================================================
+   SENAI Amapá — Navegação por seções
+   Menu em abas: cada item troca a seção visível no <main>, em vez de abrir um
+   mega-panel. Só o necessário para isso — o resto vem de assets/css/style.css
+   (e o vidro dos botões, de assets/css/glass.css, que carrega antes deste).
+   Comportamento em assets/js/nav-secoes.js.
+   ========================================================================== */
+
+/* -----------------------------------------------------------------------
+   Seções trocáveis — só a ativa ocupa espaço; a entrada desliza no mesmo
+   sentido da navegação (para a direita ao avançar no menu).
+   ----------------------------------------------------------------------- */
+.nav-page { display: none; }
+.nav-page.is-active {
+  display: block;
+  animation: nav-page-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.nav-page.from-right { --nav-page-from: 24px; }
+.nav-page.from-left { --nav-page-from: -24px; }
+
+@keyframes nav-page-in {
+  from { opacity: 0; transform: translateX(var(--nav-page-from, 0)); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-page.is-active { animation: none; }
+}
+
+/* Semipresencial é metade em casa, metade na escola, e o Font Awesome Free
+   não tem um ícone único para isso — o card usa o par lado a lado. */
+.shortcut-card .icon-duo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  line-height: 1;
+}
+.shortcut-card .icon-duo i { font-size: 1.1rem; }
+
+/* -----------------------------------------------------------------------
+   Menu como abas (só no desktop) — o item ativo recebe o pill da marca,
+   que desliza entre as abas em vez de cada item abrir um mega-panel.
+   No mobile o menu continua sendo o offcanvas em coluna do template, onde
+   um pill deslizante não faria sentido: lá o item ativo usa fundo sólido.
+   ----------------------------------------------------------------------- */
+@media (min-width: 992px) {
+  .mainnav-menu.is-tabs { position: relative; }
+
+  .mainnav-menu.is-tabs > li > a {
+    position: relative;
+    z-index: 2;
+    /* São 5 abas onde antes havia 4 itens: sem isto "Programas e Eventos"
+       quebra em duas linhas e desalinha a altura do pill. */
+    white-space: nowrap;
+    transition: color 0.15s ease;
+  }
+
+  /* O pill deslizante já pinta o item ativo, então o hover do template
+     (fundo sólido, agora em vidro pelo glass.css) daria dois fundos
+     sobrepostos — aqui o link fica sempre sem fundo próprio. */
+  .mainnav-menu.is-tabs > li > a:hover {
+    background-color: transparent;
+    background-image: none;
+    color: var(--brand);
+    border-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    text-shadow: none;
+  }
+  .mainnav-menu.is-tabs > li > a.is-active,
+  .mainnav-menu.is-tabs > li > a.is-active:hover {
+    color: #fff;
+    /* mesma sombra de texto dos outros botões de vidro da marca */
+    text-shadow: 0 1px 2px rgba(90, 25, 0, 0.35);
+  }
+
+  /* Precisa ser mais específico que o `.mainnav-menu > li { position: relative }`
+     do template, senão o indicador continua no fluxo e colapsa para height: 0. */
+  .mainnav-menu.is-tabs > li.mainnav-tab-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    height: 100%;
+    border-radius: var(--radius-sm);
+    /* Mesmo vidro dos botões (variáveis definidas em assets/css/glass.css,
+       que carrega antes deste arquivo). O fallback no var() mantém o pill
+       visível se o glass.css for removido; a base precisa ser transparente,
+       senão o gradiente translúcido se apoia num fundo opaco e não há vidro. */
+    background-color: transparent;
+    background-image: var(--glass-brand, linear-gradient(150deg,
+        rgba(var(--brand-rgb), 0.92) 0%, rgba(var(--brand-rgb), 0.82) 100%));
+    border: 1px solid var(--glass-edge, transparent);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: 0 6px 18px rgba(var(--brand-rgb), 0.22), var(--glass-bevel);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.2s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mainnav-menu.is-tabs > li.mainnav-tab-indicator { transition: opacity 0.2s ease; }
+  }
+}
+
+@media (max-width: 991.98px) {
+  .mainnav-menu.is-tabs > li.mainnav-tab-indicator { display: none; }
+  .mainnav-menu.is-tabs > li > a.is-active {
+    background-color: var(--brand);
+    color: var(--color-bg-soft);
+  }
+}

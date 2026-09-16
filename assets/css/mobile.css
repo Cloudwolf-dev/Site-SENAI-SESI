@@ -1,0 +1,245 @@
+/* ==========================================================================
+   SENAI/SESI Amapá — Camada mobile
+   No celular o menu do topo dá lugar a uma barra de abas fixa no rodapé, no
+   formato de aplicativo: quatro destinos + a marca ao centro, que leva ao
+   início.
+
+   Carregado por último, depois de style(-empresa).css, glass.css e
+   nav-secoes.css: sai do ar removendo o <link>, sem tocar os demais.
+   ========================================================================== */
+
+/* Altura da barra, usada também para reservar espaço no fim da página. */
+:root {
+  --tabbar-h: 4.25rem;
+  --tabbar-home: 3.25rem; /* diâmetro do botão central */
+}
+
+/* -----------------------------------------------------------------------
+   Rolagem lateral — os cards inclinados do banner são propositalmente mais
+   largos que o container, e abaixo de ~1300px isso empurrava a página
+   inteira para o lado.
+
+   `clip` e não `hidden`: `overflow: hidden` cria um contexto de rolagem e
+   quebraria o `position: sticky` do header. `clip` só corta.
+   ----------------------------------------------------------------------- */
+@media (max-width: 1399.98px) {
+  .hero-gallery { overflow-x: clip; }
+}
+
+/* A barra é montada em todas as páginas, mas só existe no mobile. */
+.mobile-tabbar { display: none; }
+
+@media (max-width: 991.98px) {
+
+  /* -----------------------------------------------------------------------
+     O topo perde o menu: quem navega agora é a barra de baixo. Sem isso o
+     offcanvas e o botão hambúrguer continuariam ativos, duplicando a
+     navegação (e o hambúrguer abriria um menu vazio nas páginas em abas).
+     ----------------------------------------------------------------------- */
+  .mainnav-menu,
+  .mainnav-toggler,
+  .nav-backdrop { display: none !important; }
+
+  /* Com o menu fora, o header fica só com marca, um CTA e a busca.
+     O CTA principal (Cursos Disponíveis / Agende uma consulta) sai daqui
+     porque a barra de baixo já leva ao mesmo lugar; fica só a troca de
+     público, que a barra não oferece. Sem isso a marca ficava espremida
+     entre dois botões. */
+  .mainnav .container-xl {
+    gap: 0.6rem;
+    flex-wrap: nowrap;
+  }
+  .mainnav-brand { flex: 0 1 auto; min-width: 0; }
+  .mainnav-brand img { height: 40px; min-width: 0; margin: 0; }
+
+  .cta-buttons { gap: 0.4rem; margin-left: auto; }
+  .cta-buttons .btn-brand { display: none; }
+  .cta-buttons .btn-brand-alt {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.74rem;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+
+  /* -----------------------------------------------------------------------
+     Barra de abas
+     ----------------------------------------------------------------------- */
+  .mobile-tabbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1040;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    /* A área segura evita que a barra fique sob o indicador de gestos do
+       iPhone e sob a barra de navegação do Android. */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    min-height: var(--tabbar-h);
+    background-color: rgba(255, 255, 255, 0.82);
+    backdrop-filter: var(--glass-blur, blur(18px) saturate(160%));
+    -webkit-backdrop-filter: var(--glass-blur, blur(18px) saturate(160%));
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 -6px 24px rgba(13, 44, 102, 0.16);
+  }
+
+  .mobile-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    /* Alvo de toque confortável mesmo com o rótulo curto. */
+    min-height: var(--tabbar-h);
+    padding: 0.35rem 0.2rem;
+    color: var(--color-blue, #164194);
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1.1;
+    text-align: center;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .mobile-tab i { font-size: 1.15rem; }
+  .mobile-tab span {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-tab.is-active { color: var(--brand, #e84910); }
+
+  /* -----------------------------------------------------------------------
+     Botão central (marca → início). Sobe acima da barra, como nos apps.
+     ----------------------------------------------------------------------- */
+  .mobile-tab-home {
+    position: relative;
+    justify-content: flex-start;
+    padding-top: 0;
+  }
+  .mobile-tab-home span.tab-home-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--tabbar-home);
+    height: var(--tabbar-home);
+    margin-top: calc(var(--tabbar-home) / -2.2);
+    border-radius: 50%;
+    background-color: var(--brand, #e84910);
+    border: 3px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 6px 18px rgba(var(--brand-rgb, 232, 73, 16), 0.4);
+    transition: transform 0.15s ease;
+  }
+  .mobile-tab-home img {
+    width: 58%;
+    height: auto;
+    /* O favicon é colorido; sobre o pill da marca ele fica em branco sólido
+       para não competir com o laranja do círculo. */
+    filter: brightness(0) invert(1);
+  }
+  .mobile-tab-home .tab-home-label { margin-top: 0.15rem; }
+  .mobile-tab-home:active span.tab-home-circle { transform: scale(0.94); }
+  .mobile-tab-home.is-active span.tab-home-circle {
+    border-color: #fff;
+    box-shadow: 0 8px 22px rgba(var(--brand-rgb, 232, 73, 16), 0.55);
+  }
+
+  /* O conteúdo precisa poder rolar até o fim sem ficar sob a barra. */
+  body { padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px)); }
+
+  /* -----------------------------------------------------------------------
+     Tema escuro ("Para empresas")
+     ----------------------------------------------------------------------- */
+  body.glass-dark .mobile-tabbar {
+    background-color: rgba(7, 22, 51, 0.82);
+    border-top-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.4);
+  }
+  body.glass-dark .mobile-tab { color: rgba(255, 255, 255, 0.82); }
+  body.glass-dark .mobile-tab.is-active { color: #fff; }
+  body.glass-dark .mobile-tab-home span.tab-home-circle {
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  /* Alto contraste vence o vidro, como no resto da camada glass. */
+  body.high-contrast .mobile-tabbar {
+    background-color: #000 !important;
+    border-top: 1px solid #fff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  body.high-contrast .mobile-tab { color: #fff !important; }
+  body.high-contrast .mobile-tab.is-active { color: #ffe680 !important; }
+  body.high-contrast .mobile-tab-home span.tab-home-circle {
+    background-color: #000 !important;
+    border-color: #fff !important;
+    box-shadow: none !important;
+  }
+}
+
+/* -----------------------------------------------------------------------
+   Faixa intermediária (tablet deitado / notebook pequeno): ainda é o menu de
+   abas do topo, mas agora são seis. Marca + 6 abas + 2 CTAs + busca não cabem
+   abaixo de ~1400px e o header empurrava a página para o lado — daqui até o
+   desktop cheio tudo encolhe um pouco.
+   ----------------------------------------------------------------------- */
+@media (min-width: 992px) and (max-width: 1399.98px) {
+  .mainnav .container-xl { gap: 0.4rem; }
+
+  /* O min-width da marca no style.css reserva ~254px fixos. */
+  .mainnav-brand img { height: 52px; min-width: 0; }
+
+  .mainnav-menu.is-tabs { gap: 0; margin-left: 0.25rem; }
+  .mainnav-menu.is-tabs > li > a {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0;
+  }
+
+  .cta-buttons .btn-brand,
+  .cta-buttons .btn-brand-alt {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.78rem;
+  }
+}
+
+/* Na parte de baixo dessa faixa ainda faltavam ~30px; aqui tudo encolhe o
+   suficiente para o header caber sem rolagem lateral. */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .mainnav-brand img { height: 44px; }
+  .mainnav-menu.is-tabs > li > a { padding: 0.55rem 0.36rem; font-size: 0.67rem; }
+  .cta-buttons .btn-brand,
+  .cta-buttons .btn-brand-alt { padding: 0.45rem 0.65rem; font-size: 0.7rem; }
+  .nav-search-toggle { width: 40px; height: 40px; }
+}
+
+/* -----------------------------------------------------------------------
+   Ajustes gerais de layout no celular — o que quebrava antes da barra.
+   ----------------------------------------------------------------------- */
+@media (max-width: 767.98px) {
+
+  .section { padding-block: 2rem; }
+
+  /* Títulos de seção e o botão ao lado deixam de disputar a mesma linha. */
+  .section-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  /* O banner em acordeão não funciona espremido: vira uma pilha de cards. */
+  .hero-accordion { flex-direction: column; }
+  .hero-accordion .accordion-card,
+  .hero-accordion .accordion-card.active { flex: 1 1 auto; width: 100%; }
+  .accordion-vertical-label { display: none; }
+  .accordion-content { position: static; opacity: 1; }
+
+  /* Catálogo de cursos: filtros e trilhos em coluna, cards em 1 coluna. */
+  .courses-layout { grid-template-columns: 1fr; }
+  .courses-grid { grid-template-columns: 1fr; }
+
+  .footer-links .row > [class*="col-"] { margin-bottom: 0.5rem; }
+}

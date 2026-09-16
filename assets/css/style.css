@@ -68,9 +68,9 @@
   --color-bg-soft: #f4f6fa;
   --color-border: #e3e8f0;
 
-  --radius-sm: 0.5rem;
-  --radius-md: 1rem;
-  --radius-lg: 1.5rem;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
   --shadow-soft: 0 0.5rem 1.5rem rgba(22, 65, 148, 0.08);
   --shadow-soft-hover: 0 1rem 2rem rgba(22, 65, 148, 0.14);
 
@@ -148,6 +148,7 @@ img { max-width: 100%; height: auto; }
   margin: 0;
   position: relative;
   padding-bottom: 0.6rem;
+  margin-top: 1rem;
 }
 
 .section-heading h2::after {
@@ -541,7 +542,7 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
 
 .shortcut-card:hover {
   background-color: #fff;
-  color: var(--brand);
+  color: #fff;
   border: 1.5px solid var(--brand);
   transform: translateY(-2px);
   box-shadow: var(--shadow-soft-hover);
@@ -770,7 +771,7 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
   flex-direction: column;
   height: 100%;
   background: var(--color-blue);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sm);
   box-shadow: var(--shadow-soft-hover);
   padding: clamp(1.5rem, 3vw, 2.25rem);
 }
@@ -970,7 +971,7 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
    10. Footer
    ----------------------------------------------------------------------- */
 .site-footer {
-  background: var(--color-blue);
+  background: var(--color-blue-dark);
   color: rgba(255, 255, 255, 0.85);
   overflow: hidden;
 }
@@ -999,7 +1000,7 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
 .footer-col a:hover { color: #fff; text-decoration: underline; }
 
 .footer-units {
-  background: var(--color-blue-darker);
+  background: var(--color-blue-dark);
   padding-block: 1.75rem;
 }
 .footer-units h6 {
@@ -1041,7 +1042,7 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
 /* -----------------------------------------------------------------------
    11. Breadcrumbs (só na página de notícia)
    ----------------------------------------------------------------------- */
-.breadcrumb-bar { padding-block: 1rem; }
+.breadcrumb-bar { background: #fff; padding: 0.9rem 0 0 0}
 
 .breadcrumb-modern {
   display: flex;
@@ -1050,7 +1051,7 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
   gap: 0.4rem;
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 0 0.5rem 0;
   font-size: 0.82rem;
   color: #8a94a6;
 }
@@ -1069,7 +1070,7 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
    12. Página de notícia (artigo)
    ----------------------------------------------------------------------- */
 .article-hero {
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sm);
   overflow: hidden;
   margin-bottom: 2rem;
   max-height: 460px;
@@ -1351,4 +1352,231 @@ body.high-contrast .sesi-bg { background: #000 !important; border: 1px solid #ff
 @media (max-width: 767.98px) {
   .profile-picker { flex-direction: column; }
   .profile-half:hover { flex: 1; }
+}
+
+/* -----------------------------------------------------------------------
+   15. Página de Cursos — filtros rápidos + catálogo com tags
+   ----------------------------------------------------------------------- */
+.courses-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.75rem 0 2rem;
+}
+
+.course-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 50rem;
+  border: 1.5px solid var(--color-border);
+  background: #fff;
+  color: var(--color-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.course-filter-chip:hover { border-color: var(--brand); color: var(--brand); transform: translateY(-1px); }
+.course-filter-chip.is-active {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+  box-shadow: var(--shadow-soft);
+}
+.course-filter-chip .count { font-size: 0.72rem; opacity: 0.75; }
+.course-filter-chip .count:empty { display: none; }
+
+/* Dropdown de área — filtra por assunto/setor, combinável com os demais */
+.course-area-dropdown { position: relative; margin-bottom: 1.5rem; }
+
+.course-area-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+  background: #fff;
+  color: var(--color-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+.course-area-toggle i:first-child { color: var(--brand); }
+.course-area-toggle .chev { margin-left: auto; font-size: 0.7rem; transition: transform 0.2s ease; }
+.course-area-toggle:hover { border-color: var(--brand); color: var(--color-ink); }
+.course-area-dropdown.is-open .course-area-toggle .chev { transform: rotate(180deg); }
+.course-area-dropdown.has-selection .course-area-toggle {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: rgba(var(--brand-rgb), 0.06);
+}
+
+.course-area-menu {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  background: #fff;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-soft-hover);
+  max-height: 320px;
+  overflow-y: auto;
+  display: none;
+}
+.course-area-dropdown.is-open .course-area-menu { display: block; }
+
+.course-area-menu button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: none;
+  color: var(--color-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.course-area-menu button i { width: 1.1em; text-align: center; color: var(--brand); }
+.course-area-menu button:hover { background: var(--color-bg-soft); color: var(--color-ink); }
+.course-area-menu button.is-active { background: rgba(var(--brand-rgb), 0.1); color: var(--brand); }
+.course-area-menu button .count { margin-left: auto; font-size: 0.75rem; opacity: 0.65; }
+.course-area-menu button .count:empty { display: none; }
+
+.courses-categories { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+.courses-categories button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: none;
+  color: var(--color-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.courses-categories button i { width: 1.2em; text-align: center; color: var(--brand); }
+.courses-categories button:hover { background: var(--color-bg-soft); color: var(--color-ink); }
+.courses-categories button.is-active {
+  background: rgba(var(--brand-rgb), 0.1);
+  color: var(--brand);
+}
+.courses-categories button .count { margin-left: auto; font-size: 0.78rem; opacity: 0.65; }
+
+/* Selo do programa SESI + SENAI (ex.: Ensino Médio Técnico) — reaproveita a
+   logo branca do topbar como máscara, recolorida no verde do SESI. */
+.sesi-flag {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  background-color: var(--color-sesi);
+  -webkit-mask-image: url("../img/sesi_branco.png");
+  mask-image: url("../img/sesi_branco.png");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.courses-results { margin: 0 0 1rem; font-size: 0.9rem; font-weight: 600; color: var(--color-body); }
+.courses-results span { color: var(--color-ink); font-weight: 800; }
+
+.courses-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+
+.course-card {
+  padding: 1.4rem;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-soft);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.course-card[data-facets~="aberto"] { background: #fff; }
+.course-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft-hover); }
+.course-card.is-hidden { display: none; }
+
+.course-card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.85rem; }
+.course-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 50rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.course-tag-category { background: rgba(var(--brand-rgb), 0.12); color: var(--brand); }
+.course-tag-modality { background: var(--color-bg-soft); color: var(--color-body); }
+
+.course-card h3 { font-size: 1.02rem; font-weight: 800; margin: 0 0 0.4rem; color: var(--color-ink); }
+.course-card p { margin: 0 0 1rem; color: var(--color-body); font-size: 0.86rem; line-height: 1.5; }
+
+.course-card-foot { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.course-status { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.74rem; font-weight: 700; }
+.course-status i { font-size: 0.5rem; }
+.course-status-open { color: #1a9c56; }
+.course-status-free { color: #b9790a; }
+.course-status-closed { color: #9aa3b2; }
+.course-status-edital { color: var(--brand); }
+.course-status-edital-open { color: #1a9c56; }
+
+.courses-empty { display: none; margin-top: 1.5rem; text-align: center; color: var(--color-body); font-size: 0.92rem; }
+.courses-empty.is-visible { display: block; }
+.courses-empty button { background: none; border: none; color: var(--brand); font-weight: 700; cursor: pointer; text-decoration: underline; }
+
+.course-highlight-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  color: inherit;
+}
+.course-highlight-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft-hover); }
+.course-highlight-card + .course-highlight-card { margin-top: 1.25rem; }
+.course-highlight-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem; }
+.course-highlight-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--brand);
+  color: #fff;
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+.course-highlight-card h3 { font-size: 1.05rem; font-weight: 800; margin: 0; color: var(--color-ink); }
+.course-highlight-card p { margin: 0 0 1rem; color: var(--color-body); font-size: 0.9rem; line-height: 1.5; }
+.course-highlight-link { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: auto; font-size: 0.85rem; font-weight: 700; color: var(--brand); }
+
+@media (max-width: 767.98px) {
+  .courses-grid { grid-template-columns: 1fr; }
+  .courses-toolbar { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 0.3rem; }
+  .course-filter-chip { flex: 0 0 auto; }
 }
