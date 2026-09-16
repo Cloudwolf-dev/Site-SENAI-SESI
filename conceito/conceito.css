@@ -2,21 +2,18 @@
    Conceito — do zero
    Sem identidade visual por enquanto: nada de style.css, das variáveis de
    marca ou da Neo Sans. Só a logo vem do site. O que existe aqui é a
-   estrutura do topbar, do navbar e da sub bar sobre um fundo em degradê.
+   estrutura do topbar e do navbar e um palco em degradê no corpo da página.
 
-   O material é vidro fosco com bisel: cada peça é translúcida e desfoca o
-   que está atrás (glassmorphism), mas tem also o volume do skeuomorfismo —
-   brilho na aresta de cima, sombra na de baixo e um leve lustre na metade
-   superior, como vidro moldado. É o que faz a peça parecer um objeto sobre
-   o fundo, e não um retângulo pintado.
+   A cor do degradê é o estado do protótipo: cada menu do navbar troca o par
+   de cores, e é o único efeito de clicar por enquanto.
    ========================================================================== */
 
 /* -----------------------------------------------------------------------
    Paleta por menu
-   As cores do degradê são propriedades registradas (@property) e não
-   variáveis comuns porque só assim o navegador sabe interpolar entre duas
-   cores: um `transition` num `linear-gradient()` normal trocaria de uma vez,
-   sem passar pelo meio. Onde @property não existe, a troca é seca — que é a
+   As cores são propriedades registradas (@property) e não variáveis comuns
+   porque só assim o navegador sabe interpolar entre duas cores: um
+   `transition` num `linear-gradient()` normal trocaria de uma vez, sem
+   passar pelo meio. Onde @property não existe, a troca é seca — que é a
    degradação aceitável.
    ----------------------------------------------------------------------- */
 @property --grad-topo {
@@ -36,85 +33,46 @@ body {
   /* Cor do texto sobre a metade de cima do degradê, que é a clara. */
   --tinta: #16181d;
   /* Cor do menu ativo e do CTA — o degradê sozinho não serve, porque no
-     menu 1 o topo é branco e sumiria sobre o vidro claro. --acento vale
-     sobre o vidro claro; --acento-claro, sobre o escuro. */
+     menu 1 o topo é branco e sumiria sobre o header. */
   --acento: #16181d;
-  --acento-claro: #e9ecf2;
   /* Só as duas cores registradas entram aqui: --tinta e --acento são
      variáveis comuns, que não interpolam — quem suaviza a troca delas é o
      `transition` de `color`/`background-color` em quem as usa. */
   transition: --grad-topo 0.55s ease, --grad-base 0.55s ease, color 0.55s ease;
 }
 
-body[data-menu="2"] { --grad-topo: #3ec46f; --grad-base: #10357f; --tinta: #0a2b18; --acento: #10357f; --acento-claro: #35d17e; }
-body[data-menu="3"] { --grad-topo: #f3a712; --grad-base: #5b1d8f; --tinta: #3d2503; --acento: #5b1d8f; --acento-claro: #c48bf0; }
-body[data-menu="4"] { --grad-topo: #14b8c4; --grad-base: #9b1d5e; --tinta: #06323a; --acento: #9b1d5e; --acento-claro: #ff6fa8; }
-
 /* -----------------------------------------------------------------------
-   Vidro por público
-   "Para você" usa vidro claro; "Para empresa", vidro azul escuro. Tudo que
-   é feito de vidro — barras, abas, botões, painéis — lê estas variáveis,
-   então trocar de público é trocar um punhado de valores e não manter um
-   segundo tema em paralelo.
+   Superfície do navbar por público
+   "Para você" deixa o navbar branco; "Para empresa" o pinta de azul escuro.
+   Tudo que mora sobre essa superfície — logo, menus, CTA, sub bar e a aba de
+   público no topbar — lê estas variáveis, então trocar de público é trocar
+   quatro valores, não duplicar regras.
    ----------------------------------------------------------------------- */
 body {
-  --vidro: rgba(255, 255, 255, 0.42);
-  --vidro-forte: rgba(255, 255, 255, 0.66);
-  --vidro-fundo: rgba(255, 255, 255, 0.24);
-  --aresta: rgba(255, 255, 255, 0.75);
-  --aresta-baixo: rgba(22, 34, 62, 0.14);
-  --brilho: rgba(255, 255, 255, 0.85);
-  --sombra-peca: rgba(18, 30, 60, 0.22);
-  --sombra-barra: rgba(18, 30, 60, 0.18);
-
-  --superficie-tinta: #39415a;
-  --superficie-forte: #141824;
+  --superficie: #ffffff;
+  --superficie-tinta: #4a505e;
+  --superficie-forte: #16181d;
+  --superficie-borda: #e4e7ee;
+  /* O menu ativo tem duas cores, uma por superfície: --acento sobre o navbar
+     branco e --acento-claro sobre o azul escuro. Clarear a primeira por
+     cálculo dava cores lavadas, com cara de botão desabilitado. */
   --acento-uso: var(--acento);
   --acento-tinta: #ffffff;
+  --acento-claro: #e9ecf2;
 }
 
 body[data-publico="empresa"] {
-  --vidro: rgba(14, 34, 68, 0.52);
-  --vidro-forte: rgba(14, 34, 68, 0.72);
-  --vidro-fundo: rgba(8, 22, 46, 0.42);
-  --aresta: rgba(255, 255, 255, 0.28);
-  --aresta-baixo: rgba(0, 6, 20, 0.5);
-  --brilho: rgba(255, 255, 255, 0.4);
-  --sombra-peca: rgba(0, 6, 20, 0.45);
-  --sombra-barra: rgba(0, 6, 20, 0.4);
-
-  --superficie-tinta: rgba(255, 255, 255, 0.86);
+  --superficie: #0f2444;
+  --superficie-tinta: rgba(255, 255, 255, 0.72);
   --superficie-forte: #ffffff;
+  --superficie-borda: rgba(255, 255, 255, 0.16);
   --acento-uso: var(--acento-claro);
-  --acento-tinta: #0d2246;
+  --acento-tinta: #0f2444;
 }
 
-/* -----------------------------------------------------------------------
-   Material
-   Três receitas, montadas a partir das variáveis acima:
-
-   --lustre    o gradiente interno que dá o volume. A quebra em 52% é o
-               velho truque skeuomórfico da metade de cima mais clara que a
-               de baixo — aqui em doses pequenas, para não virar botão de
-               2008.
-   --bisel     brilho na aresta de cima, sombra na de baixo, por dentro.
-   --flutua    a sombra projetada, que separa a peça do fundo.
-   --desfoque  o fosco do vidro. A saturação compensa o cinza que o blur
-               introduz, senão o degradê atrás fica lavado.
-   ----------------------------------------------------------------------- */
-body {
-  --lustre: linear-gradient(180deg,
-      rgba(255, 255, 255, 0.3) 0%,
-      rgba(255, 255, 255, 0.08) 52%,
-      rgba(0, 0, 0, 0.03) 52%,
-      rgba(0, 0, 0, 0.07) 100%);
-  --bisel: inset 0 1px 0 var(--brilho), inset 0 -1px 0 var(--aresta-baixo);
-  --flutua: 0 2px 5px var(--sombra-peca), 0 8px 18px -8px var(--sombra-peca);
-  --flutua-alto: 0 4px 10px var(--sombra-peca), 0 14px 28px -10px var(--sombra-peca);
-  /* Apertada, a peça inverte: o lustre some e a sombra vem de dentro. */
-  --apertado: inset 0 2px 6px rgba(0, 0, 0, 0.28), inset 0 -1px 0 var(--brilho);
-  --desfoque: blur(14px) saturate(165%);
-}
+body[data-menu="2"] { --grad-topo: #3ec46f; --grad-base: #10357f; --tinta: #0a2b18; --acento: #10357f; --acento-claro: #35d17e; }
+body[data-menu="3"] { --grad-topo: #f3a712; --grad-base: #5b1d8f; --tinta: #3d2503; --acento: #5b1d8f; --acento-claro: #c48bf0; }
+body[data-menu="4"] { --grad-topo: #14b8c4; --grad-base: #9b1d5e; --tinta: #06323a; --acento: #9b1d5e; --acento-claro: #ff6fa8; }
 
 /* -----------------------------------------------------------------------
    Base
@@ -129,18 +87,11 @@ body {
   font-size: 16px;
   line-height: 1.5;
   color: var(--tinta);
-  background-color: transparent;
+  background-color: #fff;
 }
 
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
-
-/* As arestas do vidro são claras demais para servir de foco de teclado. */
-:focus-visible {
-  outline: 2px solid var(--acento-uso);
-  outline-offset: 3px;
-  border-radius: 12px;
-}
 
 .faixa {
   width: min(1320px, 92vw);
@@ -157,79 +108,15 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   z-index: 100;
   padding: 0.6rem 1rem;
   background: #fff;
-  color: #141824;
-}
-
-/* -----------------------------------------------------------------------
-   Fundo
-   O degradê é uma camada fixa atrás de tudo, e não o fundo do palco: é o
-   que garante que as barras sempre tenham o que desfocar, inclusive no
-   topo da página, e que o par de cores inteiro caiba numa tela só.
-   ----------------------------------------------------------------------- */
-.fundo {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background-image: linear-gradient(180deg, var(--grad-topo) 0%, var(--grad-base) 100%);
-}
-
-/* ==========================================================================
-   PEÇAS DE VIDRO
-   A base comum de tudo que é botão, aba ou pastilha. Cada peça depois só
-   ajusta forma e cor.
-   ========================================================================== */
-.publico,
-.menu > li > a,
-.submenu > li > a,
-.cta,
-.acessibilidade-btn,
-.topbar-toggler,
-.btn-vidro {
-  position: relative;
-  background-color: var(--vidro);
-  background-image: var(--lustre);
-  border: 1px solid var(--aresta);
-  box-shadow: var(--bisel), var(--flutua);
-  backdrop-filter: var(--desfoque);
-  -webkit-backdrop-filter: var(--desfoque);
-  color: var(--superficie-tinta);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease,
-              color 0.2s ease, transform 0.12s ease;
-}
-
-.menu > li > a:hover,
-.submenu > li > a:hover,
-.cta:hover,
-.acessibilidade-btn:hover,
-.btn-vidro:hover {
-  background-color: var(--vidro-forte);
-  box-shadow: var(--bisel), var(--flutua-alto);
-  color: var(--superficie-forte);
-}
-
-/* O clique afunda de verdade — 1px de deslocamento mais a sombra por
-   dentro. Sem o deslocamento a inversão do lustre passa despercebida. */
-.menu > li > a:active,
-.submenu > li > a:active,
-.cta:active,
-.acessibilidade-btn:active,
-.btn-vidro:active {
-  transform: translateY(1px);
-  background-image: none;
-  box-shadow: var(--apertado);
+  border: 2px solid #16181d;
 }
 
 /* ==========================================================================
    TOPBAR
    ========================================================================== */
 .topbar {
-  position: relative;
-  z-index: 51;
-  background-color: rgba(10, 14, 24, 0.74);
-  backdrop-filter: var(--desfoque);
-  -webkit-backdrop-filter: var(--desfoque);
-  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.8);
+  background-color: #16181d;
+  color: rgba(255, 255, 255, 0.78);
   font-size: 0.78rem;
 }
 
@@ -256,6 +143,34 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 
 .topbar-toggler { display: none; }
 
+/* -----------------------------------------------------------------------
+   Aba de público
+   Recebe a cor do navbar e encosta nele: o -1px come a borda do navbar e
+   o canto arredondado só em cima é o que faz a peça ler como aba, e não
+   como botão solto no topbar.
+   ----------------------------------------------------------------------- */
+.publico {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  gap: 0.5rem;
+  margin: 5px 0 -1px;
+  padding: 0 1rem;
+  border-radius: 10px 10px 0 0;
+  background-color: var(--superficie);
+  color: var(--superficie-forte);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+/* A aba branca não muda com `filter: brightness`, então o retorno do hover é
+   um contorno por dentro, que funciona nas duas superfícies. */
+.publico:hover {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--superficie-forte) 25%, transparent);
+}
+.publico .publico-troca { font-size: 0.65rem; opacity: 0.45; }
+
 /* Acessibilidade — o menu abre pelo botão (conceito.js), não pelo :hover,
    para funcionar igual no toque e no teclado. */
 .acessibilidade { position: relative; }
@@ -264,35 +179,26 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.35rem 0.85rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 999px;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.85);
 }
-.acessibilidade-btn:hover { color: #fff; }
-/* Aberto, o botão fica apertado: é o mesmo gesto de manter uma tecla presa. */
-.acessibilidade[aria-expanded="true"] .acessibilidade-btn {
-  background-image: none;
-  box-shadow: var(--apertado);
-  color: #fff;
-}
+.acessibilidade-btn:hover { border-color: rgba(255, 255, 255, 0.6); color: #fff; }
 
 .acessibilidade-menu {
   display: none;
   position: absolute;
   right: 0;
-  top: calc(100% + 0.5rem);
+  top: calc(100% + 0.4rem);
   z-index: 60;
-  min-width: 230px;
-  padding: 0.4rem;
-  background-color: var(--vidro-forte);
-  background-image: var(--lustre);
-  border: 1px solid var(--aresta);
-  border-radius: 14px;
-  box-shadow: var(--bisel), var(--flutua-alto);
-  backdrop-filter: var(--desfoque);
-  -webkit-backdrop-filter: var(--desfoque);
-  color: var(--superficie-forte);
+  min-width: 220px;
+  padding: 0.35rem;
+  background: #fff;
+  color: #16181d;
+  border: 1px solid #d9dde5;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
 }
 .acessibilidade[aria-expanded="true"] .acessibilidade-menu { display: block; }
 
@@ -302,42 +208,13 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   align-items: center;
   gap: 0.6rem;
   width: 100%;
-  padding: 0.55rem 0.7rem;
-  border-radius: 9px;
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
   font-size: 0.82rem;
   text-align: left;
-  transition: background-color 0.15s ease;
 }
 .acessibilidade-menu a:hover,
-.acessibilidade-menu button:hover {
-  background-color: color-mix(in srgb, var(--superficie-forte) 10%, transparent);
-}
-
-/* -----------------------------------------------------------------------
-   Aba de público
-   Tem a cor do navbar e encosta nele: o canto arredondado só em cima e a
-   ausência de aresta embaixo são o que faz a peça ler como aba, e não como
-   botão solto no topbar.
-   ----------------------------------------------------------------------- */
-.publico {
-  display: flex;
-  align-items: center;
-  align-self: stretch;
-  gap: 0.5rem;
-  margin: 5px 0 -1px;
-  padding: 0 1.1rem;
-  border-bottom: none;
-  border-radius: 13px 13px 0 0;
-  color: var(--superficie-forte);
-  font-size: 0.78rem;
-  font-weight: 600;
-  white-space: nowrap;
-  /* Sem sombra projetada embaixo: ela descolaria a aba do navbar, que é
-     justamente o que não pode acontecer. */
-  box-shadow: inset 0 1px 0 var(--brilho), 0 -3px 10px -4px var(--sombra-peca);
-}
-.publico:hover { background-color: var(--vidro-forte); }
-.publico .publico-troca { font-size: 0.65rem; opacity: 0.5; }
+.acessibilidade-menu button:hover { background-color: #f1f3f7; }
 
 /* ==========================================================================
    NAVBAR — logo | menus | CTA
@@ -346,11 +223,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: var(--vidro);
-  backdrop-filter: var(--desfoque);
-  -webkit-backdrop-filter: var(--desfoque);
-  box-shadow: inset 0 1px 0 var(--brilho);
-  transition: background-color 0.3s ease;
+  background-color: var(--superficie);
+  border-bottom: 1px solid var(--superficie-borda);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .navbar .faixa {
@@ -361,14 +236,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 }
 
 .marca { flex: 0 0 auto; }
-.marca img {
-  display: block;
-  height: 40px;
-  width: auto;
-  /* A logo é o único elemento opaco sobre o vidro; a sombra curta a levanta
-     junto com as outras peças. */
-  filter: drop-shadow(0 1px 2px var(--sombra-peca));
-}
+.marca img { display: block; height: 40px; width: auto; }
 
 /* Duas versões da logo em vez de uma trocada por JS: sem troca de `src` não
    há o piscar do carregamento ao mudar de público. */
@@ -378,7 +246,7 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 .menu {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.25rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -387,45 +255,35 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 
 .menu > li > a {
   display: block;
-  padding: 0.55rem 1.1rem;
-  border-radius: 11px;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
   font-size: 0.9rem;
   font-weight: 600;
+  color: var(--superficie-tinta);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.menu > li > a:hover {
+  background-color: color-mix(in srgb, var(--superficie-forte) 8%, transparent);
+  color: var(--superficie-forte);
 }
 
-/* Ativo é a peça apertada: lustre invertido, sombra por dentro e a cor do
-   menu no texto. Preencher com a cor faria o item ativo flutuar mais que o
-   CTA, que é quem deve estar na frente. */
 .menu > li > a[aria-current="true"],
 .menu > li > a[aria-current="true"]:hover {
-  background-color: var(--vidro-fundo);
-  background-image: none;
-  box-shadow: var(--apertado);
-  color: var(--acento-uso);
+  color: var(--acento-tinta);
+  background-color: var(--acento-uso);
 }
 
 .cta {
   flex: 0 0 auto;
-  padding: 0.65rem 1.5rem;
-  border-radius: 11px;
+  padding: 0.65rem 1.4rem;
+  border-radius: 8px;
   font-size: 0.9rem;
   font-weight: 600;
-  /* O único vidro colorido: a cor do menu entra no próprio material, com o
-     mesmo lustre e a sombra projetada tingida pelo acento. */
-  background-color: color-mix(in srgb, var(--acento-uso) 82%, transparent);
-  border-color: color-mix(in srgb, var(--acento-uso) 35%, var(--aresta));
-  box-shadow: var(--bisel),
-              0 2px 6px color-mix(in srgb, var(--acento-uso) 45%, var(--sombra-peca)),
-              0 10px 22px -10px color-mix(in srgb, var(--acento-uso) 55%, var(--sombra-peca));
   color: var(--acento-tinta);
-}
-.cta:hover {
   background-color: var(--acento-uso);
-  color: var(--acento-tinta);
-  box-shadow: var(--bisel),
-              0 4px 10px color-mix(in srgb, var(--acento-uso) 50%, var(--sombra-peca)),
-              0 16px 30px -12px color-mix(in srgb, var(--acento-uso) 60%, var(--sombra-peca));
+  transition: background-color 0.55s ease, color 0.3s ease, filter 0.15s ease;
 }
+.cta:hover { filter: brightness(1.15); }
 
 .navbar-toggler { display: none; }
 
@@ -440,21 +298,17 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
      quando não houver JS. */
   top: 72px;
   z-index: 49;
-  /* Um vidro mais fino que o do navbar: as duas barras precisam se ler como
-     camadas distintas, e é a transparência que as separa, não uma borda. */
-  background-color: var(--vidro-fundo);
-  backdrop-filter: var(--desfoque);
-  -webkit-backdrop-filter: var(--desfoque);
-  box-shadow: inset 0 1px 0 var(--aresta-baixo),
-              inset 0 -1px 0 var(--brilho),
-              0 10px 22px -12px var(--sombra-barra);
-  transition: background-color 0.3s ease;
+  /* A cor do menu, bem diluída: a barra pertence ao menu ativo, mas não
+     pode competir com o palco logo abaixo. */
+  background-color: color-mix(in srgb, var(--acento-uso) 12%, var(--superficie));
+  border-bottom: 1px solid color-mix(in srgb, var(--acento-uso) 26%, var(--superficie));
+  transition: background-color 0.55s ease, border-color 0.55s ease;
 }
 
 .submenu {
   display: none;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.25rem;
   list-style: none;
   margin: 0;
   padding: 0.5rem 0;
@@ -479,18 +333,22 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 
 .submenu > li > a {
   display: block;
-  padding: 0.33rem 0.9rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 600;
+  color: var(--acento-uso);
   white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.submenu > li > a:hover {
+  background-color: color-mix(in srgb, var(--acento-uso) 22%, var(--superficie));
 }
 
 .submenu > li > a[aria-current="true"],
 .submenu > li > a[aria-current="true"]:hover {
-  background-color: var(--vidro-forte);
-  box-shadow: var(--bisel), var(--flutua);
-  color: var(--acento-uso);
+  color: var(--acento-tinta);
+  background-color: var(--acento-uso);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -501,8 +359,9 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
    PALCO — o corpo da página é só o degradê, à espera do conteúdo
    ========================================================================== */
 .palco {
-  min-height: 118vh;
+  min-height: 180vh;
   padding-block: 5rem;
+  background-image: linear-gradient(180deg, var(--grad-topo) 0%, var(--grad-base) 100%);
 }
 
 .palco h1 {
@@ -524,76 +383,14 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
   opacity: 0.55 !important;
 }
 
-/* -----------------------------------------------------------------------
-   Amostra — as peças fora das barras, para julgar o material contra a parte
-   escura do degradê e não só contra a clara.
-   ----------------------------------------------------------------------- */
-.amostra {
-  margin-top: 2.5rem;
-  padding: 1.5rem;
-  max-width: 44rem;
-  border-radius: 20px;
-  background-color: var(--vidro-forte);
-  background-image: var(--lustre);
-  border: 1px solid var(--aresta);
-  box-shadow: var(--bisel), var(--flutua-alto);
-  backdrop-filter: var(--desfoque);
-  -webkit-backdrop-filter: var(--desfoque);
-  color: var(--superficie-tinta);
-}
-
-.amostra-titulo {
-  margin: 0 0 1rem !important;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.6 !important;
-}
-
-.amostra-linha { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
-
-.btn-vidro {
-  padding: 0.6rem 1.3rem;
-  border-radius: 11px;
-  font-size: 0.88rem;
-  font-weight: 600;
-}
-.btn-vidro.esta-apertado {
-  background-color: var(--vidro-fundo);
-  background-image: none;
-  box-shadow: var(--apertado);
-  color: var(--acento-uso);
-}
-.btn-vidro-acento {
-  background-color: color-mix(in srgb, var(--acento-uso) 82%, transparent);
-  border-color: color-mix(in srgb, var(--acento-uso) 35%, var(--aresta));
-  box-shadow: var(--bisel),
-              0 2px 6px color-mix(in srgb, var(--acento-uso) 45%, var(--sombra-peca));
-  color: var(--acento-tinta);
-}
-.btn-vidro-acento:hover { background-color: var(--acento-uso); color: var(--acento-tinta); }
-
-/* Campos são o avesso: cavidades no vidro, não peças sobre ele. */
-.campo-cavado {
-  padding: 0.6rem 1.3rem;
-  border-radius: 11px;
-  font-size: 0.88rem;
-  background-color: var(--vidro-fundo);
-  border: 1px solid var(--aresta-baixo);
-  box-shadow: var(--apertado);
-}
-
 .nota {
-  margin-top: 1.5rem;
+  margin-top: 3rem;
   padding: 1rem 1.25rem;
-  border-radius: 14px;
+  border: 1px dashed currentColor;
+  border-radius: 10px;
   max-width: 60ch;
   font-size: 0.85rem;
-  opacity: 0.75;
-  background-color: var(--vidro-fundo);
-  border: 1px solid var(--aresta-baixo);
-  box-shadow: var(--apertado);
+  opacity: 0.6;
 }
 
 /* ==========================================================================
@@ -611,23 +408,21 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
     align-items: flex-start;
     gap: 0;
     padding: 0.5rem 4vw;
-    background-color: rgba(10, 14, 24, 0.82);
-    backdrop-filter: var(--desfoque);
-    -webkit-backdrop-filter: var(--desfoque);
+    background-color: #16181d;
   }
   .topbar-links a { display: block; padding: 0.5rem 0; }
   .topbar .faixa { position: relative; }
   .topbar-menu[aria-expanded="true"] .topbar-links { display: flex; }
 
-  .topbar-toggler {
-    display: block;
-    padding: 0.25rem 0.55rem;
-    border-radius: 9px;
-    color: rgba(255, 255, 255, 0.85);
-  }
-
   .publico { padding: 0 0.7rem; font-size: 0.72rem; }
   .publico .publico-troca { display: none; }
+
+  .topbar-toggler {
+    display: block;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+  }
 
   .navbar .faixa {
     flex-wrap: wrap;
@@ -651,37 +446,4 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
   /* Palpite de reserva para o navbar de duas linhas do celular; com JS, o
      valor certo vem medido. */
   .subbar { top: 132px; }
-}
-
-/* ==========================================================================
-   Sem vidro
-   Onde não há backdrop-filter — ou onde o sistema pede menos transparência —
-   as peças ficam opacas. Translúcido sem desfoque não é vidro: é só texto
-   competindo com o degradê atrás.
-   ========================================================================== */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  body {
-    --vidro: rgba(244, 246, 251, 0.97);
-    --vidro-forte: rgba(249, 250, 253, 0.99);
-    --vidro-fundo: rgba(232, 236, 244, 0.97);
-  }
-  body[data-publico="empresa"] {
-    --vidro: rgba(15, 36, 70, 0.97);
-    --vidro-forte: rgba(20, 44, 84, 0.99);
-    --vidro-fundo: rgba(10, 26, 54, 0.97);
-  }
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .topbar { background-color: rgba(10, 14, 24, 0.98); }
-  body {
-    --vidro: rgba(244, 246, 251, 0.98);
-    --vidro-forte: rgba(249, 250, 253, 1);
-    --vidro-fundo: rgba(232, 236, 244, 0.98);
-  }
-  body[data-publico="empresa"] {
-    --vidro: rgba(15, 36, 70, 0.98);
-    --vidro-forte: rgba(20, 44, 84, 1);
-    --vidro-fundo: rgba(10, 26, 54, 0.98);
-  }
 }
