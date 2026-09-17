@@ -18,8 +18,9 @@
    "Para você" mantém o cinza claro do template; "Para empresa" leva o site
    inteiro para o azul: o topo em --color-blue-dark, o corpo da página em
    --color-blue-darker e a logo na versão negativa. O cartão do segundo nível
-   continua branco nos dois — é ele que carrega os atalhos, e mantê-lo claro
-   é o que faz a barra flutuar sobre o fundo em vez de sumir nele.
+   acompanha: branco sobre a página clara, --color-blue sobre a escura. Nos
+   dois ele é a peça mais clara da região, que é o que o faz parecer estar
+   por cima da faixa em vez de recortado nela.
    ----------------------------------------------------------------------- */
 body {
   /* A faixa do segundo nível usa a mesma cor do navbar: as duas leem como
@@ -30,6 +31,14 @@ body {
   --corpo: #fff;
   --corpo-tinta: var(--color-body);
   --corpo-titulo: var(--color-ink);
+  /* O cartão do segundo nível. Ele é sempre a peça mais clara da região: é
+     assim que parece estar por cima da faixa, e não recortado nela. */
+  --cartao: #fff;
+  --cartao-tinta: var(--color-blue);
+  --cartao-aresta: transparent;
+  --cartao-sombra: rgba(13, 44, 102, 0.16);
+  --cartao-sombra-perto: rgba(13, 44, 102, 0.07);
+  --atalho-hover: var(--brand);
 }
 
 body[data-publico="empresa"] {
@@ -38,6 +47,18 @@ body[data-publico="empresa"] {
   --corpo: var(--color-blue-darker);
   --corpo-tinta: rgba(255, 255, 255, 0.82);
   --corpo-titulo: #fff;
+  /* --color-blue é o azul mais claro dos três e não está em uso em nenhuma
+     outra superfície deste público: fica para o cartão, que assim se
+     destaca da faixa sem precisar voltar ao branco. */
+  --cartao: var(--color-blue);
+  --cartao-tinta: #fff;
+  --cartao-aresta: rgba(255, 255, 255, 0.16);
+  /* Sombra azul não aparece sobre fundo azul escuro; aqui ela é quase preta. */
+  --cartao-sombra: rgba(2, 10, 26, 0.5);
+  --cartao-sombra-perto: rgba(2, 10, 26, 0.32);
+  /* Laranja sobre o azul do cartão fica com pouco contraste para texto — no
+     hover só a borda usa a marca, e o rótulo clareia. */
+  --atalho-hover: #fff;
 }
 
 /* ==========================================================================
@@ -151,10 +172,12 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
   width: 90%;
   max-width: 90%;
   margin-inline: auto;
-  background-color: #fff;
+  background-color: var(--cartao);
   border-radius: var(--radius-lg);
-  box-shadow: 0 0.9rem 2.2rem rgba(13, 44, 102, 0.16),
-              0 0.15rem 0.45rem rgba(13, 44, 102, 0.07);
+  box-shadow: 0 0.9rem 2.2rem var(--cartao-sombra),
+              0 0.15rem 0.45rem var(--cartao-sombra-perto),
+              inset 0 1px 0 var(--cartao-aresta);
+  transition: background-color 0.2s ease;
   /* O respiro lateral mantém o primeiro e o último atalho longe da curva
      do canto, o que evita ter de cortar o conteúdo com overflow e perder o
      contorno de foco do teclado. */
@@ -198,7 +221,7 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
   padding: 0.5rem 0.85rem;
   border-radius: var(--radius-sm);
   border: 1.5px solid transparent;
-  color: var(--color-blue);
+  color: var(--cartao-tinta);
   font-size: 0.78rem;
   font-weight: 700;
   line-height: 1.15;
@@ -209,7 +232,7 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 
 .atalho:hover {
   border-color: var(--brand);
-  color: var(--brand);
+  color: var(--atalho-hover);
 }
 
 .atalho[aria-current="true"],
