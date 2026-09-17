@@ -15,21 +15,29 @@
 
 /* -----------------------------------------------------------------------
    Superfície do navbar por público
-   "Para você" mantém o cinza claro do template; "Para empresa" pinta o
-   navbar de azul escuro e vira a logo para a versão negativa. É a única
-   coisa que o público muda no visual — a barra de atalhos e a página
-   seguem brancas nos dois.
+   "Para você" mantém o cinza claro do template; "Para empresa" leva o site
+   inteiro para o azul: o topo em --color-blue-dark, o corpo da página em
+   --color-blue e a logo na versão negativa. O cartão do segundo nível
+   continua branco nos dois — é ele que carrega os atalhos, e mantê-lo claro
+   é o que faz a barra flutuar sobre o fundo em vez de sumir nele.
    ----------------------------------------------------------------------- */
 body {
+  /* A faixa do segundo nível usa a mesma cor do navbar: as duas leem como
+     um bloco só de cabeçalho, com o cartão de atalhos solto por cima. */
   --superficie-nav: var(--color-bg-soft);
   --superficie-tinta: var(--color-blue);
-  --superficie-borda: transparent;
+  /* Fundo do corpo da página e a tinta que ele exige. */
+  --corpo: #fff;
+  --corpo-tinta: var(--color-body);
+  --corpo-titulo: var(--color-ink);
 }
 
 body[data-publico="empresa"] {
   --superficie-nav: var(--color-blue-dark);
   --superficie-tinta: #fff;
-  --superficie-borda: rgba(255, 255, 255, 0.14);
+  --corpo: var(--color-blue);
+  --corpo-tinta: rgba(255, 255, 255, 0.82);
+  --corpo-titulo: #fff;
 }
 
 /* ==========================================================================
@@ -125,18 +133,14 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
      quando não houver JS. */
   top: 76px;
   z-index: 1029;
-  /* A faixa em si não existe: é só o espaço em volta da barra flutuante.
-     Sem fundo, o conteúdo da página passa por baixo dela ao rolar, que é o
-     que faz a barra parecer solta em vez de colada no topo. */
-  background: none;
+  /* A faixa acompanha o navbar: cinza claro para pessoas, azul escuro para
+     empresas. O cartão branco flutua sobre ela. */
+  background-color: var(--superficie-nav);
   padding-block: 0.7rem 0.55rem;
-  /* Esse espaço vazio continuaria interceptando cliques do conteúdo que
-     passa por baixo; só a barra deve ser clicável. */
-  pointer-events: none;
+  transition: background-color 0.2s ease;
 }
 
 .subbar .container-xl {
-  pointer-events: auto;
   /* Ponta a ponta com 5% de folga de cada lado, em vez do 1320px do
      .container-xl do Bootstrap — que em telas largas deixava a barra
      encolhida no meio. De quebra, passa a bater com o navbar, que no
@@ -171,6 +175,7 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 .submenu.ativo {
   display: flex;
   animation: submenu-entra 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  justify-content: space-evenly;
 }
 
 @keyframes submenu-entra {
@@ -220,8 +225,39 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
   .submenu.ativo { animation: none; }
 }
 
+/* ==========================================================================
+   CORPO DA PÁGINA
+   Em "Para empresa" o fundo branco do template dá lugar ao azul. O que muda
+   é só a cor das superfícies e do texto que fica direto sobre elas: cards de
+   notícia e de serviço já têm fundo branco próprio e continuam como estão.
+   ========================================================================== */
+body { background-color: var(--corpo); }
+.page-surface { background-color: var(--corpo); }
+
 /* A barra flutuante já traz o próprio respiro embaixo. */
-.breadcrumb-bar { padding-top: 0.5rem; }
+.breadcrumb-bar {
+  padding-top: 0.5rem;
+  background-color: var(--corpo);
+}
+
+body[data-publico="empresa"] {
+  color: var(--corpo-tinta);
+}
+body[data-publico="empresa"] .page-surface h1,
+body[data-publico="empresa"] .page-surface h2,
+body[data-publico="empresa"] .page-surface h3,
+body[data-publico="empresa"] .page-surface h4,
+body[data-publico="empresa"] .page-surface h5,
+body[data-publico="empresa"] .page-surface h6 {
+  color: var(--corpo-titulo);
+}
+/* Dentro dos cards o fundo continua branco, então o título volta ao escuro. */
+body[data-publico="empresa"] .news-card h3,
+body[data-publico="empresa"] .news-card h4 { color: var(--color-ink); }
+
+body[data-publico="empresa"] .breadcrumb-modern { color: rgba(255, 255, 255, 0.7); }
+body[data-publico="empresa"] .breadcrumb-modern a { color: rgba(255, 255, 255, 0.7); }
+body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(255, 255, 255, 0.45); }
 
 /* ==========================================================================
    MOBILE
