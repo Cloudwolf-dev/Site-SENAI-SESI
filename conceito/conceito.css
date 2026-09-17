@@ -4,8 +4,7 @@
    só existe o que o template não tem:
 
    1. a aba de público no topbar (pessoa / empresa);
-   2. o nível 1 como abas que encostam na barra de baixo, em vez de itens que
-      abrem mega-panel;
+   2. o nível 1 marcando o menu ativo em vez de abrir mega-panel;
    3. o nível 2 — os atalhos de acesso rápido, que na home eram uma fileira
       de cards abaixo do header e aqui viram a segunda barra, trocando de
       conjunto conforme o menu ativo.
@@ -19,8 +18,7 @@
    "Para você" mantém o cinza claro do template; "Para empresa" pinta o
    navbar de azul escuro e vira a logo para a versão negativa. É a única
    coisa que o público muda no visual — a barra de atalhos e a página
-   seguem brancas nos dois, que é o que mantém a aba ativa "encostando"
-   no mesmo branco dos dois lados.
+   seguem brancas nos dois.
    ----------------------------------------------------------------------- */
 body {
   --superficie-nav: var(--color-bg-soft);
@@ -78,23 +76,9 @@ body[data-publico="empresa"] {
 .publico .publico-troca { font-size: 0.6rem; opacity: 0.55; }
 
 /* ==========================================================================
-   NÍVEL 1 — o menu vira aba
+   NÍVEL 1 — o menu marca a seção, em vez de abrir painel
    ========================================================================== */
-.mainnav {
-  background-color: var(--superficie-nav);
-  /* O padding sai do header para que a aba ativa possa ir até a base dele
-     e encostar na barra de atalhos. */
-  padding-block: 0;
-}
-
-.mainnav .container-xl {
-  align-items: stretch;
-  min-height: 88px;
-}
-
-.mainnav-brand,
-.cta-buttons,
-.nav-search { display: flex; align-items: center; }
+.mainnav { background-color: var(--superficie-nav); }
 
 .mainnav-brand img { height: 52px; min-width: 0; margin: 0; }
 
@@ -104,35 +88,30 @@ body[data-publico="voce"] .marca-sobre-escuro,
 body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 
 .mainnav-menu {
-  align-items: stretch;
   justify-content: flex-start;
   gap: 0.15rem;
   margin-left: 1.5rem;
 }
-.mainnav-menu > li { display: flex; }
 
 .mainnav-menu > li > a {
-  align-items: center;
-  padding: 0 1.15rem;
+  padding: 0.65rem 1.1rem;
   color: var(--superficie-tinta);
-  /* Só o topo é arredondado: a aba ativa termina rente à barra de atalhos
-     e as duas leem como uma peça só. */
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
   white-space: nowrap;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
+/* O hover é só um prenúncio do estado ativo — a mesma cor, diluída —, para
+   passar o mouse não parecer que já selecionou. */
 .mainnav-menu > li > a:hover {
   background-color: rgba(var(--brand-rgb), 0.14);
   color: var(--brand);
 }
 
-/* A aba ativa é branca porque a barra de atalhos é branca: o encaixe entre
-   os dois níveis é feito pela cor, não por uma linha. */
+/* O menu ativo é o botão cheio da marca, como no template. */
 .mainnav-menu > li > a[aria-current="true"],
 .mainnav-menu > li > a[aria-current="true"]:hover {
-  background-color: #fff;
-  color: var(--brand);
+  background-color: var(--brand);
+  color: var(--color-bg-soft);
 }
 
 /* ==========================================================================
@@ -144,7 +123,7 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
      segundo nível nunca fica órfão do primeiro. O valor exato é a altura
      medida do navbar, escrita pelo conceito.js; este é só o palpite para
      quando não houver JS. */
-  top: 88px;
+  top: 76px;
   z-index: 1029;
   background-color: #fff;
   box-shadow: 0 8px 18px -12px rgba(22, 65, 148, 0.35);
@@ -242,9 +221,7 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
      estava. */
   .mainnav .container-xl {
     flex-wrap: wrap;
-    align-items: center;
-    min-height: 0;
-    padding-block: 0.6rem 0;
+    row-gap: 0.5rem;
   }
   .mainnav-toggler { display: none !important; }
   .nav-backdrop { display: none !important; }
@@ -295,7 +272,7 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
   .publico .publico-troca { display: none; }
 
   /* Palpite de reserva; com JS, o valor certo vem medido. */
-  .subbar { top: 128px; }
+  .subbar { top: 132px; }
 }
 
 @media (max-width: 575.98px) {
