@@ -223,8 +223,7 @@ body[data-publico="empresa"] .publico-toggle::before { transform: translateX(100
     background: transparent;
     border-bottom: 6px solid var(--brand);
     border-radius: 0px;
-    padding-bottom: 17px;
-    margin-bottom: -14px;
+    padding-bottom: 5px;
 }
 
 /* ==========================================================================
@@ -256,30 +255,12 @@ body[data-publico="empresa"] .publico-toggle::before { transform: translateX(100
   width: 90%;
   max-width: 90%;
   margin-inline: auto;
+  background-color: var(--cartao);
   border-radius: var(--radius-lg);
-
-  /* Borda só no topo, em degradê do laranja da marca para o transparente.
-     `border-image` resolveria o degradê mas não convive com border-radius,
-     então aqui vai a técnica das duas camadas de fundo (css-tricks.com/
-     gradient-borders-in-css): a borda é declarada transparente e o que a
-     pinta é um gradiente recortado no border-box, enquanto o preenchimento
-     do cartão é outra camada recortada no padding-box, que começa depois da
-     borda.
-
-     O gradiente termina em `var(--borda-topo)` — a própria espessura — e
-     não em 100%: medido na altura do cartão inteiro, a faixa de 4px pegaria
-     só o começo dele e sairia laranja chapado, sem desvanecer. */
-  --borda-topo: 4px;
-  border-top: var(--borda-topo) solid transparent;
-  background-image:
-    linear-gradient(var(--cartao), var(--cartao)),
-    linear-gradient(180deg, var(--brand) 0, transparent var(--borda-topo));
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
-
   box-shadow: 0 0.9rem 2.2rem var(--cartao-sombra),
               0 0.15rem 0.45rem var(--cartao-sombra-perto),
               inset 0 1px 0 var(--cartao-aresta);
+  transition: background-color 0.2s ease;
   /* O respiro lateral mantém o primeiro e o último atalho longe da curva
      do canto, o que evita ter de cortar o conteúdo com overflow e perder o
      contorno de foco do teclado. */
