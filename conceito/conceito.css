@@ -17,7 +17,7 @@
    Superfície do navbar por público
    "Para você" mantém o cinza claro do template; "Para empresa" leva o site
    inteiro para o azul: o topo em --color-blue-dark, o corpo da página em
-   --color-blue e a logo na versão negativa. O cartão do segundo nível
+   --color-blue-darker e a logo na versão negativa. O cartão do segundo nível
    continua branco nos dois — é ele que carrega os atalhos, e mantê-lo claro
    é o que faz a barra flutuar sobre o fundo em vez de sumir nele.
    ----------------------------------------------------------------------- */
@@ -35,7 +35,7 @@ body {
 body[data-publico="empresa"] {
   --superficie-nav: var(--color-blue-dark);
   --superficie-tinta: #fff;
-  --corpo: var(--color-blue);
+  --corpo: var(--color-blue-darker);
   --corpo-tinta: rgba(255, 255, 255, 0.82);
   --corpo-titulo: #fff;
 }
@@ -133,11 +133,14 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
      quando não houver JS. */
   top: 76px;
   z-index: 1029;
-  /* A faixa acompanha o navbar: cinza claro para pessoas, azul escuro para
-     empresas. O cartão branco flutua sobre ela. */
+  /* A faixa é a emenda entre o navbar e o corpo da página: começa na cor de
+     um e termina na do outro, então a troca de tom acontece ao longo dela em
+     vez de numa linha dura. Como as duas pontas são variáveis, vale para os
+     dois públicos — cinza claro para branco, azul escuro para o mais escuro
+     ainda. O background-color é a reserva para quem não pintar o gradiente. */
   background-color: var(--superficie-nav);
+  background-image: linear-gradient(180deg, var(--superficie-nav) 0%, var(--corpo) 100%);
   padding-block: 0.7rem 0.55rem;
-  transition: background-color 0.2s ease;
 }
 
 .subbar .container-xl {
