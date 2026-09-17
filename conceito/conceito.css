@@ -137,6 +137,13 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 
 .subbar .container-xl {
   pointer-events: auto;
+  /* Ponta a ponta com 5% de folga de cada lado, em vez do 1320px do
+     .container-xl do Bootstrap — que em telas largas deixava a barra
+     encolhida no meio. De quebra, passa a bater com o navbar, que no
+     template também é 90%. */
+  width: 90%;
+  max-width: 90%;
+  margin-inline: auto;
   background-color: #fff;
   border-radius: var(--radius-lg);
   box-shadow: 0 0.9rem 2.2rem rgba(13, 44, 102, 0.16),
