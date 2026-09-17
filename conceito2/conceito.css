@@ -124,33 +124,10 @@ body[data-publico="empresa"] {
 body[data-publico="voce"] .marca-sobre-escuro,
 body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 
-/* -----------------------------------------------------------------------
-   Atalho para o SESI
-   Fica à esquerda do seletor de público porque é da mesma natureza: escolha
-   de casa, não de seção. A seta avisa que o clique sai deste site — sem ela
-   o ícone pareceria só mais um link do topbar.
-
-   A altura é dada pelo próprio <img>; a classe .sesi-icon-min do template
-   não serve aqui, porque as margens negativas dela foram feitas para
-   encaixar o logo dentro da lista de links.
-   ----------------------------------------------------------------------- */
-.sesi-link {
-  display: flex;
-  align-items: center;
-  flex: 0 0 auto;
-  gap: 0.5rem;
-  padding: 0.28rem 0.7rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-.sesi-link img { display: block; height: 18px; width: auto; }
-.sesi-link i { font-size: 0.6rem; opacity: 0.75; }
-.sesi-link:hover {
-  background-color: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.6);
-}
-.sesi-link:hover i { opacity: 1; }
+/* A marca do SESI, igual à que era na lista de links — só que agora à
+   esquerda do seletor de público. O visual é o da .sesi-icon-min do
+   template; aqui só existe o necessário para ela ser um item da barra. */
+.sesi-link { display: flex; align-items: center; flex: 0 0 auto; }
 
 /* -----------------------------------------------------------------------
    Toggle de público
