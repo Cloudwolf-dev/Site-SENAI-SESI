@@ -1,48 +1,110 @@
 /**
- * Conceito — comportamento mínimo
+ * Conceito — navegação em dois níveis
  *
- * O estado é um par (menu, opção) dentro de um público: o menu do navbar
- * troca a cor do degradê do palco e o conjunto de opções da sub bar; a opção
- * da sub bar é o segundo nível dentro do menu; e o público — "Para você" ou
- * "Para empresa" — troca a superfície do navbar (branco ou azul escuro) e,
- * com ela, a versão da logo. Fora isso, só o menu de acessibilidade abre e
- * fecha e o topbar recolhe no celular.
+ * O estado é um par (menu, atalho) dentro de um público. O nível 1 — as abas
+ * do navbar — troca o conjunto de atalhos da barra de baixo; o nível 2 é o
+ * atalho escolhido dentro daquele conjunto; e o público, na aba do topbar,
+ * troca a superfície do navbar e o CTA.
  *
- * A cor não é escolhida aqui: o clique só escreve o número do menu em
- * <body data-menu="N">, e o público em <body data-publico="...">; o
- * conceito.css diz o que cada valor significa.
- * Os rótulos também não: quantas opções cada menu tem e como se chamam está
- * no HTML, em <ul class="submenu" data-de="N">.
+ * Os rótulos não estão aqui: quantos atalhos cada menu tem e como se chamam
+ * está no HTML, em <ul class="submenu" data-de="...">. Acrescentar um menu é
+ * acrescentar um <li> no nível 1 e um <ul> no nível 2 — o script lê os dois.
+ *
+ * A URL guarda o estado inteiro como #publico/menu/atalho, então recarregar,
+ * voltar no histórico ou compartilhar o link cai no mesmo lugar.
+ *
+ * O resto do comportamento da página — busca, acessibilidade, links
+ * institucionais e o banner em accordion — continua vindo de
+ * assets/js/main.js, que é o mesmo do site.
  */
 (function () {
   "use strict";
 
   /* --------------------------------------------------------------------
-     Aba de público — "Para você" / "Para empresa"
+     Público — "Para você" / "Para empresa"
+     A aba mostra o DESTINO, não o público atual: é um botão de troca, e o
+     rótulo diz para onde ele leva. Quem mostra onde se está é o caminho.
      -------------------------------------------------------------------- */
   var PUBLICOS = {
-    voce: { rotulo: "Para empresa", icone: "fa-solid fa-user", outro: "empresa" },
-    empresa: { rotulo: "Para você", icone: "fa-solid fa-building", outro: "voce" }
+    voce: {
+      nome: "Para você",
+      outro: "empresa",
+      cta: { rotulo: "Cursos Disponíveis", href: "../para-voce/cursos/index.html" }
+    },
+    empresa: {
+      nome: "Para empresa",
+      outro: "voce",
+      cta: { rotulo: "Agende uma consulta", href: "#" }
+    }
   };
+  var ICONE_PUBLICO = { voce: "fa-solid fa-user", empresa: "fa-solid fa-building" };
 
   var abaPublico = document.querySelector(".publico");
-  var publico = "voce";
+  var cta = document.getElementById("navCta");
+  var nivel1 = document.getElementById("menuNivel1");
+  var subbar = document.querySelector(".subbar");
+  var navbar = document.querySelector(".mainnav");
+  var marca = document.querySelector(".mainnav-brand");
+  var crumbRaiz = document.querySelector(".breadcrumb-modern a[data-menu]");
+  var crumbMenu = document.getElementById("navCrumbMenu");
+  var crumbSub = document.getElementById("navCrumbSub");
 
-  function trocarPublico(id, empurrarHash) {
+  if (!nivel1 || !subbar) return;
+
+  var conjuntos = subbar.querySelectorAll(".submenu[data-de]");
+  var abas = nivel1.querySelectorAll("a[data-menu]");
+  var MENU_RAIZ = "inicio";
+
+  var publico = document.body.getAttribute("data-publico") || "voce";
+  var menu = MENU_RAIZ;
+  var atalho = null;
+
+  function conjuntoDe(id) {
+    return subbar.querySelector('.submenu[data-de="' + id + '"]');
+  }
+
+  function rotuloMenu(id) {
+    var aba = nivel1.querySelector('a[data-menu="' + id + '"]');
+    return aba ? aba.textContent.trim() : "";
+  }
+
+  function marcar(links, valor, attr) {
+    Array.prototype.forEach.call(links, function (link) {
+      // aria-current em vez de uma classe: o estado é informação, não
+      // decoração, e o CSS pinta a partir do próprio atributo.
+      link.setAttribute("aria-current", link.getAttribute(attr) === valor ? "true" : "false");
+    });
+  }
+
+  function escreverHash() {
+    var partes = [publico, menu];
+    if (atalho) partes.push(atalho);
+    history.replaceState(null, "", "#" + partes.join("/"));
+  }
+
+  /* --------------------------------------------------------------------
+     Público
+     -------------------------------------------------------------------- */
+  function trocarPublico(id, gravarHash) {
     if (!PUBLICOS[id]) id = "voce";
     publico = id;
     document.body.setAttribute("data-publico", id);
 
+    var def = PUBLICOS[id];
     if (abaPublico) {
-      var def = PUBLICOS[id];
-      abaPublico.querySelector(".publico-rotulo").textContent = def.rotulo;
-      abaPublico.querySelector("i").className = def.icone;
+      var destino = PUBLICOS[def.outro];
+      abaPublico.querySelector(".publico-rotulo").textContent = destino.nome;
+      abaPublico.querySelector("i").className = ICONE_PUBLICO[def.outro];
       abaPublico.setAttribute("data-publico-alvo", def.outro);
-      // O rótulo da aba é o destino, não o público atual: o aria-label
-      // repete isso em voz alta para quem não vê o ícone de troca.
-      abaPublico.setAttribute("aria-label", "Trocar para " + def.rotulo + ".");
+      abaPublico.setAttribute("aria-label", "Trocar para " + destino.nome + ".");
     }
-    if (empurrarHash !== false) escreverHash();
+    if (cta) {
+      cta.textContent = def.cta.rotulo;
+      cta.setAttribute("href", def.cta.href);
+    }
+    if (crumbRaiz) crumbRaiz.textContent = def.nome;
+
+    if (gravarHash !== false) escreverHash();
   }
 
   if (abaPublico) {
@@ -52,146 +114,101 @@
   }
 
   /* --------------------------------------------------------------------
-     Navbar e sub bar — o par (menu, opção)
+     Níveis 1 e 2
      -------------------------------------------------------------------- */
-  var menu = document.querySelector(".menu");
-  var subbar = document.querySelector(".subbar");
+  function sincronizarCaminho() {
+    if (!crumbMenu || !crumbSub) return;
+    // Na raiz o degrau do menu seria "Início > Início": some.
+    crumbMenu.hidden = menu === MENU_RAIZ;
+    if (!crumbMenu.hidden) crumbMenu.textContent = rotuloMenu(menu);
 
-  /* A URL guarda o estado inteiro — público, menu e opção — para recarregar
-     e compartilhar caírem no mesmo lugar. */
-  function escreverHash() {
-    var b = document.body;
-    var partes = [b.getAttribute("data-publico") || "voce",
-                  "menu-" + (b.getAttribute("data-menu") || "1")];
-    var op = document.querySelector('.submenu.ativo a[aria-current="true"]');
-    if (op) partes.push("sub-" + op.getAttribute("data-sub"));
-    history.replaceState(null, "", "#" + partes.join("/"));
+    var conjunto = conjuntoDe(menu);
+    var link = conjunto && conjunto.querySelector('a[data-sub="' + atalho + '"]');
+    crumbSub.hidden = !link;
+    if (link) crumbSub.textContent = link.textContent.trim();
   }
 
-  if (menu) {
-    var itens = menu.querySelectorAll("a[data-menu]");
-    var conjuntos = subbar ? subbar.querySelectorAll(".submenu[data-de]") : [];
-    var estado = document.getElementById("estado");
+  function ativar(idMenu, idAtalho, gravarHash) {
+    var conjunto = conjuntoDe(idMenu);
+    if (!conjunto) return;
 
-    function marcar(links, valor, attr) {
-      Array.prototype.forEach.call(links, function (link) {
-        // aria-current em vez de uma classe: o estado é informação, não
-        // decoração, e o CSS pinta a partir do próprio atributo.
-        link.setAttribute("aria-current", link.getAttribute(attr) === valor ? "true" : "false");
-      });
-    }
-
-    function conjuntoDe(id) {
-      return subbar ? subbar.querySelector('.submenu[data-de="' + id + '"]') : null;
-    }
-
-    var ativar = function (id, sub) {
-      var conjunto = conjuntoDe(id);
-      // Trocar de menu sem dizer qual opção cai na primeira do conjunto: a
-      // sub bar nunca fica sem nada selecionado.
-      var opcoes = conjunto ? conjunto.querySelectorAll("a[data-sub]") : [];
-      var escolhida = null;
-      Array.prototype.forEach.call(opcoes, function (op) {
-        if (op.getAttribute("data-sub") === sub) escolhida = sub;
-      });
-      if (!escolhida && opcoes.length) escolhida = opcoes[0].getAttribute("data-sub");
-
-      document.body.setAttribute("data-menu", id);
-      marcar(itens, id, "data-menu");
-
-      Array.prototype.forEach.call(conjuntos, function (c) {
-        c.classList.toggle("ativo", c.getAttribute("data-de") === id);
-      });
-      if (conjunto) {
-        marcar(opcoes, escolhida, "data-sub");
-        // No celular a sub bar rola na horizontal e a opção ativa pode
-        // nascer fora da vista. A conta é feita em rects, e não com
-        // scrollIntoView, porque este último também mexe na rolagem vertical
-        // da página e obedece ao `scroll-behavior: smooth` do documento.
-        var ativa = conjunto.querySelector('a[aria-current="true"]');
-        if (ativa) {
-          var caixa = conjunto.getBoundingClientRect();
-          var item = ativa.getBoundingClientRect();
-          conjunto.scrollLeft += (item.left - caixa.left) - (caixa.width - item.width) / 2;
-        }
-      }
-
-      if (estado) {
-        var rotuloMenu = menu.querySelector('a[data-menu="' + id + '"]');
-        var rotuloSub = conjunto && conjunto.querySelector('a[data-sub="' + escolhida + '"]');
-        estado.textContent = (rotuloMenu ? rotuloMenu.textContent : "Menu " + id) +
-                             (rotuloSub ? " › " + rotuloSub.textContent : "");
-      }
-
-      escreverHash();
-    };
-
-    menu.addEventListener("click", function (e) {
-      var alvo = e.target.closest("a[data-menu]");
-      if (!alvo) return;
-      e.preventDefault();
-      // Sem opção: cai na primeira do menu de destino.
-      ativar(alvo.getAttribute("data-menu"), null);
+    // Nenhum atalho vem marcado por padrão. Eles são acesso rápido, não
+    // seções da página: destacar o primeiro só porque é o primeiro diria
+    // que o visitante está nele, o que não é verdade.
+    var opcoes = conjunto.querySelectorAll("a[data-sub]");
+    var escolhido = null;
+    Array.prototype.forEach.call(opcoes, function (op) {
+      if (op.getAttribute("data-sub") === idAtalho) escolhido = idAtalho;
     });
 
-    if (subbar) {
-      subbar.addEventListener("click", function (e) {
-        var alvo = e.target.closest("a[data-sub]");
-        if (!alvo) return;
-        e.preventDefault();
-        ativar(document.body.getAttribute("data-menu"), alvo.getAttribute("data-sub"));
-      });
+    menu = idMenu;
+    atalho = escolhido;
+    document.body.setAttribute("data-menu", menu);
+
+    marcar(abas, menu, "data-menu");
+    if (marca) marca.setAttribute("aria-current", menu === MENU_RAIZ ? "true" : "false");
+
+    Array.prototype.forEach.call(conjuntos, function (c) {
+      c.classList.toggle("ativo", c.getAttribute("data-de") === menu);
+    });
+    marcar(opcoes, atalho, "data-sub");
+
+    var ativo = atalho && conjunto.querySelector('a[aria-current="true"]');
+    if (ativo) {
+      // A barra rola na horizontal e o atalho ativo pode nascer fora da
+      // vista. A conta é feita em rects, e não com scrollIntoView, porque
+      // este último também mexe na rolagem vertical da página.
+      var caixa = conjunto.getBoundingClientRect();
+      var item = ativo.getBoundingClientRect();
+      conjunto.scrollLeft += (item.left - caixa.left) - (caixa.width - item.width) / 2;
     }
 
-    /* A sub bar gruda logo abaixo do navbar, e a altura dele muda com a
-       largura da tela (no celular ele quebra em duas linhas). Medir é mais
-       barato que manter dois números mágicos em sincronia com o CSS. */
-    var navbar = document.querySelector(".navbar");
-    function encaixarSubbar() {
-      if (navbar && subbar) subbar.style.top = navbar.offsetHeight + "px";
-    }
-    encaixarSubbar();
-    window.addEventListener("resize", encaixarSubbar);
-
-    var doHash = location.hash.match(/^#(?:(voce|empresa)\/)?menu-(\d+)(?:\/sub-(\d+))?$/) || [];
-    // O público entra antes do menu porque quem ativa o menu já escreve o
-    // hash completo, e escreveria o público errado se viesse depois.
-    trocarPublico(doHash[1] || "voce", false);
-    var inicial = doHash[2] && document.querySelector('a[data-menu="' + doHash[2] + '"]') ? doHash[2] : "1";
-    ativar(inicial, doHash[3] || null);
+    sincronizarCaminho();
+    if (gravarHash !== false) escreverHash();
   }
+
+  document.addEventListener("click", function (e) {
+    var alvo = e.target.closest("a[data-menu], a[data-sub]");
+    if (!alvo) return;
+    var destinoMenu = alvo.getAttribute("data-menu");
+    if (destinoMenu) {
+      if (!conjuntoDe(destinoMenu)) return;
+      e.preventDefault();
+      ativar(destinoMenu, null);
+      return;
+    }
+    // Num atalho, o menu é o da barra em que ele está — não o atual, que
+    // seria o mesmo mas por acidente.
+    var barra = alvo.closest(".submenu[data-de]");
+    e.preventDefault();
+    ativar(barra ? barra.getAttribute("data-de") : menu, alvo.getAttribute("data-sub"));
+  });
 
   /* --------------------------------------------------------------------
-     Menus que abrem e fecham (acessibilidade no topbar, links no celular)
+     A barra de atalhos gruda logo abaixo do navbar, e a altura dele muda
+     com a largura da tela (abaixo de 992px o menu quebra para uma segunda
+     linha). Medir é mais barato que manter dois números mágicos em
+     sincronia com o CSS.
      -------------------------------------------------------------------- */
-  function sanfona(raiz, botao) {
-    if (!raiz || !botao) return;
+  function encaixarSubbar() {
+    if (navbar) subbar.style.top = navbar.offsetHeight + "px";
+  }
+  window.addEventListener("resize", encaixarSubbar);
 
-    function estado(aberto) {
-      raiz.setAttribute("aria-expanded", aberto ? "true" : "false");
-      botao.setAttribute("aria-expanded", aberto ? "true" : "false");
-    }
-
-    estado(false);
-
-    botao.addEventListener("click", function (e) {
-      e.stopPropagation();
-      estado(raiz.getAttribute("aria-expanded") !== "true");
-    });
-
-    // Fecha ao clicar fora ou no Esc — sem isso o painel fica aberto por
-    // cima do palco e atrapalha justamente o que se quer olhar.
-    document.addEventListener("click", function (e) {
-      if (!raiz.contains(e.target)) estado(false);
-    });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") estado(false);
-    });
+  /* --------------------------------------------------------------------
+     Estado inicial e histórico
+     -------------------------------------------------------------------- */
+  function daUrl(gravarHash) {
+    var m = location.hash.match(/^#(?:(voce|empresa)\/)?([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/) || [];
+    // O público entra antes do menu: quem ativa o menu já grava o hash
+    // inteiro, e gravaria o público errado se viesse depois.
+    trocarPublico(m[1] || publico, false);
+    ativar(conjuntoDe(m[2]) ? m[2] : MENU_RAIZ, m[3] || null, gravarHash);
   }
 
-  var acess = document.querySelector(".acessibilidade");
-  sanfona(acess, acess && acess.querySelector(".acessibilidade-btn"));
+  window.addEventListener("popstate", function () { daUrl(false); });
+  window.addEventListener("hashchange", function () { daUrl(false); });
 
-  var topbarMenu = document.querySelector(".topbar-menu");
-  sanfona(topbarMenu, topbarMenu && topbarMenu.querySelector(".topbar-toggler"));
+  encaixarSubbar();
+  daUrl(false);
 })();

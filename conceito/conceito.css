@@ -1,152 +1,58 @@
 /* ==========================================================================
-   Conceito — do zero
-   Sem identidade visual por enquanto: nada de style.css, das variáveis de
-   marca ou da Neo Sans. Só a logo vem do site. O que existe aqui é a
-   estrutura do topbar e do navbar e um palco em degradê no corpo da página.
+   Conceito — navegação em dois níveis sobre a identidade do site
+   Tudo que é cor, tipografia e componente vem de assets/css/style.css. Aqui
+   só existe o que o template não tem:
 
-   A cor do degradê é o estado do protótipo: cada menu do navbar troca o par
-   de cores, e é o único efeito de clicar por enquanto.
+   1. a aba de público no topbar (pessoa / empresa);
+   2. o nível 1 como abas que encostam na barra de baixo, em vez de itens que
+      abrem mega-panel;
+   3. o nível 2 — os atalhos de acesso rápido, que na home eram uma fileira
+      de cards abaixo do header e aqui viram a segunda barra, trocando de
+      conjunto conforme o menu ativo.
+
+   Comportamento em conceito.js. O resto (busca, acessibilidade, banner em
+   accordion, menu mobile) continua vindo de assets/js/main.js.
    ========================================================================== */
-
-/* -----------------------------------------------------------------------
-   Paleta por menu
-   As cores são propriedades registradas (@property) e não variáveis comuns
-   porque só assim o navegador sabe interpolar entre duas cores: um
-   `transition` num `linear-gradient()` normal trocaria de uma vez, sem
-   passar pelo meio. Onde @property não existe, a troca é seca — que é a
-   degradação aceitável.
-   ----------------------------------------------------------------------- */
-@property --grad-topo {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #ffffff;
-}
-@property --grad-base {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #000000;
-}
-
-body {
-  --grad-topo: #ffffff;
-  --grad-base: #000000;
-  /* Cor do texto sobre a metade de cima do degradê, que é a clara. */
-  --tinta: #16181d;
-  /* Cor do menu ativo e do CTA — o degradê sozinho não serve, porque no
-     menu 1 o topo é branco e sumiria sobre o header. */
-  --acento: #16181d;
-  /* Só as duas cores registradas entram aqui: --tinta e --acento são
-     variáveis comuns, que não interpolam — quem suaviza a troca delas é o
-     `transition` de `color`/`background-color` em quem as usa. */
-  transition: --grad-topo 0.55s ease, --grad-base 0.55s ease, color 0.55s ease;
-}
 
 /* -----------------------------------------------------------------------
    Superfície do navbar por público
-   "Para você" deixa o navbar branco; "Para empresa" o pinta de azul escuro.
-   Tudo que mora sobre essa superfície — logo, menus, CTA, sub bar e a aba de
-   público no topbar — lê estas variáveis, então trocar de público é trocar
-   quatro valores, não duplicar regras.
+   "Para você" mantém o cinza claro do template; "Para empresa" pinta o
+   navbar de azul escuro e vira a logo para a versão negativa. É a única
+   coisa que o público muda no visual — a barra de atalhos e a página
+   seguem brancas nos dois, que é o que mantém a aba ativa "encostando"
+   no mesmo branco dos dois lados.
    ----------------------------------------------------------------------- */
 body {
-  --superficie: #ffffff;
-  --superficie-tinta: #4a505e;
-  --superficie-forte: #16181d;
-  --superficie-borda: #e4e7ee;
-  /* O menu ativo tem duas cores, uma por superfície: --acento sobre o navbar
-     branco e --acento-claro sobre o azul escuro. Clarear a primeira por
-     cálculo dava cores lavadas, com cara de botão desabilitado. */
-  --acento-uso: var(--acento);
-  --acento-tinta: #ffffff;
-  --acento-claro: #e9ecf2;
+  --superficie-nav: var(--color-bg-soft);
+  --superficie-tinta: var(--color-blue);
+  --superficie-borda: transparent;
 }
 
 body[data-publico="empresa"] {
-  --superficie: #0f2444;
-  --superficie-tinta: rgba(255, 255, 255, 0.72);
-  --superficie-forte: #ffffff;
-  --superficie-borda: rgba(255, 255, 255, 0.16);
-  --acento-uso: var(--acento-claro);
-  --acento-tinta: #0f2444;
-}
-
-body[data-menu="2"] { --grad-topo: #3ec46f; --grad-base: #10357f; --tinta: #0a2b18; --acento: #10357f; --acento-claro: #35d17e; }
-body[data-menu="3"] { --grad-topo: #f3a712; --grad-base: #5b1d8f; --tinta: #3d2503; --acento: #5b1d8f; --acento-claro: #c48bf0; }
-body[data-menu="4"] { --grad-topo: #14b8c4; --grad-base: #9b1d5e; --tinta: #06323a; --acento: #9b1d5e; --acento-claro: #ff6fa8; }
-
-/* -----------------------------------------------------------------------
-   Base
-   ----------------------------------------------------------------------- */
-* { box-sizing: border-box; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--tinta);
-  background-color: #fff;
-}
-
-a { color: inherit; text-decoration: none; }
-button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
-
-.faixa {
-  width: min(1320px, 92vw);
-  margin-inline: auto;
-}
-
-.pular {
-  position: absolute;
-  left: -9999px;
-}
-.pular:focus {
-  left: 1rem;
-  top: 1rem;
-  z-index: 100;
-  padding: 0.6rem 1rem;
-  background: #fff;
-  border: 2px solid #16181d;
+  --superficie-nav: var(--color-blue-dark);
+  --superficie-tinta: #fff;
+  --superficie-borda: rgba(255, 255, 255, 0.14);
 }
 
 /* ==========================================================================
-   TOPBAR
+   TOPBAR — abre espaço para a aba
    ========================================================================== */
-.topbar {
-  background-color: #16181d;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 0.78rem;
+/* O padding vertical sai do container e vai para os itens: a aba precisa
+   poder tocar a borda de baixo do topbar, que é onde o navbar começa. */
+.topbar .container-xl {
+  padding-block: 0;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 46px;
 }
-
-.topbar .faixa {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  min-height: 40px;
-}
-
-/* A acessibilidade continua encostada à direita; o resto do topbar cresce
-   da esquerda para a direita, a partir da aba de público. */
-.topbar .acessibilidade { margin-left: auto; }
-
-.topbar-links {
-  display: flex;
-  align-items: center;
-  gap: 1.1rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.topbar-links a:hover { color: #fff; }
-
-.topbar-toggler { display: none; }
+.topbar .topbar-menu,
+.topbar .accessibility-dropdown { display: flex; align-items: center; }
+.topbar .accessibility-dropdown { margin-left: auto; }
 
 /* -----------------------------------------------------------------------
    Aba de público
-   Recebe a cor do navbar e encosta nele: o -1px come a borda do navbar e
-   o canto arredondado só em cima é o que faz a peça ler como aba, e não
+   Recebe a cor do navbar e encosta nele: o canto arredondado só em cima e
+   a ausência de borda embaixo são o que fazem a peça ler como aba, e não
    como botão solto no topbar.
    ----------------------------------------------------------------------- */
 .publico {
@@ -154,141 +60,83 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   align-items: center;
   align-self: stretch;
   gap: 0.5rem;
-  margin: 5px 0 -1px;
-  padding: 0 1rem;
-  border-radius: 10px 10px 0 0;
-  background-color: var(--superficie);
-  color: var(--superficie-forte);
-  font-size: 0.78rem;
-  font-weight: 600;
+  margin: 6px 1.25rem 0 0;
+  padding: 0 1.1rem;
+  border: 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background-color: var(--superficie-nav);
+  color: var(--superficie-tinta);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   white-space: nowrap;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, filter 0.15s ease;
 }
-/* A aba branca não muda com `filter: brightness`, então o retorno do hover é
-   um contorno por dentro, que funciona nas duas superfícies. */
-.publico:hover {
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--superficie-forte) 25%, transparent);
-}
-.publico .publico-troca { font-size: 0.65rem; opacity: 0.45; }
-
-/* Acessibilidade — o menu abre pelo botão (conceito.js), não pelo :hover,
-   para funcionar igual no toque e no teclado. */
-.acessibilidade { position: relative; }
-
-.acessibilidade-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.35rem 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 999px;
-  font-size: 0.75rem;
-}
-.acessibilidade-btn:hover { border-color: rgba(255, 255, 255, 0.6); color: #fff; }
-
-.acessibilidade-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: calc(100% + 0.4rem);
-  z-index: 60;
-  min-width: 220px;
-  padding: 0.35rem;
-  background: #fff;
-  color: #16181d;
-  border: 1px solid #d9dde5;
-  border-radius: 10px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-}
-.acessibilidade[aria-expanded="true"] .acessibilidade-menu { display: block; }
-
-.acessibilidade-menu a,
-.acessibilidade-menu button {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  width: 100%;
-  padding: 0.5rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.82rem;
-  text-align: left;
-}
-.acessibilidade-menu a:hover,
-.acessibilidade-menu button:hover { background-color: #f1f3f7; }
+.publico:hover { filter: brightness(1.06); }
+.publico .publico-troca { font-size: 0.6rem; opacity: 0.55; }
 
 /* ==========================================================================
-   NAVBAR — logo | menus | CTA
+   NÍVEL 1 — o menu vira aba
    ========================================================================== */
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background-color: var(--superficie);
-  border-bottom: 1px solid var(--superficie-borda);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+.mainnav {
+  background-color: var(--superficie-nav);
+  /* O padding sai do header para que a aba ativa possa ir até a base dele
+     e encostar na barra de atalhos. */
+  padding-block: 0;
 }
 
-.navbar .faixa {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  min-height: 72px;
+.mainnav .container-xl {
+  align-items: stretch;
+  min-height: 88px;
 }
 
-.marca { flex: 0 0 auto; }
-.marca img { display: block; height: 40px; width: auto; }
+.mainnav-brand,
+.cta-buttons,
+.nav-search { display: flex; align-items: center; }
+
+.mainnav-brand img { height: 52px; min-width: 0; margin: 0; }
 
 /* Duas versões da logo em vez de uma trocada por JS: sem troca de `src` não
    há o piscar do carregamento ao mudar de público. */
 body[data-publico="voce"] .marca-sobre-escuro,
 body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 
-.menu {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  flex: 1 1 auto;
+.mainnav-menu {
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0.15rem;
+  margin-left: 1.5rem;
 }
+.mainnav-menu > li { display: flex; }
 
-.menu > li > a {
-  display: block;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
+.mainnav-menu > li > a {
+  align-items: center;
+  padding: 0 1.15rem;
   color: var(--superficie-tinta);
+  /* Só o topo é arredondado: a aba ativa termina rente à barra de atalhos
+     e as duas leem como uma peça só. */
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  white-space: nowrap;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
-.menu > li > a:hover {
-  background-color: color-mix(in srgb, var(--superficie-forte) 8%, transparent);
-  color: var(--superficie-forte);
+
+.mainnav-menu > li > a:hover {
+  background-color: rgba(var(--brand-rgb), 0.14);
+  color: var(--brand);
 }
 
-.menu > li > a[aria-current="true"],
-.menu > li > a[aria-current="true"]:hover {
-  color: var(--acento-tinta);
-  background-color: var(--acento-uso);
+/* A aba ativa é branca porque a barra de atalhos é branca: o encaixe entre
+   os dois níveis é feito pela cor, não por uma linha. */
+.mainnav-menu > li > a[aria-current="true"],
+.mainnav-menu > li > a[aria-current="true"]:hover {
+  background-color: #fff;
+  color: var(--brand);
 }
-
-.cta {
-  flex: 0 0 auto;
-  padding: 0.65rem 1.4rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--acento-tinta);
-  background-color: var(--acento-uso);
-  transition: background-color 0.55s ease, color 0.3s ease, filter 0.15s ease;
-}
-.cta:hover { filter: brightness(1.15); }
-
-.navbar-toggler { display: none; }
 
 /* ==========================================================================
-   SUB BAR — o segundo nível, preso ao menu ativo do navbar
+   NÍVEL 2 — a fileira de atalhos vira barra
    ========================================================================== */
 .subbar {
   position: sticky;
@@ -296,22 +144,19 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
      segundo nível nunca fica órfão do primeiro. O valor exato é a altura
      medida do navbar, escrita pelo conceito.js; este é só o palpite para
      quando não houver JS. */
-  top: 72px;
-  z-index: 49;
-  /* A cor do menu, bem diluída: a barra pertence ao menu ativo, mas não
-     pode competir com o palco logo abaixo. */
-  background-color: color-mix(in srgb, var(--acento-uso) 12%, var(--superficie));
-  border-bottom: 1px solid color-mix(in srgb, var(--acento-uso) 26%, var(--superficie));
-  transition: background-color 0.55s ease, border-color 0.55s ease;
+  top: 88px;
+  z-index: 1029;
+  background-color: #fff;
+  box-shadow: 0 8px 18px -12px rgba(22, 65, 148, 0.35);
 }
 
 .submenu {
   display: none;
-  align-items: center;
-  gap: 0.25rem;
+  align-items: stretch;
+  gap: 0.4rem;
   list-style: none;
   margin: 0;
-  padding: 0.5rem 0;
+  padding: 0.6rem 0;
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -329,121 +174,136 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.submenu > li { flex: 0 0 auto; }
+.submenu > li { display: flex; flex: 0 0 auto; }
 
-.submenu > li > a {
-  display: block;
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--acento-uso);
+/* O atalho é o .shortcut-card do template deitado: mesmo azul, mesma
+   tipografia, mesmo laranja no hover — só que em linha, para caber numa
+   barra em vez de numa grade de nove cards. */
+.atalho {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid transparent;
+  color: var(--color-blue);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.15;
   white-space: nowrap;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
-.submenu > li > a:hover {
-  background-color: color-mix(in srgb, var(--acento-uso) 22%, var(--superficie));
+.atalho i { font-size: 1rem; }
+
+.atalho:hover {
+  border-color: var(--brand);
+  color: var(--brand);
 }
 
-.submenu > li > a[aria-current="true"],
-.submenu > li > a[aria-current="true"]:hover {
-  color: var(--acento-tinta);
-  background-color: var(--acento-uso);
+.atalho[aria-current="true"],
+.atalho[aria-current="true"]:hover {
+  background-color: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
 }
+
+/* Semipresencial é metade em casa, metade na escola, e o Font Awesome Free
+   não tem ícone único para isso — o atalho usa o par lado a lado. */
+.atalho .icon-duo { display: inline-flex; align-items: center; gap: 0.3rem; line-height: 1; }
+.atalho .icon-duo i { font-size: 0.85rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .submenu.ativo { animation: none; }
 }
 
-/* ==========================================================================
-   PALCO — o corpo da página é só o degradê, à espera do conteúdo
-   ========================================================================== */
-.palco {
-  min-height: 180vh;
-  padding-block: 5rem;
-  background-image: linear-gradient(180deg, var(--grad-topo) 0%, var(--grad-base) 100%);
-}
-
-.palco h1 {
-  margin: 0 0 0.75rem;
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-.palco p { margin: 0; max-width: 60ch; opacity: 0.8; }
-
-/* Onde o clique na sub bar aparece — sem conteúdo ainda, é o único retorno
-   visível de qual par (menu, opção) está selecionado. */
-.estado {
-  margin-bottom: 1.25rem !important;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.55 !important;
-}
-
-.nota {
-  margin-top: 3rem;
-  padding: 1rem 1.25rem;
-  border: 1px dashed currentColor;
-  border-radius: 10px;
-  max-width: 60ch;
-  font-size: 0.85rem;
-  opacity: 0.6;
-}
+/* O breadcrumb encosta na barra de atalhos, então perde o fundo próprio. */
+.breadcrumb-bar { padding-top: 0.75rem; }
 
 /* ==========================================================================
    MOBILE
    ========================================================================== */
-@media (max-width: 860px) {
-  .topbar-links {
-    display: none;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 100%;
-    z-index: 55;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    padding: 0.5rem 4vw;
-    background-color: #16181d;
-  }
-  .topbar-links a { display: block; padding: 0.5rem 0; }
-  .topbar .faixa { position: relative; }
-  .topbar-menu[aria-expanded="true"] .topbar-links { display: flex; }
+@media (max-width: 1199.98px) {
+  .mainnav .container-xl { gap: 0.5rem; }
+  .mainnav-brand img { height: 42px; }
+  .mainnav-menu { margin-left: 0.5rem; }
+  .mainnav-menu > li > a { padding: 0 0.7rem; font-size: 0.74rem; }
+  .cta-buttons .btn-brand { padding: 0.5rem 0.8rem; font-size: 0.78rem; }
+}
 
-  .publico { padding: 0 0.7rem; font-size: 0.72rem; }
-  .publico .publico-troca { display: none; }
+@media (max-width: 991.98px) {
+  /* No template o menu vira um offcanvas que entra pela direita. Aqui ele
+     não pode sumir: os dois níveis visíveis ao mesmo tempo são o conceito.
+     Então o painel fixo é desfeito peça por peça e o menu volta a ser uma
+     linha — rolável, porque quatro rótulos em maiúsculas não cabem numa
+     tela estreita.
 
-  .topbar-toggler {
-    display: block;
-    padding: 0.35rem 0.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 6px;
-  }
-
-  .navbar .faixa {
+     É preciso desfazer tudo: `position`, `transform` e `height` do painel
+     continuariam valendo e o menu ficaria fora da tela, do jeito que já
+     estava. */
+  .mainnav .container-xl {
     flex-wrap: wrap;
-    gap: 0.75rem;
-    padding-block: 0.75rem;
+    align-items: center;
+    min-height: 0;
+    padding-block: 0.6rem 0;
   }
-  .marca img { height: 32px; }
+  .mainnav-toggler { display: none !important; }
+  .nav-backdrop { display: none !important; }
 
-  /* Os menus passam para uma faixa rolável abaixo da logo — a barra de abas
-     de aplicativo fica para quando o conceito tiver conteúdo. */
-  .menu {
-    order: 3;
-    width: 100%;
+  .mainnav-brand { order: 1; }
+  .nav-search { order: 2; margin-left: auto; }
+  .cta-buttons { order: 3; }
+
+  .mainnav-menu {
+    position: static;
+    inset: auto;
+    order: 4;
+    /* `flex: 0 0 100%` e não `width: 100%`: um item flex encolhe abaixo da
+       base, e com largura o menu dividia a linha com o CTA em vez de descer
+       para a sua. Sem encolher, ele obriga a quebra. */
+    flex: 0 0 100%;
+    min-width: 0;
+    height: auto;
+    flex-direction: row;
+    align-items: stretch;
+    /* O template usa !important aqui; sem repetir, os quatro itens ficariam
+       espalhados pela largura toda em vez de agrupados à esquerda. */
+    justify-content: flex-start !important;
+    gap: 0.15rem;
+    margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    transform: none;
+    overflow-y: visible;
     overflow-x: auto;
     scrollbar-width: none;
+    z-index: auto;
   }
-  .menu::-webkit-scrollbar { display: none; }
-  .menu > li { flex: 0 0 auto; }
-  .cta { margin-left: auto; }
+  .mainnav-menu::-webkit-scrollbar { display: none; }
+  .mainnav-menu > li { flex: 0 0 auto; }
+  .mainnav-menu > li > a {
+    justify-content: center;
+    padding: 0.55rem 0.8rem;
+    color: var(--superficie-tinta);
+  }
+  .mainnav-menu > li > a:hover {
+    background-color: rgba(var(--brand-rgb), 0.14);
+    color: var(--brand);
+  }
 
-  /* Palpite de reserva para o navbar de duas linhas do celular; com JS, o
-     valor certo vem medido. */
-  .subbar { top: 132px; }
+  .publico { margin-right: 0.75rem; font-size: 0.65rem; padding: 0 0.7rem; }
+  .publico .publico-troca { display: none; }
+
+  /* Palpite de reserva; com JS, o valor certo vem medido. */
+  .subbar { top: 128px; }
+}
+
+@media (max-width: 575.98px) {
+  /* Marca, busca e CTA precisam caber numa linha só, senão o menu desce
+     para a terceira e o header come meia tela. */
+  .mainnav-brand img { height: 34px; }
+  .mainnav .container-xl { gap: 0.4rem; }
+  .cta-buttons .btn-brand { font-size: 0.72rem; padding: 0.45rem 0.7rem; }
+  .nav-search-toggle { width: 36px; height: 36px; font-size: 0.85rem; }
+  .atalho span { max-width: 9rem; overflow: hidden; text-overflow: ellipsis; }
 }
