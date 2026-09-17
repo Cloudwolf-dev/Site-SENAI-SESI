@@ -18,12 +18,6 @@
 <!-- ===================== TOPBAR ===================== -->
 <div class="topbar">
   <div class="container-xl">
-    <!-- A marca abre o topbar, em versão negativa: o fundo é sempre o azul
-         da instituição, nos dois públicos. -->
-    <a class="marca" href="#inicio" data-menu="inicio" aria-label="SENAI Amapá — Início">
-      <img src="../assets/img/senai_white.png" alt="">
-    </a>
-
     <!-- Público como toggle de duas posições, e não um botão que alterna:
          com um botão só não dá para saber se o rótulo é onde se está ou
          para onde se vai. Aqui as duas opções ficam à vista e o polegar
@@ -74,6 +68,15 @@
 <header class="mainnav">
   <div class="container-xl">
     <div class="nav-backdrop"></div>
+
+    <!-- A marca abre o navbar, em duas versões: a colorida sobre o cinza
+         claro de "Para você" e a negativa sobre o azul de "Para empresa".
+         Estava dentro do <ul>, onde um <a> não é filho válido — agora é
+         irmã dele. -->
+    <a class="marca" href="#inicio" data-menu="inicio" aria-label="SENAI Amapá — Início">
+      <img class="marca-sobre-claro" src="../assets/img/senai_colorido.png" alt="">
+      <img class="marca-sobre-escuro" src="../assets/img/senai_white.png" alt="">
+    </a>
 
     <ul class="mainnav-menu" id="menuNivel1">
       <li><a href="#institucional" data-menu="institucional">Institucional</a></li>

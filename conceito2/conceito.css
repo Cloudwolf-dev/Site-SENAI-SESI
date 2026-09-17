@@ -4,8 +4,8 @@
 
    - o topbar também é fixo, então as três barras sobem juntas e param no
      topo empilhadas;
-   - a marca mora no topbar, em versão negativa, e o navbar fica só com a
-     navegação;
+   - a marca tem uma versão por público: colorida sobre o cinza claro,
+     negativa sobre o azul;
    - o público é um toggle de duas posições, não um botão que alterna.
 
    Navegação em dois níveis sobre a identidade do site
@@ -96,25 +96,33 @@ body[data-publico="empresa"] {
 }
 .topbar .topbar-menu,
 .topbar .accessibility-dropdown { display: flex; align-items: center; }
-/* Os links institucionais empurram a acessibilidade para a direita; a marca
-   e o toggle ficam à esquerda, nessa ordem. */
+/* Os links institucionais empurram a acessibilidade para a direita; o
+   toggle fica à esquerda. */
 .topbar .topbar-menu { margin-left: auto; }
 
 /* -----------------------------------------------------------------------
-   Marca no topbar
-   Sempre a versão negativa: o fundo do topbar é o azul da instituição nos
-   dois públicos. A altura é menor que os 64px que ela tinha no navbar do
-   conceito/ — aqui ela divide a barra com links de serviço —, e o min-width
-   continua sendo a largura proporcional exata (arquivo 436x110).
+   Marca
+   Duas versões, uma por superfície: a colorida sobre o cinza claro de
+   "Para você" e a negativa sobre o azul de "Para empresa". São dois <img>
+   alternados por CSS, e não um `src` trocado por JS, para a troca de
+   público não piscar esperando o carregamento.
+
+   Os dois arquivos são 436x110, então o min-width de 253,667px é a largura
+   proporcional exata a 64px de altura nos dois — ele reserva espaço sem
+   esticar nada. `width: auto` e `object-fit: contain` são o seguro para o
+   caso de a caixa ser forçada a outra medida.
    ----------------------------------------------------------------------- */
-.topbar .marca { display: flex; align-items: center; flex: 0 0 auto; }
-.topbar .marca img {
+.marca { display: flex; align-items: center; flex: 0 0 auto; }
+.marca img {
   display: block;
-  height: 44px;
+  height: 64px;
   width: auto;
-  min-width: 174.4px;
+  min-width: 253.667px;
   object-fit: contain;
 }
+
+body[data-publico="voce"] .marca-sobre-escuro,
+body[data-publico="empresa"] .marca-sobre-claro { display: none; }
 
 /* -----------------------------------------------------------------------
    Toggle de público
@@ -197,7 +205,7 @@ body[data-publico="empresa"] .publico-toggle::before { transform: translateX(100
 .mainnav-menu {
   justify-content: flex-start;
   gap: 0.15rem;
-  margin-left: 0;
+  margin-left: 1.5rem;
 }
 
 .mainnav-menu > li > a {
@@ -403,8 +411,10 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
   .mainnav-toggler { display: none !important; }
   .nav-backdrop { display: none !important; }
 
-  .cta-buttons { order: 1; }
-  .nav-search { order: 2; margin-left: auto; }
+  /* Com a marca de volta ao navbar, a primeira linha é ela mais a busca —
+     o CTA não cabe ao lado dos 253px da marca e desce para a segunda. */
+  .nav-search { order: 1; margin-left: auto; }
+  .cta-buttons { order: 2; }
 
   .mainnav-menu {
     position: static;
@@ -444,11 +454,10 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
     color: var(--brand);
   }
 
-  /* No celular o topbar quebra em duas linhas: marca e acessibilidade em
+  /* No celular o topbar quebra em duas linhas: links e acessibilidade em
      cima, o toggle embaixo, ocupando a largura toda — é a posição em que
      ele se lê como seletor, e não como mais um botão perdido na barra. */
   .topbar .container-xl { flex-wrap: wrap; row-gap: 0.5rem; gap: 0.6rem; }
-  .topbar .marca img { height: 34px; min-width: 134.8px; }
   /* Sem o `margin-left: auto` do desktop: numa linha que quebra, ele comeria
      todo o espaço livre e empurraria a acessibilidade para uma terceira
      linha. Aqui os três se empacotam e só o toggle desce. */
