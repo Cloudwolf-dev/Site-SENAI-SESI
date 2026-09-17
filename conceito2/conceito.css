@@ -85,6 +85,11 @@ body[data-publico="empresa"] {
 }
 
 .topbar .container-xl {
+  /* Mesma largura do navbar, que no template é 90% — sem isto o topbar
+     ficaria preso nos 1320px do .container-xl do Bootstrap e a marca não
+     bateria com o menu logo abaixo. */
+  min-width: 90%;
+  max-width: 90%;
   padding-block: 0.5rem;
   gap: 1.25rem;
   min-height: 46px;
@@ -119,7 +124,14 @@ body[data-publico="empresa"] {
    ----------------------------------------------------------------------- */
 .publico-toggle {
   position: relative;
-  display: flex;
+  /* Grade de duas colunas iguais, e não flex. Com `flex: 1 1 0` as duas
+     opções ficavam com larguras diferentes (106px e 127px), porque numa
+     caixa dimensionada pelo conteúdo o flex reparte na proporção do
+     conteúdo de cada item — e aí o polegar, que é metade da trilha, parava
+     dentro da segunda opção, a 4px do ícone dela. Com `1fr 1fr` as duas
+     colunas ficam do tamanho da mais larga, e a metade vira a divisa real. */
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   flex: 0 0 auto;
   padding: 3px;
   border-radius: 999px;
@@ -148,12 +160,11 @@ body[data-publico="empresa"] .publico-toggle::before { transform: translateX(100
 .publico-opcao {
   position: relative;
   z-index: 1;
-  flex: 1 1 0;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.35rem 0.9rem;
+  padding: 0.35rem 1rem;
   border: 0;
   border-radius: 999px;
   background: none;
@@ -360,6 +371,14 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
 /* ==========================================================================
    MOBILE
    ========================================================================== */
+/* Os cards inclinados do banner são de propósito mais largos que o container
+   e, abaixo de ~1400px, empurravam a página inteira para o lado — com o
+   topbar em 90% da largura, o 90% passava a ser de um documento maior que a
+   tela. `clip` e não `hidden`: `hidden` criaria um contexto de rolagem e
+   quebraria o `position: sticky` das três barras; `clip` só corta. */
+@media (max-width: 1399.98px) {
+  .hero-gallery { overflow-x: clip; }
+}
 @media (max-width: 1199.98px) {
   .mainnav .container-xl { gap: 0.5rem; }
   .mainnav-menu { margin-left: 0.5rem; }
@@ -430,7 +449,10 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
      ele se lê como seletor, e não como mais um botão perdido na barra. */
   .topbar .container-xl { flex-wrap: wrap; row-gap: 0.5rem; gap: 0.6rem; }
   .topbar .marca img { height: 34px; min-width: 134.8px; }
-  .topbar .topbar-menu { order: 2; margin-left: auto; }
+  /* Sem o `margin-left: auto` do desktop: numa linha que quebra, ele comeria
+     todo o espaço livre e empurraria a acessibilidade para uma terceira
+     linha. Aqui os três se empacotam e só o toggle desce. */
+  .topbar .topbar-menu { order: 2; margin-left: 0; }
   .topbar .accessibility-dropdown { order: 3; }
   .publico-toggle { order: 4; width: 100%; }
   .publico-opcao { font-size: 0.68rem; padding: 0.4rem 0.6rem; }
