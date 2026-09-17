@@ -119,14 +119,32 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
    ========================================================================== */
 .subbar {
   position: sticky;
-  /* Encosta no navbar quando a página rola: as duas barras sobem juntas e o
+  /* Acompanha o navbar quando a página rola: as duas barras sobem juntas e o
      segundo nível nunca fica órfão do primeiro. O valor exato é a altura
      medida do navbar, escrita pelo conceito.js; este é só o palpite para
      quando não houver JS. */
   top: 76px;
   z-index: 1029;
+  /* A faixa em si não existe: é só o espaço em volta da barra flutuante.
+     Sem fundo, o conteúdo da página passa por baixo dela ao rolar, que é o
+     que faz a barra parecer solta em vez de colada no topo. */
+  background: none;
+  padding-block: 0.7rem 0.55rem;
+  /* Esse espaço vazio continuaria interceptando cliques do conteúdo que
+     passa por baixo; só a barra deve ser clicável. */
+  pointer-events: none;
+}
+
+.subbar .container-xl {
+  pointer-events: auto;
   background-color: #fff;
-  box-shadow: 0 8px 18px -12px rgba(22, 65, 148, 0.35);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 0.9rem 2.2rem rgba(13, 44, 102, 0.16),
+              0 0.15rem 0.45rem rgba(13, 44, 102, 0.07);
+  /* O respiro lateral mantém o primeiro e o último atalho longe da curva
+     do canto, o que evita ter de cortar o conteúdo com overflow e perder o
+     contorno de foco do teclado. */
+  padding-inline: 1rem;
 }
 
 .submenu {
@@ -195,8 +213,8 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
   .submenu.ativo { animation: none; }
 }
 
-/* O breadcrumb encosta na barra de atalhos, então perde o fundo próprio. */
-.breadcrumb-bar { padding-top: 0.75rem; }
+/* A barra flutuante já traz o próprio respiro embaixo. */
+.breadcrumb-bar { padding-top: 0.5rem; }
 
 /* ==========================================================================
    MOBILE
@@ -272,7 +290,8 @@ body[data-publico="empresa"] .marca-sobre-claro { display: none; }
   .publico .publico-troca { display: none; }
 
   /* Palpite de reserva; com JS, o valor certo vem medido. */
-  .subbar { top: 132px; }
+  .subbar { top: 132px; padding-block: 0.5rem 0.45rem; }
+  .subbar .container-xl { border-radius: var(--radius-md); padding-inline: 0.75rem; }
 }
 
 @media (max-width: 575.98px) {
