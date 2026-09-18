@@ -183,23 +183,19 @@ body[data-publico="empresa"] .marca-sobre-claro { opacity: 0; }
 .senai-link img { display: block; height: 17px; width: auto; max-width: none; margin: 0; }
 
 /* -----------------------------------------------------------------------
-   Seletores segmentados do topbar
-   Duas posições à vista, no formato dos seletores de celular: a trilha é um
-   sulco translúcido no azul do topbar e o polegar branco desliza para a
-   opção escolhida. São dois no SESI — o público e, dentro de "Para você", a
-   área de interesse —, e por isso as regras valem para os dois.
+   Seletor de site
+   Três posições, no formato dos seletores segmentados de celular: a trilha
+   é um sulco translúcido no azul do topbar e o polegar branco desliza para
+   a escolhida. Três, e não dois encadeados, porque são três destinos — uma
+   escolha só, sem controle que aparece e some.
    ----------------------------------------------------------------------- */
-.publico-toggle,
-.tema-toggle {
+.publico-toggle {
   position: relative;
-  /* Grade de duas colunas iguais, e não flex. Com `flex: 1 1 0` as duas
-     opções ficavam com larguras diferentes (106px e 127px), porque numa
-     caixa dimensionada pelo conteúdo o flex reparte na proporção do
-     conteúdo de cada item — e aí o polegar, que é metade da trilha, parava
-     dentro da segunda opção, a 4px do ícone dela. Com `1fr 1fr` as duas
-     colunas ficam do tamanho da mais larga, e a metade vira a divisa real. */
+  /* Grade de colunas iguais, e não flex: numa caixa dimensionada pelo
+     conteúdo o flex reparte na proporção do conteúdo de cada item, e aí o
+     polegar — que vale um terço da trilha — pararia fora da divisa. */
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   flex: 0 0 auto;
   padding: 3px;
   border-radius: 999px;
@@ -207,35 +203,48 @@ body[data-publico="empresa"] .marca-sobre-claro { opacity: 0; }
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.28);
 }
 
-/* O polegar ocupa metade da trilha e anda a própria largura. Isso só fecha
-   porque as duas opções têm largura igual (flex-basis 0): com larguras
-   naturais, "Para empresa" seria mais larga e o polegar pararia fora do
-   lugar. */
-.publico-toggle::before,
-.tema-toggle::before {
+/* Filete antes do terceiro segmento: os dois primeiros são o par de pessoa
+   física, o terceiro é o outro público. Fica abaixo do polegar na ordem de
+   pintura, para sumir quando ele passa por cima. */
+.publico-toggle::after {
   content: "";
   position: absolute;
+  z-index: 0;
+  top: 9px;
+  bottom: 9px;
+  left: calc(3px + (100% - 6px) / 3 * 2);
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.22);
+}
+
+/* O polegar vale uma coluna — `(100% - 6px) / 3` desconta o padding da
+   trilha — e anda a própria largura a cada posição. Medida assim, e não em
+   33,33% cheios, ela não acumula erro até o terceiro. */
+.publico-toggle::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
   top: 3px;
   bottom: 3px;
   left: 3px;
-  width: calc(50% - 3px);
+  width: calc((100% - 6px) / 3);
   border-radius: 999px;
   background-color: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transform: translateX(calc(var(--destino-i, 0) * 100%));
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
-body[data-publico="empresa"] .publico-toggle::before,
-body[data-tema="saude"] .tema-toggle::before { transform: translateX(100%); }
+body[data-destino="saude"]   { --destino-i: 1; }
+body[data-destino="empresa"] { --destino-i: 2; }
 
-.publico-opcao,
-.tema-opcao {
+.publico-opcao {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.35rem 1rem;
+  padding: 0.35rem 0.9rem;
   border: 0;
   border-radius: 999px;
   background: none;
@@ -248,37 +257,11 @@ body[data-tema="saude"] .tema-toggle::before { transform: translateX(100%); }
   cursor: pointer;
   transition: color 0.2s ease;
 }
-.publico-opcao:hover,
-.tema-opcao:hover { color: #fff; }
-.publico-opcao[aria-pressed="true"],
-.tema-opcao[aria-pressed="true"] { color: var(--color-blue); }
-
-/* -----------------------------------------------------------------------
-   O seletor de área só existe em "Para você" — o site de empresas é um só.
-   Ele recolhe em vez de sumir: `display: none` daria um salto no topbar
-   bem no meio da transição de público, que dura quase meio segundo. O
-   max-width é o truque de sempre para animar uma largura de conteúdo; o
-   valor é só um teto folgado. O `inert` que tira o controle do teclado e
-   dos leitores de tela é posto pelo conceito.js.
-   ----------------------------------------------------------------------- */
-.tema-toggle {
-  max-width: 32rem;
-  overflow: hidden;
-  transition: max-width var(--troca) ease, opacity var(--troca) ease,
-              padding var(--troca) ease;
-}
-body[data-publico="empresa"] .tema-toggle {
-  max-width: 0;
-  padding-inline: 0;
-  opacity: 0;
-  /* Desfaz o `flex: 0 0 100%` que o coloca numa linha só nas telas menores:
-     recolhido, ele não pode continuar reservando a linha inteira. */
-  flex-basis: auto;
-}
+.publico-opcao:hover { color: #fff; }
+.publico-opcao[aria-pressed="true"] { color: var(--color-blue); }
 
 @media (prefers-reduced-motion: reduce) {
-  .publico-toggle::before,
-  .tema-toggle::before { transition: none; }
+  .publico-toggle::before { transition: none; }
 }
 
 /* ==========================================================================
@@ -485,17 +468,6 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
 @media (max-width: 1399.98px) {
   .hero-gallery { overflow-x: clip; }
 }
-/* Os dois seletores mais os links institucionais só cabem numa linha acima
-   de ~1535px de janela; daí para baixo o de área desce para a própria, que
-   é também onde ele fica no celular. */
-@media (max-width: 1599.98px) {
-  /* A quebra é presa a "Para você": em "Para empresa" não há seletor de
-     área, e ligar o wrap ali só faria a acessibilidade cair para uma
-     segunda linha sozinha em telas apertadas. */
-  body[data-publico="voce"] .topbar .container-xl { flex-wrap: wrap; row-gap: 0.4rem; }
-  .tema-toggle { order: 5; flex: 0 0 100%; }
-}
-
 @media (max-width: 1199.98px) {
   .mainnav .container-xl { gap: 0.5rem; }
   .mainnav-menu { margin-left: 0.5rem; }
@@ -575,9 +547,7 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
   .topbar .topbar-menu { order: 2; margin-left: 0; }
   .topbar .accessibility-dropdown { order: 3; }
   .publico-toggle { order: 4; width: 100%; }
-  .tema-toggle { order: 5; width: 100%; max-width: 100%; }
-  .publico-opcao,
-  .tema-opcao { font-size: 0.68rem; padding: 0.4rem 0.6rem; }
+  .publico-opcao { font-size: 0.66rem; padding: 0.4rem 0.4rem; }
 
   /* Palpite de reserva; com JS, o valor certo vem medido. */
   .subbar { top: 132px; padding-block: 0.5rem 0.45rem; }

@@ -10,14 +10,15 @@
  * está no HTML, em <ul class="submenu" data-de="...">. Acrescentar um menu é
  * acrescentar um <li> no nível 1 e um <ul> no nível 2 — o script lê os dois.
  *
- * A URL guarda o estado inteiro como #publico/menu/atalho, então recarregar,
- * voltar no histórico ou compartilhar o link cai no mesmo lugar.
+ * A URL guarda o estado inteiro como #destino/menu/atalho, então recarregar,
+ * voltar no histórico ou compartilhar o link cai no mesmo lugar. É o destino
+ * que entra nela, e não o público: o público é consequência dele.
  *
  * Muda em relação ao conceito/: o topbar também é fixo (então há três
  * alturas a encaixar, não uma) e o público é um toggle de duas posições em
- * vez de um botão que alterna. E esta é a casa do SESI, que tem um segundo
- * seletor: a área de interesse — Educação e Cultura ou Saúde e Esportes —,
- * que só existe dentro de "Para você", porque o site de empresas é um só.
+ * vez de um botão que alterna. E esta é a casa do SESI, que tem três sites:
+ * dois para pessoa física — Educação e Cultura, Saúde e Esportes — e um
+ * para empresas. O seletor tem as três posições, porque são três destinos.
  *
  * O resto do comportamento da página — busca, acessibilidade, links
  * institucionais e o banner em accordion — continua vindo de
@@ -27,24 +28,33 @@
   "use strict";
 
   /* --------------------------------------------------------------------
-     Público — "Para você" / "Para empresa"
-     As duas opções ficam à vista no toggle; o script só marca qual está
-     apertada. Não há mais rótulo nem ícone a reescrever.
+     Os três sites
+     Cada destino carrega o que muda com ele: o nome que abre o caminho, o
+     CTA e o público. O público continua existindo como atributo separado
+     porque é dele que saem as cores, a logo e a transição — um destino diz
+     *qual site*, o público diz *que cara ele tem*, e dois destinos
+     compartilham a mesma cara.
      -------------------------------------------------------------------- */
-  var PUBLICOS = {
-    voce: {
-      nome: "Para você",
+  var DESTINOS = {
+    educacao: {
+      nome: "Educação e Cultura",
+      publico: "voce",
+      cta: { rotulo: "Cursos Disponíveis", href: "../para-voce/cursos/index.html" }
+    },
+    saude: {
+      nome: "Saúde e Esportes",
+      publico: "voce",
       cta: { rotulo: "Cursos Disponíveis", href: "../para-voce/cursos/index.html" }
     },
     empresa: {
       nome: "Para empresa",
+      publico: "empresa",
       cta: { rotulo: "Agende uma consulta", href: "#" }
     }
   };
 
   var toggle = document.querySelector(".publico-toggle");
-  var opcoesPublico = toggle ? toggle.querySelectorAll("[data-publico]") : [];
-  var temas = document.querySelector(".tema-toggle");
+  var opcoesDestino = toggle ? toggle.querySelectorAll("[data-destino]") : [];
   var cta = document.getElementById("navCta");
   var nivel1 = document.getElementById("menuNivel1");
   var subbar = document.querySelector(".subbar");
@@ -60,7 +70,7 @@
   var abas = nivel1.querySelectorAll("a[data-menu]");
   var MENU_RAIZ = "inicio";
 
-  var publico = document.body.getAttribute("data-publico") || "voce";
+  var destino = document.body.getAttribute("data-destino") || "educacao";
   var menu = MENU_RAIZ;
   var atalho = null;
 
@@ -82,25 +92,30 @@
   }
 
   function escreverHash() {
-    var partes = [publico, menu];
+    var partes = [destino, menu];
     if (atalho) partes.push(atalho);
     history.replaceState(null, "", "#" + partes.join("/"));
   }
 
   /* --------------------------------------------------------------------
-     Público
+     Troca de site
      -------------------------------------------------------------------- */
-  function trocarPublico(id, gravarHash) {
-    if (!PUBLICOS[id]) id = "voce";
-    publico = id;
-    document.body.setAttribute("data-publico", id);
+  function irPara(id, gravarHash) {
+    if (!DESTINOS[id]) id = "educacao";
+    destino = id;
 
-    var def = PUBLICOS[id];
-    // aria-pressed, e não uma classe: num par de botões que se excluem, é o
-    // atributo que diz ao leitor de tela qual está acionado — e é dele que
-    // o CSS tira a cor da opção escolhida.
-    Array.prototype.forEach.call(opcoesPublico, function (op) {
-      op.setAttribute("aria-pressed", op.getAttribute("data-publico") === id ? "true" : "false");
+    var def = DESTINOS[id];
+    document.body.setAttribute("data-destino", id);
+    // O público é derivado, e não escolhido: é o que faz "Educação e
+    // Cultura" e "Saúde e Esportes" partilharem cores, logo e CTA sem
+    // precisarem saber um do outro.
+    document.body.setAttribute("data-publico", def.publico);
+
+    // aria-pressed, e não uma classe: num grupo de botões que se excluem, é
+    // o atributo que diz ao leitor de tela qual está acionado — e é dele
+    // que o CSS tira a cor da opção escolhida.
+    Array.prototype.forEach.call(opcoesDestino, function (op) {
+      op.setAttribute("aria-pressed", op.getAttribute("data-destino") === id ? "true" : "false");
     });
     if (cta) {
       cta.textContent = def.cta.rotulo;
@@ -108,38 +123,13 @@
     }
     if (crumbRaiz) crumbRaiz.textContent = def.nome;
 
-    // Recolhido, o seletor de área continua no documento: `inert` é o que o
-    // tira do teclado e dos leitores de tela, já que quem o esconde é uma
-    // largura zerada, e não `display: none`.
-    if (temas) temas.inert = id === "empresa";
-
     if (gravarHash !== false) escreverHash();
   }
 
   if (toggle) {
     toggle.addEventListener("click", function (e) {
-      var opcao = e.target.closest("[data-publico]");
-      if (opcao) trocarPublico(opcao.getAttribute("data-publico"));
-    });
-  }
-
-  /* --------------------------------------------------------------------
-     Área de interesse — Educação e Cultura / Saúde e Esportes
-     Mesmo mecanismo do público: o clique só escreve a escolha em
-     <body data-tema="..."> e o CSS diz o que ela significa. Por enquanto o
-     que ela significa é a posição do polegar — o que cada área muda na
-     página ainda não está definido, e por isso ela também não entra na URL.
-     -------------------------------------------------------------------- */
-  if (temas) {
-    var opcoesTema = temas.querySelectorAll("[data-tema]");
-    temas.addEventListener("click", function (e) {
-      var opcao = e.target.closest("[data-tema]");
-      if (!opcao) return;
-      var id = opcao.getAttribute("data-tema");
-      document.body.setAttribute("data-tema", id);
-      Array.prototype.forEach.call(opcoesTema, function (op) {
-        op.setAttribute("aria-pressed", op.getAttribute("data-tema") === id ? "true" : "false");
-      });
+      var opcao = e.target.closest("[data-destino]");
+      if (opcao) irPara(opcao.getAttribute("data-destino"));
     });
   }
 
@@ -233,10 +223,10 @@
      Estado inicial e histórico
      -------------------------------------------------------------------- */
   function daUrl(gravarHash) {
-    var m = location.hash.match(/^#(?:(voce|empresa)\/)?([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/) || [];
-    // O público entra antes do menu: quem ativa o menu já grava o hash
-    // inteiro, e gravaria o público errado se viesse depois.
-    trocarPublico(m[1] || publico, false);
+    var m = location.hash.match(/^#(?:(educacao|saude|empresa)\/)?([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/) || [];
+    // O destino entra antes do menu: quem ativa o menu já grava o hash
+    // inteiro, e gravaria o destino errado se viesse depois.
+    irPara(m[1] || destino, false);
     ativar(conjuntoDe(m[2]) ? m[2] : MENU_RAIZ, m[3] || null, gravarHash);
   }
 

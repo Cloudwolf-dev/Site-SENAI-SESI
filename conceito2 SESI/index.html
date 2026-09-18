@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="conceito.css">
 </head>
-<body class="site-sesi" data-menu="inicio" data-publico="voce" data-tema="educacao">
+<body class="site-sesi" data-menu="inicio" data-destino="educacao" data-publico="voce">
 <a class="skip-link" href="#main">Pular para o conteúdo</a>
 
 <!-- ===================== TOPBAR ===================== -->
@@ -24,28 +24,20 @@
       <img src="../assets/img/logos%20SENAI/senai_branco.png" alt="SENAI Amapá">
     </a>
 
-    <!-- Público como toggle de duas posições, e não um botão que alterna:
-         com um botão só não dá para saber se o rótulo é onde se está ou
-         para onde se vai. Aqui as duas opções ficam à vista e o polegar
-         branco marca a atual. -->
-    <div class="publico-toggle" role="group" aria-label="Escolha o público">
-      <button class="publico-opcao" type="button" data-publico="voce" aria-pressed="true">
-        <i class="fa-solid fa-user" aria-hidden="true"></i><span>Para você</span>
-      </button>
-      <button class="publico-opcao" type="button" data-publico="empresa" aria-pressed="false">
-        <i class="fa-solid fa-building" aria-hidden="true"></i><span>Para empresa</span>
-      </button>
-    </div>
-
-    <!-- Segundo nível da escolha, e só dentro de "Para você": o SESI tem
-         dois sites para pessoa física. Em "Para empresa" ele recolhe, em
-         vez de sumir de uma vez, para o topbar não dar um salto. -->
-    <div class="tema-toggle" role="group" aria-label="Área de interesse">
-      <button class="tema-opcao" type="button" data-tema="educacao" aria-pressed="true">
+    <!-- O SESI tem três sites: dois para pessoa física e um para empresas.
+         Um seletor de três posições, e não dois encadeados: são três
+         destinos, então é uma escolha só. O filete antes do terceiro
+         segmento marca que os dois primeiros formam o par de pessoa física,
+         e o ícone de prédio diz que ali muda o público, não o tema. -->
+    <div class="publico-toggle" role="group" aria-label="Escolha o site">
+      <button class="publico-opcao" type="button" data-destino="educacao" aria-pressed="true">
         <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i><span>Educação e Cultura</span>
       </button>
-      <button class="tema-opcao" type="button" data-tema="saude" aria-pressed="false">
+      <button class="publico-opcao" type="button" data-destino="saude" aria-pressed="false">
         <i class="fa-solid fa-heart-pulse" aria-hidden="true"></i><span>Saúde e Esportes</span>
+      </button>
+      <button class="publico-opcao" type="button" data-destino="empresa" aria-pressed="false">
+        <i class="fa-solid fa-building" aria-hidden="true"></i><span>Para empresa</span>
       </button>
     </div>
 
