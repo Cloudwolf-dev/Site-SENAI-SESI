@@ -146,9 +146,17 @@ body[data-publico="empresa"] {
 .marca { display: flex; align-items: center; flex: 0 0 auto; }
 .marca img {
   display: block;
-  height: 64px;
+  /* Altura da marca visível, e não da caixa: os arquivos novos são recorte
+     justo, sem a folga transparente que os antigos tinham em volta. Nos
+     antigos, 64px de caixa rendiam ~36px de marca — é esse o tamanho que
+     estava na tela, e é o que estes 36px reproduzem.
+
+     Sem min-width pelo mesmo motivo: ele existia para reservar a largura
+     proporcional de uma caixa que era maior que o desenho. Agora a largura
+     natural já é a do desenho. */
+  height: 36px;
   width: auto;
-  min-width: 253.667px;
+  max-width: none;
   object-fit: contain;
 }
 
@@ -166,10 +174,13 @@ body[data-publico="empresa"] {
 body[data-publico="voce"] .marca-sobre-escuro { opacity: 0; }
 body[data-publico="empresa"] .marca-sobre-claro { opacity: 0; }
 
-/* A marca da casa irmã, à esquerda do seletor de público. O visual é o da
-   .sesi-icon-min do template; aqui só existe o necessário para ela ser um
-   item da barra. */
+/* A marca da casa irmã, à esquerda do seletor de público. A .sesi-icon-min
+   do template saiu junto com o arquivo antigo: as margens negativas dela
+   existiam para descontar a folga transparente, que o arquivo novo não tem
+   — mantê-las agora cortaria o desenho. Os 17px são a altura que a marca
+   já tinha na tela. */
 .senai-link { display: flex; align-items: center; flex: 0 0 auto; }
+.senai-link img { display: block; height: 17px; width: auto; max-width: none; margin: 0; }
 
 /* -----------------------------------------------------------------------
    Toggle de público
