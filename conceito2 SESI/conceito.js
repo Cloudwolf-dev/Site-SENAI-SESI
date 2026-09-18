@@ -13,9 +13,10 @@
  * A URL guarda o estado inteiro como #publico/menu/atalho, então recarregar,
  * voltar no histórico ou compartilhar o link cai no mesmo lugar.
  *
- * Muda em relação ao conceito/: a marca vive no topbar, o topbar também é
- * fixo (então há três alturas a encaixar, não uma) e o público é um toggle
- * de duas posições em vez de um botão que alterna.
+ * Muda em relação ao conceito/: o topbar também é fixo (então há três
+ * alturas a encaixar, não uma) e o público é um toggle de duas posições em
+ * vez de um botão que alterna. E esta é a casa do SESI, que tem mais um
+ * seletor: o das quatro áreas, no navbar.
  *
  * O resto do comportamento da página — busca, acessibilidade, links
  * institucionais e o banner em accordion — continua vindo de
@@ -112,6 +113,28 @@
     toggle.addEventListener("click", function (e) {
       var opcao = e.target.closest("[data-publico]");
       if (opcao) trocarPublico(opcao.getAttribute("data-publico"));
+    });
+  }
+
+  /* --------------------------------------------------------------------
+     Áreas do SESI — Educação, Saúde, Esporte e Lazer
+     Mesmo mecanismo do público: o clique só escreve a escolha em
+     <body data-area="..."> e o CSS diz o que ela significa. Por enquanto o
+     que ela significa é só a posição do polegar — o que cada área muda na
+     página ainda não está definido, e por isso ela também não entra na URL.
+     -------------------------------------------------------------------- */
+  var areas = document.querySelector(".area-toggle");
+
+  if (areas) {
+    var opcoesArea = areas.querySelectorAll("[data-area]");
+    areas.addEventListener("click", function (e) {
+      var opcao = e.target.closest("[data-area]");
+      if (!opcao) return;
+      var id = opcao.getAttribute("data-area");
+      document.body.setAttribute("data-area", id);
+      Array.prototype.forEach.call(opcoesArea, function (op) {
+        op.setAttribute("aria-pressed", op.getAttribute("data-area") === id ? "true" : "false");
+      });
     });
   }
 
