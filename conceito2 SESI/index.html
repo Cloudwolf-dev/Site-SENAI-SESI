@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conceito 2 — SESI Amapá</title>
+<meta name="description" content="Conceito 2 no SESI: mesma estrutura do conceito do SENAI, com a cor e as marcas da casa.">
+<link rel="icon" href="../assets/img/favicon.png">
+<link rel="stylesheet" href="../assets/vendor/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="../assets/vendor/fontawesome/css/all.min.css">
+<!-- A identidade vem inteira do site; conceito.css só acrescenta os dois
+     níveis da barra, a aba de público e os atalhos em faixa. -->
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="conceito.css">
+</head>
+<body class="site-sesi" data-menu="inicio" data-publico="voce">
+<a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+<!-- ===================== TOPBAR ===================== -->
+<div class="topbar">
+  <div class="container-xl">
+    <!-- O SENAI é a outra casa da instituição, não uma seção desta: fica
+         fora da lista de links, à esquerda do seletor de público. -->
+    <a class="senai-link" href="../senai-home.html">
+      <img class="sesi-icon-min" src="../assets/img/senai_white.png" alt="SENAI Amapá">
+    </a>
+
+    <!-- Público como toggle de duas posições, e não um botão que alterna:
+         com um botão só não dá para saber se o rótulo é onde se está ou
+         para onde se vai. Aqui as duas opções ficam à vista e o polegar
+         branco marca a atual. -->
+    <div class="publico-toggle" role="group" aria-label="Escolha o público">
+      <button class="publico-opcao" type="button" data-publico="voce" aria-pressed="true">
+        <i class="fa-solid fa-user" aria-hidden="true"></i><span>Para você</span>
+      </button>
+      <button class="publico-opcao" type="button" data-publico="empresa" aria-pressed="false">
+        <i class="fa-solid fa-building" aria-hidden="true"></i><span>Para empresa</span>
+      </button>
+    </div>
+
+    <div class="topbar-menu">
+      <button class="topbar-toggler" type="button" aria-expanded="false" aria-controls="topbarInstitutional" aria-label="Abrir links institucionais">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul class="topbar-links institutional" id="topbarInstitutional">
+        <li><a href="#">LGPD</a></li>
+        <li><a href="#">Transparência</a></li>
+        <li><a href="#">Sustentabilidade</a></li>
+        <li><a href="#">Portal ESG</a></li>
+        <li><a href="#">Intranet</a></li>
+      </ul>
+    </div>
+
+    <div class="accessibility-dropdown">
+      <button class="accessibility-toggle" type="button" aria-expanded="false">
+        <i class="fa-solid fa-universal-access"></i> Acessibilidade <i class="fa-solid fa-chevron-down" style="font-size:.6rem"></i>
+      </button>
+      <div class="accessibility-menu">
+        <button type="button" data-action="font-increase"><i class="fa-solid fa-magnifying-glass-plus"></i> Aumentar fonte</button>
+        <button type="button" data-action="font-decrease"><i class="fa-solid fa-magnifying-glass-minus"></i> Diminuir fonte</button>
+        <button type="button" data-action="contrast"><i class="fa-solid fa-circle-half-stroke"></i> Contraste</button>
+        <a href="#" target="_blank"><i class="fa-solid fa-hands-asl-interpreting"></i> Libras</a>
+        <a href="#" target="_blank"><i class="fa-solid fa-volume-high"></i> Leitor de Tela</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== NAVBAR — NÍVEL 1 =====================
+     4 menus | CTA do público. A marca subiu para o topbar, então esta barra
+     é só navegação. O menu ativo não abre painel: ele troca a faixa de
+     atalhos logo abaixo.
+========================================================== -->
+<header class="mainnav">
+  <div class="container-xl">
+    <div class="nav-backdrop"></div>
+
+    <!-- A marca abre o navbar, em duas versões: a colorida sobre o cinza
+         claro de "Para você" e a negativa sobre o azul de "Para empresa".
+         Estava dentro do <ul>, onde um <a> não é filho válido — agora é
+         irmã dele. -->
+    <a class="marca" href="#inicio" data-menu="inicio" aria-label="SESI Amapá — Início">
+      <img class="marca-sobre-claro" src="../assets/img/sesi_colorido.png" alt="">
+      <img class="marca-sobre-escuro" src="../assets/img/sesi_white.png" alt="">
+    </a>
+
+    <ul class="mainnav-menu" id="menuNivel1">
+      <li><a href="#institucional" data-menu="institucional">Institucional</a></li>
+      <li><a href="#cursos" data-menu="cursos">Cursos</a></li>
+      <li><a href="#programas" data-menu="programas">Programas</a></li>
+      <li><a href="#eventos" data-menu="eventos">Eventos</a></li>
+    </ul>
+
+    <div class="cta-buttons">
+      <a class="btn-brand" id="navCta" href="../para-voce/cursos/index.html">Cursos Disponíveis</a>
+    </div>
+
+    <div class="nav-search">
+      <button class="nav-search-toggle" type="button" aria-expanded="false" aria-label="Buscar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+      <div class="search-panel">
+        <form action="#" method="get">
+          <label class="form-label small fw-bold text-uppercase" for="search-input">O que você procura?</label>
+          <div class="input-group mb-2">
+            <input id="search-input" type="search" class="form-control" placeholder="Pesquisar...">
+            <button class="btn btn-brand" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+          </div>
+          <select class="form-select form-select-sm" name="categoria" aria-label="Categoria da busca">
+            <option selected="">Todas as categorias</option>
+            <option>Notícias</option>
+            <option>Cursos</option>
+            <option>Editais</option>
+            <option>Unidades</option>
+          </select>
+        </form>
+      </div>
+    </div>
+
+    <button class="mainnav-toggler" type="button" aria-expanded="false" aria-controls="menuNivel1" aria-label="Abrir menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+</header>
+
+<!-- ===================== SUB BAR — NÍVEL 2 =====================
+     Os atalhos de acesso rápido, que na home eram uma fileira de cards
+     abaixo do header, agora são o segundo nível da barra: cada menu do
+     nível 1 tem o seu conjunto e só ele fica visível.
+=========================================================== -->
+<div class="subbar">
+  <div class="container-xl">
+      <ul class="submenu" data-de="inicio">
+        <li><a class="atalho" href="#inicio/portal-do-aluno" data-sub="portal-do-aluno"><i class="fa-solid fa-bag-shopping"></i><span>Portal do Aluno</span></a></li>
+        <li><a class="atalho" href="#inicio/portal-docente" data-sub="portal-docente"><i class="fa-solid fa-graduation-cap"></i><span>Portal Docente</span></a></li>
+        <li><a class="atalho" href="#inicio/editais-de-cursos" data-sub="editais-de-cursos"><i class="fa-solid fa-file-lines"></i><span>Editais de Cursos</span></a></li>
+        <li><a class="atalho" href="#inicio/trabalhe-conosco" data-sub="trabalhe-conosco"><i class="fa-solid fa-user-check"></i><span>Trabalhe Conosco</span></a></li>
+        <li><a class="atalho" href="#inicio/validador" data-sub="validador"><i class="fa-solid fa-stamp"></i><span>Validador</span></a></li>
+        <li><a class="atalho" href="#inicio/ouvidoria" data-sub="ouvidoria"><i class="fa-solid fa-comments"></i><span>Ouvidoria</span></a></li>
+        <li><a class="atalho" href="#inicio/youtube" data-sub="youtube"><i class="fa-brands fa-youtube"></i><span>Youtube</span></a></li>
+        <li><a class="atalho" href="#inicio/amazoniamais21" data-sub="amazoniamais21"><i class="fa-solid fa-leaf"></i><span>Amazônia+21</span></a></li>
+        <li><a class="atalho" href="#inicio/hub-de-inovacao" data-sub="hub-de-inovacao"><i class="fa-solid fa-cube"></i><span>HUB de Inovação</span></a></li>
+      </ul>
+
+      <ul class="submenu" data-de="institucional">
+        <li><a class="atalho" href="#institucional/quem-somos" data-sub="quem-somos"><i class="fa-solid fa-industry"></i><span>Quem somos</span></a></li>
+        <li><a class="atalho" href="#institucional/missao-visao-e-valores" data-sub="missao-visao-e-valores"><i class="fa-solid fa-bullseye"></i><span>Missão, Visão e Valores</span></a></li>
+        <li><a class="atalho" href="#institucional/transparencia" data-sub="transparencia"><i class="fa-solid fa-scale-balanced"></i><span>Transparência</span></a></li>
+        <li><a class="atalho" href="#institucional/trabalhe-conosco" data-sub="trabalhe-conosco"><i class="fa-solid fa-user-check"></i><span>Trabalhe Conosco</span></a></li>
+        <li><a class="atalho" href="#institucional/validador" data-sub="validador"><i class="fa-solid fa-stamp"></i><span>Validador</span></a></li>
+        <li><a class="atalho" href="#institucional/unidades" data-sub="unidades"><i class="fa-solid fa-location-dot"></i><span>Unidades</span></a></li>
+        <li><a class="atalho" href="#institucional/fale-conosco" data-sub="fale-conosco"><i class="fa-solid fa-comments"></i><span>Fale Conosco</span></a></li>
+      </ul>
+
+      <ul class="submenu" data-de="cursos">
+        <li><a class="atalho" href="#cursos/cursos-disponiveis" data-sub="cursos-disponiveis"><i class="fa-solid fa-graduation-cap"></i><span>Cursos Disponíveis</span></a></li>
+        <li><a class="atalho" href="#cursos/editais-de-cursos" data-sub="editais-de-cursos"><i class="fa-solid fa-file-lines"></i><span>Editais de Cursos</span></a></li>
+        <li><a class="atalho" href="#cursos/formacao-profissional" data-sub="formacao-profissional"><i class="fa-solid fa-compass"></i><span>Formação Profissional</span></a></li>
+        <li><a class="atalho" href="#cursos/aprendizagem-industrial" data-sub="aprendizagem-industrial"><i class="fa-solid fa-industry"></i><span>Aprendizagem Industrial</span></a></li>
+        <li><a class="atalho" href="#cursos/presencial" data-sub="presencial"><i class="fa-solid fa-school"></i><span>Presencial</span></a></li>
+        <li><a class="atalho" href="#cursos/semipresencial" data-sub="semipresencial"><span class="icon-duo"><i class="fa-solid fa-school"></i><i class="fa-solid fa-house-laptop"></i></span><span>Semipresencial</span></a></li>
+        <li><a class="atalho" href="#cursos/ead" data-sub="ead"><i class="fa-solid fa-house-laptop"></i><span>EAD</span></a></li>
+        <li><a class="atalho" href="#cursos/portal-do-aluno" data-sub="portal-do-aluno"><i class="fa-solid fa-bag-shopping"></i><span>Portal do Aluno</span></a></li>
+      </ul>
+
+      <ul class="submenu" data-de="programas">
+        <li><a class="atalho" href="#programas/worldskills" data-sub="worldskills"><i class="fa-solid fa-trophy"></i><span>WorldSkills</span></a></li>
+        <li><a class="atalho" href="#programas/saga-senai" data-sub="saga-senai"><i class="fa-solid fa-gamepad"></i><span>Saga SENAI</span></a></li>
+        <li><a class="atalho" href="#programas/psai" data-sub="psai"><i class="fa-solid fa-universal-access"></i><span>PSAI</span></a></li>
+        <li><a class="atalho" href="#programas/programa-mais-aprendiz" data-sub="programa-mais-aprendiz"><i class="fa-solid fa-user-plus"></i><span>Programa + Aprendiz</span></a></li>
+        <li><a class="atalho" href="#programas/unidades-moveis" data-sub="unidades-moveis"><i class="fa-solid fa-truck"></i><span>Unidades Móveis</span></a></li>
+        <li><a class="atalho" href="#programas/olimpiada-do-conhecimento" data-sub="olimpiada-do-conhecimento"><i class="fa-solid fa-medal"></i><span>Olimpíada do Conhecimento</span></a></li>
+      </ul>
+
+      <ul class="submenu" data-de="eventos">
+        <li><a class="atalho" href="#eventos/agenda-de-eventos" data-sub="agenda-de-eventos"><i class="fa-solid fa-calendar-days"></i><span>Agenda de Eventos</span></a></li>
+        <li><a class="atalho" href="#eventos/feirao-da-empregabilidade" data-sub="feirao-da-empregabilidade"><i class="fa-solid fa-briefcase"></i><span>Feirão da Empregabilidade</span></a></li>
+        <li><a class="atalho" href="#eventos/inova-senai" data-sub="inova-senai"><i class="fa-solid fa-lightbulb"></i><span>Inova SENAI</span></a></li>
+        <li><a class="atalho" href="#eventos/forum-de-oleo-e-gas" data-sub="forum-de-oleo-e-gas"><i class="fa-solid fa-oil-well"></i><span>Fórum de Óleo e Gás</span></a></li>
+        <li><a class="atalho" href="#eventos/mundo-senai" data-sub="mundo-senai"><i class="fa-solid fa-earth-americas"></i><span>Mundo SENAI</span></a></li>
+      </ul>
+  </div>
+</div>
+
+<!-- ===================== BREADCRUMB ===================== -->
+<section class="breadcrumb-bar">
+  <div class="container-xl">
+    <ul class="breadcrumb-modern">
+      <li><a href="#inicio" data-menu="inicio">Início</a></li>
+      <li class="current" id="navCrumbMenu" hidden></li>
+      <li class="current" id="navCrumbSub" hidden></li>
+    </ul>
+  </div>
+</section>
+
+<main id="main" class="page-surface">
+
+<!-- ===================== BANNER ===================== -->
+<section class="hero-gallery">
+  <div class="container-xl" id="card-accordion">
+    <div class="hero-accordion">
+      <div class="accordion-card" tabindex="0" role="button" aria-expanded="false">
+        <img src="../assets/img/placeholders/senai-banner-3.jpg" alt="A Indústria do Brasil">
+        <span class="accordion-vertical-label">A Indústria do Brasil</span>
+        <div class="accordion-content">
+          <span class="badge-brand mb-3 d-inline-block">Institucional</span>
+          <p class="accordion-eyebrow">SENAI Amapá</p>
+          <h3>A indústria que transforma o Amapá</h3>
+          <p>Conheça como o SENAI impulsiona a qualificação profissional e a inovação na indústria amapaense.</p>
+          <a href="#" class="btn btn-brand">Saiba mais</a>
+        </div>
+      </div>
+      <div class="accordion-card active" tabindex="0" role="button" aria-expanded="true">
+        <img src="../assets/img/placeholders/senai-banner-1.jpg" alt="Fórum de Óleo e Gás">
+        <span class="accordion-vertical-label">Fórum de Óleo e Gás</span>
+        <div class="accordion-content">
+          <span class="badge-brand mb-3 d-inline-block">Evento</span>
+          <p class="accordion-eyebrow">Inscrições abertas</p>
+          <h3>Fórum de Fornecedores da Cadeia de Óleo e Gás — Conectando Oportunidades</h3>
+          <p>Empresas e industriários amapaenses ganham acesso a rodadas de negócio com grandes operadoras do setor.</p>
+          <a href="#" class="btn btn-brand">Clique e inscreva-se</a>
+        </div>
+      </div>
+      <div class="accordion-card" tabindex="0" role="button" aria-expanded="false">
+        <img src="../assets/img/placeholders/senai-banner-4.jpg" alt="Institucional">
+        <span class="accordion-vertical-label">Institucional</span>
+        <div class="accordion-content">
+          <span class="badge-brand mb-3 d-inline-block">Institucional</span>
+          <p class="accordion-eyebrow">Sobre o SENAI</p>
+          <h3>Conheça a gestão e a estrutura do SENAI Amapá</h3>
+          <p>Transparência, planejamento estratégico e resultados que fortalecem a indústria local.</p>
+          <a href="#" class="btn btn-brand">Conheça o SENAI</a>
+        </div>
+      </div>
+      <div class="accordion-card" tabindex="0" role="button" aria-expanded="false">
+        <img src="../assets/img/placeholders/senai-banner-2.jpg" alt="Estude aqui no SENAI">
+        <span class="accordion-vertical-label">Estude aqui no SENAI</span>
+        <div class="accordion-content">
+          <span class="badge-brand mb-3 d-inline-block">Matrículas</span>
+          <p class="accordion-eyebrow">Matrículas abertas</p>
+          <h3>Cursos técnicos e de aprendizagem industrial com matrículas abertas</h3>
+          <p>Formação profissional de qualidade para você ingressar ou se destacar no mercado de trabalho.</p>
+          <a href="#" class="btn btn-brand">Ver cursos disponíveis</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== NOTÍCIAS ===================== -->
+<section class="section">
+  <div class="container-xl">
+    <div class="section-heading">
+      <h2>Notícias</h2>
+      <a href="#" class="btn btn-brand">Ver todas as notícias</a>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <a class="news-card news-featured" href="../senai-noticia.html">
+          <div class="news-img">
+            <img src="../assets/img/placeholders/senai-news-1.jpg" alt="Fórum de fornecedores">
+            <span class="badge-brand news-badge">Institucional</span>
+          </div>
+          <div class="news-body">
+            <h3>SENAI AP e Firjan promovem Fórum para conectar empresas ao mercado de óleo e gás</h3>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-6">
+        <div class="row g-4">
+          <div class="col-sm-6">
+            <a class="news-card" href="../senai-noticia.html">
+              <div class="news-img">
+                <img src="../assets/img/placeholders/senai-news-2.jpg" alt="Edital de curso técnico">
+                <span class="badge-brand news-badge">Editais</span>
+              </div>
+              <div class="news-body">
+                <h4>SENAI AP retifica edital do curso técnico em Petróleo e Gás; veja as novas datas</h4>
+              </div>
+            </a>
+          </div>
+          <div class="col-sm-6">
+            <a class="news-card" href="../senai-noticia.html">
+              <div class="news-img">
+                <img src="../assets/img/placeholders/senai-news-3.jpg" alt="Cursos gratuitos itinerantes">
+                <span class="badge-brand news-badge">Ações Móveis</span>
+              </div>
+              <div class="news-body">
+                <h4>SENAI AP leva cursos gratuitos para Tartarugalzinho</h4>
+              </div>
+            </a>
+          </div>
+          <div class="col-sm-6">
+            <a class="news-card" href="../senai-noticia.html">
+              <div class="news-img">
+                <img src="../assets/img/placeholders/senai-news-4.jpg" alt="Olimpíada do Conhecimento">
+                <span class="badge-brand news-badge">Competição</span>
+              </div>
+              <div class="news-body">
+                <h4>Amapá define equipe que vai representar o estado na Olimpíada do Conhecimento</h4>
+              </div>
+            </a>
+          </div>
+          <div class="col-sm-6">
+            <a class="news-card" href="../senai-noticia.html">
+              <div class="news-img">
+                <img src="../assets/img/placeholders/senai-news-5.jpg" alt="Parceria com indústria local">
+                <span class="badge-brand news-badge">Parcerias</span>
+              </div>
+              <div class="news-body">
+                <h4>SENAI Amapá firma parceria para qualificação de mão de obra local</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SERVIÇOS ===================== -->
+<section class="section" ;">
+  <div class="container-xl">
+
+    <div class="service-group">
+      <div class="service-group-heading">
+        <span class="dot"></span>
+        <h3>Tecnologia e Inovação</h3>
+        <a href="#" class="service-group-link">Ver todos</a>
+      </div>
+      <div class="row g-4">
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-tech-1.jpg" alt="Alimentos e Bebidas"></div>
+            <p class="service-title">Alimentos e Bebidas</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-tech-2.jpg" alt="Construção Civil"></div>
+            <p class="service-title">Construção Civil</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-tech-3.jpg" alt="Eficiência Energética"></div>
+            <p class="service-title">Eficiência Energética</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-tech-4.jpg" alt="Inclusão Profissional"></div>
+            <p class="service-title">Inclusão Profissional</p>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="service-group">
+      <div class="service-group-heading">
+        <span class="dot"></span>
+        <h3>Programas e Iniciativas</h3>
+        <a href="#" class="service-group-link">Ver todos</a>
+      </div>
+      <div class="row g-4">
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-prog-1.jpg" alt="Ações Inclusivas"></div>
+            <p class="service-title">Ações Inclusivas</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-prog-2.jpg" alt="Olimpíada do Conhecimento"></div>
+            <p class="service-title">Olimpíada do Conhecimento</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-prog-3.jpg" alt="Mundo SENAI"></div>
+            <p class="service-title">Mundo SENAI</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-prog-4.jpg" alt="Unidades Móveis"></div>
+            <p class="service-title">Unidades Móveis</p>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="service-group">
+      <div class="service-group-heading">
+        <span class="dot"></span>
+        <h3>Educação Profissional</h3>
+        <a href="../para-voce/cursos/index.html" class="service-group-link">Ver todos</a>
+      </div>
+      <div class="row g-4">
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-edu-1.jpg" alt="Aprendizagem Industrial"></div>
+            <p class="service-title">Aprendizagem Industrial</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-edu-2.jpg" alt="Iniciação Profissional"></div>
+            <p class="service-title">Iniciação Profissional</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-edu-3.jpg" alt="Qualificação Profissional"></div>
+            <p class="service-title">Qualificação Profissional</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-edu-4.jpg" alt="Aperfeiçoamento Profissional"></div>
+            <p class="service-title">Aperfeiçoamento Profissional</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-edu-5.jpg" alt="Cursos Técnicos"></div>
+            <p class="service-title">Cursos Técnicos</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-edu-6.jpg" alt="Cursos semipresenciais e EAD"></div>
+            <p class="service-title">Cursos semipresenciais e EAD</p>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-footer">
+  <!--<div class="container-xl footer-links">
+    <div class="row g-4">
+      <div class="col-6 col-md-4 footer-col">
+        <h5>Cursos</h5>
+        <ul>
+          <li><a href="../para-voce/cursos/index.html">Cursos disponíveis</a></li>
+          <li><a href="../para-voce/formacao-profissional/index.html">Formação Profissional</a></li>
+          <li><a href="../para-voce/modalidades-e-suporte/index.html">Modalidades e Suporte</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-4 footer-col">
+        <h5>Institucional</h5>
+        <ul>
+          <li><a href="#institucional" data-nav="institucional">Quem somos</a></li>
+          <li><a href="#programas" data-nav="programas">Programas</a></li>
+          <li><a href="#eventos" data-nav="eventos">Eventos</a></li>
+          <li><a href="#informacoes" data-nav="informacoes">Unidades e contato</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-4 footer-col">
+        <h5>Para empresas</h5>
+        <ul>
+          <li><a href="../para-empresa/index.html">Serviços para a indústria</a></li>
+          <li><a href="../para-empresa/educacao-corporativa/index.html">Educação Corporativa</a></li>
+          <li><a href="../para-empresa/servicos-de-tecnologia-e-inovacao/index.html">Tecnologia e Inovação</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>-->
+
+  <div class="footer-units">
+    <div class="container-xl">
+      <div class="row g-4 justify-content-center text-center text-md-start">
+        <div class="col-md-4">
+          <h6><i class="fa-solid fa-location-dot"></i>Macapá</h6>
+          <p>Centro de Formação Profissional<br>Rua Professor Tostes, 1294 - Sta. Rita<br><i class="fa-solid fa-phone"></i> (96) 3084-8923</p>
+        </div>
+        <div class="col-md-4">
+          <h6><i class="fa-solid fa-location-dot"></i>Santana</h6>
+          <p>Centro de Formação Profissional<br>Av. B1, S/N - Vila Amazonas<br><i class="fa-solid fa-phone"></i> (96) 3084-8984</p>
+        </div>
+        <div class="col-md-4">
+          <h6><i class="fa-solid fa-location-dot"></i>Unidade Integrada</h6>
+          <p>Unidade Integrada SESI/SENAI - A Banda<br>Av. Ernestino Borges, 257 - Centro<br><i class="fa-solid fa-phone"></i> (96) 3084-8923</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-xl">
+    <div class="footer-social">
+      <a href="https://www.facebook.com/SENAIamapa/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://twitter.com/senaiamapa" target="_blank" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://instagram.com/amapasenai" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#" target="_blank" aria-label="E-mail"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+    <div class="footer-copy">
+      <p class="mb-1">Copyright 2026. Todos os Direitos Reservados. SENAI AMAPÁ.</p>
+      <a href="#">Política de Privacidade</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="conceito.js"></script>
+
+</body></html>
