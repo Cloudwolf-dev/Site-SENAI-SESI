@@ -31,7 +31,31 @@
    dois ele é a peça mais clara da região, que é o que o faz parecer estar
    por cima da faixa em vez de recortado nela.
    ----------------------------------------------------------------------- */
+/* As duas cores que entram no gradiente da faixa são propriedades
+   registradas, e não variáveis comuns: só assim o navegador sabe interpolar
+   entre dois `linear-gradient()`. Registrá-las resolve de quebra as
+   superfícies chapadas que leem as mesmas variáveis — navbar, corpo da
+   página e caminho —, que passam a mudar de cor junto, no mesmo tempo.
+   Onde @property não existe, a troca é seca: a degradação aceitável. */
+@property --superficie-nav {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f4f6fa;
+}
+@property --corpo {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+
 body {
+  /* Um só tempo para tudo que muda com o público: as peças trocam de cor
+     em bloco, e não cada uma no seu ritmo. */
+  --troca: 0.45s;
+  transition: --superficie-nav var(--troca) ease,
+              --corpo var(--troca) ease,
+              color var(--troca) ease;
+
   /* A faixa do segundo nível usa a mesma cor do navbar: as duas leem como
      um bloco só de cabeçalho, com o cartão de atalhos solto por cima. */
   --superficie-nav: var(--color-bg-soft);
@@ -121,8 +145,19 @@ body[data-publico="empresa"] {
   object-fit: contain;
 }
 
-body[data-publico="voce"] .marca-sobre-escuro,
-body[data-publico="empresa"] .marca-sobre-claro { display: none; }
+/* As duas versões ficam sobrepostas e trocam por opacidade. Com
+   `display: none` o corte era instantâneo no meio de uma transição que
+   dura quase meio segundo, e a logo pulava antes do resto chegar. */
+.marca { position: relative; }
+.marca img { transition: opacity var(--troca) ease; }
+.marca .marca-sobre-escuro {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+body[data-publico="voce"] .marca-sobre-escuro { opacity: 0; }
+body[data-publico="empresa"] .marca-sobre-claro { opacity: 0; }
 
 /* A marca do SESI, igual à que era na lista de links — só que agora à
    esquerda do seletor de público. O visual é o da .sesi-icon-min do
@@ -217,7 +252,9 @@ body[data-publico="empresa"] .publico-toggle::before { transform: translateX(100
   padding: 0.65rem 1.1rem;
   color: var(--superficie-tinta);
   white-space: nowrap;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  /* O fundo é resposta ao ponteiro e continua rápido; a cor também muda
+     com o público, e aí segue o tempo da troca. */
+  transition: background-color 0.15s ease, color var(--troca) ease;
 }
 
 /* O hover é só um prenúncio do estado ativo — a mesma cor, diluída —, para
@@ -273,7 +310,7 @@ body[data-publico="empresa"] .publico-toggle::before { transform: translateX(100
   box-shadow: 0 0.9rem 2.2rem var(--cartao-sombra),
               0 0.15rem 0.45rem var(--cartao-sombra-perto),
               inset 0 1px 0 var(--cartao-aresta);
-  transition: background-color 0.2s ease;
+  transition: background-color var(--troca) ease, box-shadow var(--troca) ease;
   /* O respiro lateral mantém o primeiro e o último atalho longe da curva
      do canto, o que evita ter de cortar o conteúdo com overflow e perder o
      contorno de foco do teclado. */
@@ -322,7 +359,8 @@ body[data-publico="empresa"] .publico-toggle::before { transform: translateX(100
   font-weight: 700;
   line-height: 1.15;
   white-space: nowrap;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: background-color 0.15s ease, color var(--troca) ease,
+              border-color 0.15s ease;
 }
 .atalho i { font-size: 1rem; }
 
@@ -362,21 +400,27 @@ body { background-color: var(--corpo); }
   background-color: var(--corpo);
 }
 
-body[data-publico="empresa"] {
-  color: var(--corpo-tinta);
-}
-body[data-publico="empresa"] .page-surface h1,
-body[data-publico="empresa"] .page-surface h2,
-body[data-publico="empresa"] .page-surface h3,
-body[data-publico="empresa"] .page-surface h4,
-body[data-publico="empresa"] .page-surface h5,
-body[data-publico="empresa"] .page-surface h6 {
-  color: var(--corpo-titulo);
+/* Texto e títulos saem de variáveis nos dois públicos, e não só no escuro:
+   uma regra que existisse apenas em "Para empresa" faria a cor aparecer e
+   sumir de uma vez, sem ter de onde interpolar. */
+body { color: var(--corpo-tinta); }
+
+.page-surface h1,
+.page-surface h2,
+.page-surface h3,
+.page-surface h4,
+.page-surface h5,
+.page-surface h6 {
+  color: #fff;
+  transition: color var(--troca) ease;
 }
 /* Dentro dos cards o fundo continua branco, então o título volta ao escuro. */
-body[data-publico="empresa"] .news-card h3,
-body[data-publico="empresa"] .news-card h4 { color: var(--color-ink); }
+.news-card h3,
+.news-card h4 { color: var(--color-ink); }
 
+.breadcrumb-modern,
+.breadcrumb-modern a,
+.breadcrumb-modern li + li::before { transition: color var(--troca) ease; }
 body[data-publico="empresa"] .breadcrumb-modern { color: rgba(255, 255, 255, 0.7); }
 body[data-publico="empresa"] .breadcrumb-modern a { color: rgba(255, 255, 255, 0.7); }
 body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(255, 255, 255, 0.45); }
@@ -479,4 +523,9 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
   .cta-buttons .btn-brand { font-size: 0.72rem; padding: 0.45rem 0.7rem; }
   .nav-search-toggle { width: 36px; height: 36px; font-size: 0.85rem; }
   .atalho span { max-width: 9rem; overflow: hidden; text-overflow: ellipsis; }
+}
+
+/* Quem pediu menos movimento troca de público sem a fusão. */
+@media (prefers-reduced-motion: reduce) {
+  body { --troca: 0s; }
 }
