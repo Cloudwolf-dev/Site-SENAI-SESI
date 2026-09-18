@@ -30,13 +30,19 @@
          segmento marca que os dois primeiros formam o par de pessoa física,
          e o ícone de prédio diz que ali muda o público, não o tema. -->
     <div class="publico-toggle" role="group" aria-label="Escolha o site">
-      <button class="publico-opcao" type="button" data-destino="educacao" aria-pressed="true">
+      <!-- Rótulo do grupo, só visual: ele diz que os dois primeiros são o
+           par de pessoa física. Para quem usa leitor de tela isso vem no
+           aria-label de cada um dos dois, que é onde a informação serve. -->
+      <span class="publico-grupo" aria-hidden="true">Para você</span>
+      <button class="publico-opcao" type="button" data-destino="educacao"
+              aria-pressed="true" aria-label="Para você: Educação e Cultura">
         <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i><span>Educação e Cultura</span>
       </button>
-      <button class="publico-opcao" type="button" data-destino="saude" aria-pressed="false">
+      <button class="publico-opcao" type="button" data-destino="saude"
+              aria-pressed="false" aria-label="Para você: Saúde e Esportes">
         <i class="fa-solid fa-heart-pulse" aria-hidden="true"></i><span>Saúde e Esportes</span>
       </button>
-      <button class="publico-opcao" type="button" data-destino="empresa" aria-pressed="false">
+      <button class="publico-opcao publico-opcao-alta" type="button" data-destino="empresa" aria-pressed="false">
         <i class="fa-solid fa-building" aria-hidden="true"></i><span>Para empresa</span>
       </button>
     </div>
