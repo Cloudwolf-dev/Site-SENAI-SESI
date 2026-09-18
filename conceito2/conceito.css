@@ -411,7 +411,7 @@ body { color: var(--corpo-tinta); }
 .page-surface h4,
 .page-surface h5,
 .page-surface h6 {
-  color: #fff;
+  color: var(--corpo-titulo);
   transition: color var(--troca) ease;
 }
 /* Dentro dos cards o fundo continua branco, então o título volta ao escuro. */
