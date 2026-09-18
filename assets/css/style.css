@@ -228,7 +228,7 @@ img { max-width: 100%; height: auto; }
   background-color: var(--color-blue);
   color: #fff;
   font-size: 0.8rem;
-  /*box-shadow: inset 0px -4px 5px 1px #00000045;*/
+  box-shadow: inset 0px -4px 5px 1px #00000045;
 }
 
 .topbar .container-xl {
