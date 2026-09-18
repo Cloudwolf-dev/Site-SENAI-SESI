@@ -183,12 +183,14 @@ body[data-publico="empresa"] .marca-sobre-claro { opacity: 0; }
 .senai-link img { display: block; height: 17px; width: auto; max-width: none; margin: 0; }
 
 /* -----------------------------------------------------------------------
-   Toggle de público
-   Duas posições à vista, no formato dos seletores segmentados de celular:
-   a trilha é um sulco translúcido no azul do topbar e o polegar branco
-   desliza para a opção escolhida.
+   Seletores segmentados do topbar
+   Duas posições à vista, no formato dos seletores de celular: a trilha é um
+   sulco translúcido no azul do topbar e o polegar branco desliza para a
+   opção escolhida. São dois no SESI — o público e, dentro de "Para você", a
+   área de interesse —, e por isso as regras valem para os dois.
    ----------------------------------------------------------------------- */
-.publico-toggle {
+.publico-toggle,
+.tema-toggle {
   position: relative;
   /* Grade de duas colunas iguais, e não flex. Com `flex: 1 1 0` as duas
      opções ficavam com larguras diferentes (106px e 127px), porque numa
@@ -209,7 +211,8 @@ body[data-publico="empresa"] .marca-sobre-claro { opacity: 0; }
    porque as duas opções têm largura igual (flex-basis 0): com larguras
    naturais, "Para empresa" seria mais larga e o polegar pararia fora do
    lugar. */
-.publico-toggle::before {
+.publico-toggle::before,
+.tema-toggle::before {
   content: "";
   position: absolute;
   top: 3px;
@@ -221,9 +224,11 @@ body[data-publico="empresa"] .marca-sobre-claro { opacity: 0; }
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
-body[data-publico="empresa"] .publico-toggle::before { transform: translateX(100%); }
+body[data-publico="empresa"] .publico-toggle::before,
+body[data-tema="saude"] .tema-toggle::before { transform: translateX(100%); }
 
-.publico-opcao {
+.publico-opcao,
+.tema-opcao {
   position: relative;
   z-index: 1;
   display: flex;
@@ -243,11 +248,37 @@ body[data-publico="empresa"] .publico-toggle::before { transform: translateX(100
   cursor: pointer;
   transition: color 0.2s ease;
 }
-.publico-opcao:hover { color: #fff; }
-.publico-opcao[aria-pressed="true"] { color: var(--color-blue); }
+.publico-opcao:hover,
+.tema-opcao:hover { color: #fff; }
+.publico-opcao[aria-pressed="true"],
+.tema-opcao[aria-pressed="true"] { color: var(--color-blue); }
+
+/* -----------------------------------------------------------------------
+   O seletor de área só existe em "Para você" — o site de empresas é um só.
+   Ele recolhe em vez de sumir: `display: none` daria um salto no topbar
+   bem no meio da transição de público, que dura quase meio segundo. O
+   max-width é o truque de sempre para animar uma largura de conteúdo; o
+   valor é só um teto folgado. O `inert` que tira o controle do teclado e
+   dos leitores de tela é posto pelo conceito.js.
+   ----------------------------------------------------------------------- */
+.tema-toggle {
+  max-width: 32rem;
+  overflow: hidden;
+  transition: max-width var(--troca) ease, opacity var(--troca) ease,
+              padding var(--troca) ease;
+}
+body[data-publico="empresa"] .tema-toggle {
+  max-width: 0;
+  padding-inline: 0;
+  opacity: 0;
+  /* Desfaz o `flex: 0 0 100%` que o coloca numa linha só nas telas menores:
+     recolhido, ele não pode continuar reservando a linha inteira. */
+  flex-basis: auto;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .publico-toggle::before { transition: none; }
+  .publico-toggle::before,
+  .tema-toggle::before { transition: none; }
 }
 
 /* ==========================================================================
@@ -264,16 +295,7 @@ body[data-publico="empresa"] .publico-toggle::before { transform: translateX(100
   justify-content: flex-start;
   gap: 0.15rem;
   margin-left: 1.5rem;
-  /* Sem o `flex: 1` do template: com ele o menu esticava até o fim da barra
-     e o seletor de áreas, que vem depois, era jogado para a direita em vez
-     de ficar rente a "Eventos". Quem empurra o CTA agora é o auto abaixo. */
-  flex: 0 1 auto;
 }
-.cta-buttons { margin-left: auto; }
-/* O rótulo do CTA não quebra: se faltar espaço, quem cede é o seletor de
-   áreas, que desce de linha — e não o botão, virando um bloco de duas
-   alturas no meio da barra. */
-.cta-buttons .btn-brand { white-space: nowrap; }
 
 .mainnav-menu > li > a {
   padding: 0.65rem 1.1rem;
@@ -301,77 +323,6 @@ body[data-publico="empresa"] .publico-toggle::before { transform: translateX(100
     border-bottom: 4px solid var(--brand);
     border-radius: 0px;
     padding-bottom: 4px;
-}
-
-/* -----------------------------------------------------------------------
-   Seletor de áreas — a particularidade do SESI
-   Mesmo desenho do toggle de público, com quatro posições. As cores saem
-   das variáveis de superfície, porque aqui ele mora no navbar, que é claro
-   num público e azul escuro no outro: o polegar usa a cor do cartão de
-   atalhos, que é sempre a peça mais clara da região.
-   ----------------------------------------------------------------------- */
-.area-toggle {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  flex: 0 0 auto;
-  margin-left: 1rem;
-  padding: 3px;
-  border-radius: 999px;
-  background-color: rgba(0, 0, 0, 0.16);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.22);
-}
-
-/* O polegar tem a largura de uma coluna — `(100% - 6px) / 4` desconta o
-   padding da trilha — e anda a própria largura a cada posição. Medir a
-   coluna assim, e não em 25% cheios, é o que impede o erro de acumular
-   três vezes até a última posição. */
-.area-toggle::before {
-  content: "";
-  position: absolute;
-  top: 3px;
-  bottom: 3px;
-  left: 3px;
-  width: calc((100% - 6px) / 4);
-  border-radius: 999px;
-  background-color: var(--cartao);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-  transform: translateX(calc(var(--area-i, 0) * 100%));
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-              background-color var(--troca) ease;
-}
-body[data-area="saude"]   { --area-i: 1; }
-body[data-area="esporte"] { --area-i: 2; }
-body[data-area="lazer"]   { --area-i: 3; }
-
-.area-opcao {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.35rem 0.85rem;
-  border: 0;
-  border-radius: 999px;
-  background: none;
-  color: var(--superficie-tinta);
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-  cursor: pointer;
-  opacity: 0.75;
-  transition: color var(--troca) ease, opacity 0.2s ease;
-}
-.area-opcao:hover { opacity: 1; }
-.area-opcao[aria-pressed="true"] {
-  color: var(--cartao-tinta);
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .area-toggle::before { transition: background-color var(--troca) ease; }
 }
 
 /* ==========================================================================
@@ -534,12 +485,18 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
 @media (max-width: 1399.98px) {
   .hero-gallery { overflow-x: clip; }
 }
-/* O seletor de áreas acrescentou ~330px à barra, então o aperto do navbar
-   começa bem antes: até 1699px tudo encolhe para os cinco blocos caberem
-   numa linha. O limite é o CTA de "Para empresa", que é o rótulo mais
-   longo — abaixo de 1700px ele quebrava em duas linhas e engordava a
-   barra. */
-@media (max-width: 1699.98px) {
+/* Os dois seletores mais os links institucionais só cabem numa linha acima
+   de ~1535px de janela; daí para baixo o de área desce para a própria, que
+   é também onde ele fica no celular. */
+@media (max-width: 1599.98px) {
+  /* A quebra é presa a "Para você": em "Para empresa" não há seletor de
+     área, e ligar o wrap ali só faria a acessibilidade cair para uma
+     segunda linha sozinha em telas apertadas. */
+  body[data-publico="voce"] .topbar .container-xl { flex-wrap: wrap; row-gap: 0.4rem; }
+  .tema-toggle { order: 5; flex: 0 0 100%; }
+}
+
+@media (max-width: 1199.98px) {
   .mainnav .container-xl { gap: 0.5rem; }
   .mainnav-menu { margin-left: 0.5rem; }
   /* O padding vertical fica: a regra antiga zerava ele, sobra da época em
@@ -548,12 +505,6 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
   .cta-buttons .btn-brand { padding: 0.5rem 0.8rem; font-size: 0.78rem; }
 }
 
-/* Abaixo disso nem encolhendo cabe: o seletor de áreas desce para a própria
-   linha, que é onde ele também fica no celular. */
-@media (max-width: 1399.98px) {
-  .mainnav .container-xl { flex-wrap: wrap; row-gap: 0.5rem; }
-  .area-toggle { order: 5; flex: 0 0 100%; margin-left: 0; }
-}
 
 @media (max-width: 991.98px) {
   /* No template o menu vira um offcanvas que entra pela direita. Aqui ele
@@ -603,9 +554,6 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
   }
   .mainnav-menu::-webkit-scrollbar { display: none; }
 
-  /* A posição do seletor de áreas já vem da faixa de 1399px; aqui só os
-     rótulos apertam. */
-  .area-opcao { padding: 0.35rem 0.4rem; font-size: 0.62rem; }
   .mainnav-menu > li { flex: 0 0 auto; }
   .mainnav-menu > li > a {
     justify-content: center;
@@ -627,7 +575,9 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
   .topbar .topbar-menu { order: 2; margin-left: 0; }
   .topbar .accessibility-dropdown { order: 3; }
   .publico-toggle { order: 4; width: 100%; }
-  .publico-opcao { font-size: 0.68rem; padding: 0.4rem 0.6rem; }
+  .tema-toggle { order: 5; width: 100%; max-width: 100%; }
+  .publico-opcao,
+  .tema-opcao { font-size: 0.68rem; padding: 0.4rem 0.6rem; }
 
   /* Palpite de reserva; com JS, o valor certo vem medido. */
   .subbar { top: 132px; padding-block: 0.5rem 0.45rem; }
@@ -644,4 +594,8 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
 /* Quem pediu menos movimento troca de público sem a fusão. */
 @media (prefers-reduced-motion: reduce) {
   body { --troca: 0s; }
+}
+
+.accordion-content h3 {
+    color: #fff; /* corrige o título do accordion */
 }

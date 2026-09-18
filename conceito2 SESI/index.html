@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="conceito.css">
 </head>
-<body class="site-sesi" data-menu="inicio" data-publico="voce" data-area="educacao">
+<body class="site-sesi" data-menu="inicio" data-publico="voce" data-tema="educacao">
 <a class="skip-link" href="#main">Pular para o conteúdo</a>
 
 <!-- ===================== TOPBAR ===================== -->
@@ -34,6 +34,18 @@
       </button>
       <button class="publico-opcao" type="button" data-publico="empresa" aria-pressed="false">
         <i class="fa-solid fa-building" aria-hidden="true"></i><span>Para empresa</span>
+      </button>
+    </div>
+
+    <!-- Segundo nível da escolha, e só dentro de "Para você": o SESI tem
+         dois sites para pessoa física. Em "Para empresa" ele recolhe, em
+         vez de sumir de uma vez, para o topbar não dar um salto. -->
+    <div class="tema-toggle" role="group" aria-label="Área de interesse">
+      <button class="tema-opcao" type="button" data-tema="educacao" aria-pressed="true">
+        <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i><span>Educação e Cultura</span>
+      </button>
+      <button class="tema-opcao" type="button" data-tema="saude" aria-pressed="false">
+        <i class="fa-solid fa-heart-pulse" aria-hidden="true"></i><span>Saúde e Esportes</span>
       </button>
     </div>
 
@@ -90,24 +102,6 @@
       <li><a href="#eventos" data-menu="eventos">Eventos</a></li>
     </ul>
 
-    <!-- Particularidade do SESI: as quatro áreas da casa. Mesmo seletor
-         segmentado do público, com quatro posições em vez de duas — por
-         enquanto ele só troca de estado; o que cada área muda na página
-         fica para depois. -->
-    <div class="area-toggle" role="group" aria-label="Área do SESI">
-      <button class="area-opcao" type="button" data-area="educacao" aria-pressed="true">
-        <span>Educação</span>
-      </button>
-      <button class="area-opcao" type="button" data-area="saude" aria-pressed="false">
-        <span>Saúde</span>
-      </button>
-      <button class="area-opcao" type="button" data-area="esporte" aria-pressed="false">
-        <span>Esporte</span>
-      </button>
-      <button class="area-opcao" type="button" data-area="lazer" aria-pressed="false">
-        <span>Cultura</span>
-      </button>
-    </div>
 
     <div class="cta-buttons">
       <a class="btn-brand" id="navCta" href="../para-voce/cursos/index.html">Cursos Disponíveis</a>

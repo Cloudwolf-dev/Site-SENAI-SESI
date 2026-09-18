@@ -15,8 +15,9 @@
  *
  * Muda em relação ao conceito/: o topbar também é fixo (então há três
  * alturas a encaixar, não uma) e o público é um toggle de duas posições em
- * vez de um botão que alterna. E esta é a casa do SESI, que tem mais um
- * seletor: o das quatro áreas, no navbar.
+ * vez de um botão que alterna. E esta é a casa do SESI, que tem um segundo
+ * seletor: a área de interesse — Educação e Cultura ou Saúde e Esportes —,
+ * que só existe dentro de "Para você", porque o site de empresas é um só.
  *
  * O resto do comportamento da página — busca, acessibilidade, links
  * institucionais e o banner em accordion — continua vindo de
@@ -43,6 +44,7 @@
 
   var toggle = document.querySelector(".publico-toggle");
   var opcoesPublico = toggle ? toggle.querySelectorAll("[data-publico]") : [];
+  var temas = document.querySelector(".tema-toggle");
   var cta = document.getElementById("navCta");
   var nivel1 = document.getElementById("menuNivel1");
   var subbar = document.querySelector(".subbar");
@@ -106,6 +108,11 @@
     }
     if (crumbRaiz) crumbRaiz.textContent = def.nome;
 
+    // Recolhido, o seletor de área continua no documento: `inert` é o que o
+    // tira do teclado e dos leitores de tela, já que quem o esconde é uma
+    // largura zerada, e não `display: none`.
+    if (temas) temas.inert = id === "empresa";
+
     if (gravarHash !== false) escreverHash();
   }
 
@@ -117,23 +124,21 @@
   }
 
   /* --------------------------------------------------------------------
-     Áreas do SESI — Educação, Saúde, Esporte e Lazer
+     Área de interesse — Educação e Cultura / Saúde e Esportes
      Mesmo mecanismo do público: o clique só escreve a escolha em
-     <body data-area="..."> e o CSS diz o que ela significa. Por enquanto o
-     que ela significa é só a posição do polegar — o que cada área muda na
+     <body data-tema="..."> e o CSS diz o que ela significa. Por enquanto o
+     que ela significa é a posição do polegar — o que cada área muda na
      página ainda não está definido, e por isso ela também não entra na URL.
      -------------------------------------------------------------------- */
-  var areas = document.querySelector(".area-toggle");
-
-  if (areas) {
-    var opcoesArea = areas.querySelectorAll("[data-area]");
-    areas.addEventListener("click", function (e) {
-      var opcao = e.target.closest("[data-area]");
+  if (temas) {
+    var opcoesTema = temas.querySelectorAll("[data-tema]");
+    temas.addEventListener("click", function (e) {
+      var opcao = e.target.closest("[data-tema]");
       if (!opcao) return;
-      var id = opcao.getAttribute("data-area");
-      document.body.setAttribute("data-area", id);
-      Array.prototype.forEach.call(opcoesArea, function (op) {
-        op.setAttribute("aria-pressed", op.getAttribute("data-area") === id ? "true" : "false");
+      var id = opcao.getAttribute("data-tema");
+      document.body.setAttribute("data-tema", id);
+      Array.prototype.forEach.call(opcoesTema, function (op) {
+        op.setAttribute("aria-pressed", op.getAttribute("data-tema") === id ? "true" : "false");
       });
     });
   }
