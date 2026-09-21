@@ -194,10 +194,14 @@
      -------------------------------------------------------------------- */
   var topbar = document.querySelector(".topbar");
 
+  // function encaixarBarras() {
+  //   var alturaTopo = topbar ? topbar.offsetHeight : 0;
+  //   if (navbar) navbar.style.top = alturaTopo + "px";
+  //   subbar.style.top = alturaTopo + (navbar ? navbar.offsetHeight : 0) + "px";
+  // }
   function encaixarBarras() {
-    var alturaTopo = topbar ? topbar.offsetHeight : 0;
-    if (navbar) navbar.style.top = alturaTopo + "px";
-    subbar.style.top = alturaTopo + (navbar ? navbar.offsetHeight : 0) + "px";
+    if (navbar) navbar.style.top = "0px";
+    if (subbar) subbar.style.top = (navbar ? navbar.offsetHeight : 0) + "px";
   }
   window.addEventListener("resize", encaixarBarras);
 

@@ -127,8 +127,8 @@ body[data-publico="empresa"] {
    a faixa nos deslocamentos que o conceito.js mede. O z-index cresce de
    baixo para cima, para a barra de cima passar por cima da de baixo. */
 .topbar {
-  position: sticky;
-  top: 0;
+  /*position: sticky;
+  top: 0;*/
   z-index: 1031;
   /* Mesmo degradê do template, com a ponta de baixo em variável para poder
      animar na troca de público. */
@@ -222,7 +222,7 @@ body[data-publico="empresa"] .marca-sobre-claro { opacity: 0; }
   display: grid;
   grid-template-rows: repeat(3, minmax(0, 1fr));
   flex: 0 0 auto;
-  margin-left: 1.25rem;
+  /*/*margin-left: 1.25rem;*/
   padding: 3px;
   border-radius: 12px;
   background-color: var(--trilha);
