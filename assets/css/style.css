@@ -230,7 +230,7 @@ img { max-width: 100%; height: auto; }
    4. Barra institucional (topo) — accessibility + institutional links
    ----------------------------------------------------------------------- */
 .topbar {
-  background: var(--color-blue);
+  background: linear-gradient(var(--color-blue) 85%, var(--color-blue-dark));
   color: #fff;
   font-size: 0.8rem;
 }

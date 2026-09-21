@@ -47,6 +47,14 @@
   inherits: true;
   initial-value: #ffffff;
 }
+/* A ponta de baixo do degradê do topbar. Registrada pelo mesmo motivo das
+   outras: sem isso a troca de público apagaria o degradê de uma vez, no
+   meio de uma transição que dura quase meio segundo. */
+@property --topbar-fim {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #0d2c66;
+}
 
 body {
   /* Um só tempo para tudo que muda com o público: as peças trocam de cor
@@ -54,6 +62,7 @@ body {
   --troca: 0.45s;
   transition: --superficie-nav var(--troca) ease,
               --corpo var(--troca) ease,
+              --topbar-fim var(--troca) ease,
               color var(--troca) ease;
 
   /* A faixa do segundo nível usa a mesma cor do navbar: as duas leem como
@@ -74,6 +83,7 @@ body {
   /* Sulco do seletor. Sobre a superfície clara ele é um azul diluído; sobre
      a escura tem de ser mais escuro que o fundo, senão não há sulco. */
   --trilha: rgba(13, 44, 102, 0.09);
+  --topbar-fim: var(--color-blue-dark);
   --atalho-hover: var(--brand);
 }
 
@@ -93,6 +103,9 @@ body[data-publico="empresa"] {
   --cartao-sombra: rgba(2, 10, 26, 0.5);
   --cartao-sombra-perto: rgba(2, 10, 26, 0.32);
   --trilha: rgba(0, 0, 0, 0.3);
+  /* Em "Para empresa" o topbar é cor chapada: a ponta do degradê passa a
+     ser a mesma cor do começo, e ele desaparece sem sumir de repente. */
+  --topbar-fim: var(--color-blue);
   /* Laranja sobre o azul do cartão fica com pouco contraste para texto — no
      hover só a borda usa a marca, e o rótulo clareia. */
   --atalho-hover: #fff;
@@ -110,6 +123,9 @@ body[data-publico="empresa"] {
   position: sticky;
   top: 0;
   z-index: 1031;
+  /* Mesmo degradê do template, com a ponta de baixo em variável para poder
+     animar na troca de público. */
+  background-image: linear-gradient(var(--color-blue) 85%, var(--topbar-fim));
 }
 
 .topbar .container-xl {
