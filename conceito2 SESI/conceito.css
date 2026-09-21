@@ -78,6 +78,9 @@ body {
   --cartao-aresta: transparent;
   --cartao-sombra: rgba(13, 44, 102, 0.16);
   --cartao-sombra-perto: rgba(13, 44, 102, 0.07);
+  /* Sulco do seletor. Sobre a superfície clara ele é um azul diluído; sobre
+     a escura tem de ser mais escuro que o fundo, senão não há sulco. */
+  --trilha: rgba(13, 44, 102, 0.09);
   --atalho-hover: var(--brand);
 }
 
@@ -96,6 +99,7 @@ body[data-publico="empresa"] {
   /* Sombra azul não aparece sobre fundo azul escuro; aqui ela é quase preta. */
   --cartao-sombra: rgba(2, 10, 26, 0.5);
   --cartao-sombra-perto: rgba(2, 10, 26, 0.32);
+  --trilha: rgba(0, 0, 0, 0.3);
   /* Laranja sobre o azul do cartão fica com pouco contraste para texto — no
      hover só a borda usa a marca, e o rótulo clareia. */
   --atalho-hover: #fff;
@@ -183,56 +187,65 @@ body[data-publico="empresa"] .marca-sobre-claro { opacity: 0; }
 .senai-link img { display: block; height: 17px; width: auto; max-width: none; margin: 0; }
 
 /* -----------------------------------------------------------------------
-   Seletor de site
-   Três posições, no formato dos seletores segmentados de celular: a trilha
-   é um sulco translúcido no azul do topbar e o polegar branco desliza para
-   a escolhida. Três, e não dois encadeados, porque são três destinos — uma
-   escolha só, sem controle que aparece e some.
+   Seletor de site — vertical, ao lado da marca
+   As três posições empilhadas, no formato dos seletores segmentados de
+   celular, mas na vertical: o polegar desce em vez de andar para o lado.
+   Três, e não dois encadeados, porque são três destinos — uma escolha só.
+
+   Mora no navbar, não no topbar, e essa é a diferença que manda no estilo:
+   o topbar era sempre azul, o navbar é cinza claro num público e azul
+   escuro no outro. Por isso trilha, polegar e texto saem das variáveis de
+   superfície — o polegar usa a cor do cartão de atalhos, que é sempre a
+   peça mais clara da região.
    ----------------------------------------------------------------------- */
 .publico-toggle {
   position: relative;
-  /* Grade de colunas iguais, e não flex: numa caixa dimensionada pelo
-     conteúdo o flex reparte na proporção do conteúdo de cada item, e aí o
+  /* Grade de três linhas iguais, e não flex: numa caixa dimensionada pelo
+     conteúdo o flex reparte na proporção do conteúdo de cada item, e o
      polegar — que vale um terço da trilha — pararia fora da divisa. */
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
   flex: 0 0 auto;
+  margin-left: 1.25rem;
   padding: 3px;
-  border-radius: 999px;
-  background-color: rgba(0, 0, 0, 0.22);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.28);
+  border-radius: var(--radius-lg);
+  background-color: var(--trilha);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.14);
+  transition: background-color var(--troca) ease;
 }
 
 /* Filete antes do terceiro segmento: os dois primeiros são o par de pessoa
-   física, o terceiro é o outro público. Fica abaixo do polegar na ordem de
-   pintura, para sumir quando ele passa por cima. */
+   física, o terceiro é o outro público. Na vertical ele é uma linha
+   horizontal. Fica abaixo do polegar na ordem de pintura, para sumir
+   quando ele passa por cima. */
 .publico-toggle::after {
   content: "";
   position: absolute;
   z-index: 0;
-  top: 9px;
-  bottom: 9px;
-  left: calc(3px + (100% - 6px) / 3 * 2);
-  width: 1px;
-  background-color: rgba(255, 255, 255, 0.22);
+  left: 12px;
+  right: 12px;
+  top: calc(3px + (100% - 6px) / 3 * 2);
+  height: 1px;
+  background-color: color-mix(in srgb, var(--superficie-tinta) 25%, transparent);
 }
 
-/* O polegar vale uma coluna — `(100% - 6px) / 3` desconta o padding da
-   trilha — e anda a própria largura a cada posição. Medida assim, e não em
+/* O polegar vale uma linha — `(100% - 6px) / 3` desconta o padding da
+   trilha — e desce a própria altura a cada posição. Medida assim, e não em
    33,33% cheios, ela não acumula erro até o terceiro. */
 .publico-toggle::before {
   content: "";
   position: absolute;
   z-index: 1;
-  top: 3px;
-  bottom: 3px;
   left: 3px;
-  width: calc((100% - 6px) / 3);
-  border-radius: 999px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-  transform: translateX(calc(var(--destino-i, 0) * 100%));
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  right: 3px;
+  top: 3px;
+  height: calc((100% - 6px) / 3);
+  border-radius: calc(var(--radius-lg) - 3px);
+  background-color: var(--cartao);
+  box-shadow: 0 1px 3px rgba(13, 44, 102, 0.18);
+  transform: translateY(calc(var(--destino-i, 0) * 100%));
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color var(--troca) ease;
 }
 body[data-destino="saude"]   { --destino-i: 1; }
 body[data-destino="empresa"] { --destino-i: 2; }
@@ -242,26 +255,37 @@ body[data-destino="empresa"] { --destino-i: 2; }
   z-index: 2;
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* Alinhado à esquerda: empilhados, os três rótulos leem como uma lista,
+     e centralizar deixaria os ícones desencontrados. */
+  justify-content: flex-start;
   gap: 0.4rem;
-  padding: 0.35rem 0.9rem;
+  padding: 0.3rem 0.75rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: calc(var(--radius-lg) - 3px);
+  /* `line-height: 1` porque empilhado cada linha entressolada engorda o
+     navbar inteiro: o seletor é o item mais alto da barra e é ele que
+     define a altura dela. */
+  line-height: 1;
   background: none;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.72rem;
+  color: var(--superficie-tinta);
+  font-size: 0.66rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   white-space: nowrap;
   cursor: pointer;
-  transition: color 0.2s ease;
+  opacity: 0.7;
+  transition: color var(--troca) ease, opacity 0.2s ease;
 }
-.publico-opcao:hover { color: #fff; }
-.publico-opcao[aria-pressed="true"] { color: var(--color-blue); }
+.publico-opcao i { width: 0.9rem; text-align: center; }
+.publico-opcao:hover { opacity: 1; }
+.publico-opcao[aria-pressed="true"] {
+  color: var(--cartao-tinta);
+  opacity: 1;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .publico-toggle::before { transition: none; }
+  .publico-toggle::before { transition: background-color var(--troca) ease; }
 }
 
 /* ==========================================================================
@@ -546,8 +570,6 @@ body[data-publico="empresa"] .breadcrumb-modern li + li::before { color: rgba(25
      linha. Aqui os três se empacotam e só o toggle desce. */
   .topbar .topbar-menu { order: 2; margin-left: 0; }
   .topbar .accessibility-dropdown { order: 3; }
-  .publico-toggle { order: 4; width: 100%; }
-  .publico-opcao { font-size: 0.66rem; padding: 0.4rem 0.4rem; }
 
   /* Palpite de reserva; com JS, o valor certo vem medido. */
   .subbar { top: 132px; padding-block: 0.5rem 0.45rem; }
