@@ -75,13 +75,22 @@
          com um botão só não dá para saber se o rótulo é onde se está ou
          para onde se vai. Aqui as duas opções ficam à vista e o polegar
          branco marca a atual. -->
-    <div class="publico-toggle" role="group" aria-label="Escolha o público">
-      <button class="publico-opcao" type="button" data-publico="voce" aria-pressed="true">
-        <i class="fa-solid fa-user" aria-hidden="true"></i><span>Para você</span>
+    <!-- No celular o toggle sai da barra e vira um dropdown no canto
+         direito: o botão, que só aparece lá, mostra o público atual e abre
+         o toggle como painel. -->
+    <div class="publico-menu">
+      <button class="publico-menu-toggle" type="button" aria-expanded="false" aria-controls="publicoToggle">
+        <span class="publico-menu-atual">Para você</span>
+        <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
       </button>
-      <button class="publico-opcao" type="button" data-publico="empresa" aria-pressed="false">
-        <i class="fa-solid fa-building" aria-hidden="true"></i><span>Para empresa</span>
-      </button>
+      <div class="publico-toggle" id="publicoToggle" role="group" aria-label="Escolha o público">
+        <button class="publico-opcao" type="button" data-publico="voce" aria-pressed="true">
+          <i class="fa-solid fa-user" aria-hidden="true"></i><span>Para você</span>
+        </button>
+        <button class="publico-opcao" type="button" data-publico="empresa" aria-pressed="false">
+          <i class="fa-solid fa-building" aria-hidden="true"></i><span>Para empresa</span>
+        </button>
+      </div>
     </div>
 
     <ul class="mainnav-menu" id="menuNivel1">
@@ -129,6 +138,14 @@
      nível 1 tem o seu conjunto e só ele fica visível.
 =========================================================== -->
 <div class="subbar">
+  <!-- Só aparece no celular, quando a faixa vira a camada de tela cheia
+       aberta pela barra de abas: é o topo dessa "página", com o voltar. -->
+  <div class="nivel2-topo">
+    <button class="nivel2-voltar" type="button" aria-label="Voltar">
+      <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+    </button>
+    <h2 class="nivel2-titulo" id="nivel2Titulo"></h2>
+  </div>
   <div class="container-xl">
       <ul class="submenu" data-de="inicio">
         <li><a class="atalho" href="#inicio/portal-do-aluno" data-sub="portal-do-aluno"><i class="fa-solid fa-bag-shopping"></i><span>Portal do Aluno</span></a></li>
@@ -439,6 +456,134 @@
 
 </main>
 
+<!-- ===================== GALERIA EM STORIES =====================
+     A galeria de fotos dos eventos, no formato de stories: um círculo por
+     evento, numa barra que acompanha a rolagem colada à base da tela. Fica
+     antes do rodapé, e não fixa, para no fim da página encaixar acima dele
+     em vez de cobri-lo.
+
+     Cada evento é um <button class="story">: o nome é o próprio rótulo, a
+     data vai em data-data e as fotos em data-fotos, separadas por vírgula,
+     na ordem em que passam. A primeira é também a capa do círculo.
+     Acrescentar um evento é acrescentar um <li>; o stories.js lê a lista.
+========================================================== -->
+<section class="stories-bar" aria-label="Galeria de eventos">
+  <div class="stories-cartao">
+
+    <div class="stories-trilho">
+      <button class="stories-rolar anterior" type="button" aria-label="Eventos anteriores" disabled>
+        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+      </button>
+      <ul class="stories-lista">
+        <li>
+          <button class="story" type="button" data-data="16 set 2026" data-fotos="../assets/img/placeholders/senai-banner-2.jpg, ../assets/img/placeholders/senai-news-1.jpg, ../assets/img/placeholders/senai-news-2.jpg, ../assets/img/placeholders/senai-tech-1.jpg">
+            <span class="story-anel"><img src="../assets/img/placeholders/senai-banner-2.jpg" alt=""></span>
+            <span class="story-nome">Fórum de Óleo e Gás</span>
+          </button>
+        </li>
+        <li>
+          <button class="story" type="button" data-data="5 set 2026" data-fotos="../assets/img/placeholders/senai-news-3.jpg, ../assets/img/placeholders/senai-edu-1.jpg, ../assets/img/placeholders/senai-edu-2.jpg">
+            <span class="story-anel"><img src="../assets/img/placeholders/senai-news-3.jpg" alt=""></span>
+            <span class="story-nome">Feirão da Empregabilidade</span>
+          </button>
+        </li>
+        <li>
+          <button class="story" type="button" data-data="28 ago 2026" data-fotos="../assets/img/placeholders/senai-tech-2.jpg, ../assets/img/placeholders/senai-tech-3.jpg, ../assets/img/placeholders/senai-tech-4.jpg, ../assets/img/placeholders/senai-banner-1.jpg">
+            <span class="story-anel"><img src="../assets/img/placeholders/senai-tech-2.jpg" alt=""></span>
+            <span class="story-nome">Inova SENAI</span>
+          </button>
+        </li>
+        <li>
+          <button class="story" type="button" data-data="20 ago 2026" data-fotos="../assets/img/placeholders/senai-prog-1.jpg, ../assets/img/placeholders/senai-prog-2.jpg, ../assets/img/placeholders/senai-edu-3.jpg">
+            <span class="story-anel"><img src="../assets/img/placeholders/senai-prog-1.jpg" alt=""></span>
+            <span class="story-nome">WorldSkills</span>
+          </button>
+        </li>
+        <li>
+          <button class="story" type="button" data-data="9 ago 2026" data-fotos="../assets/img/placeholders/senai-banner-3.jpg, ../assets/img/placeholders/senai-edu-4.jpg, ../assets/img/placeholders/senai-news-4.jpg">
+            <span class="story-anel"><img src="../assets/img/placeholders/senai-banner-3.jpg" alt=""></span>
+            <span class="story-nome">Mundo SENAI</span>
+          </button>
+        </li>
+        <li>
+          <button class="story" type="button" data-data="25 jul 2026" data-fotos="../assets/img/placeholders/senai-prog-3.jpg, ../assets/img/placeholders/senai-prog-4.jpg, ../assets/img/placeholders/senai-edu-5.jpg">
+            <span class="story-anel"><img src="../assets/img/placeholders/senai-prog-3.jpg" alt=""></span>
+            <span class="story-nome">Olimpíada do Conhecimento</span>
+          </button>
+        </li>
+        <li>
+          <button class="story" type="button" data-data="12 jul 2026" data-fotos="../assets/img/placeholders/senai-banner-4.jpg, ../assets/img/placeholders/senai-edu-6.jpg">
+            <span class="story-anel"><img src="../assets/img/placeholders/senai-banner-4.jpg" alt=""></span>
+            <span class="story-nome">Saga SENAI</span>
+          </button>
+        </li>
+        <li>
+          <button class="story" type="button" data-data="30 jun 2026" data-fotos="../assets/img/placeholders/senai-news-5.jpg, ../assets/img/placeholders/senai-edu-1.jpg, ../assets/img/placeholders/senai-prog-1.jpg">
+            <span class="story-anel"><img src="../assets/img/placeholders/senai-news-5.jpg" alt=""></span>
+            <span class="story-nome">Formatura da Aprendizagem Industrial</span>
+          </button>
+        </li>
+      </ul>
+      <button class="stories-rolar proximo" type="button" aria-label="Mais eventos">
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="stories-cabeca">
+      <i class="fa-solid fa-images" aria-hidden="true"></i>
+      <div>
+        <strong>Galeria</strong>
+        <span>Fotos dos eventos</span>
+      </div>
+    </div>
+
+    <button class="stories-recolher" type="button" aria-expanded="true" aria-label="Recolher galeria">
+      <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+    </button>
+  </div>
+</section>
+
+<!-- O visualizador: um só, preenchido pelo stories.js com o evento aberto. -->
+<div class="story-viewer" role="dialog" aria-modal="true" aria-labelledby="storyTitulo" hidden>
+  <div class="story-fundo"></div>
+
+  <button class="story-seta anterior" type="button" aria-label="Foto anterior">
+    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+  </button>
+
+  <div class="story-quadro">
+    <div class="story-desfoque" aria-hidden="true"></div>
+    <img class="story-foto" src="" alt="">
+
+    <div class="story-topo">
+      <div class="story-progresso" aria-hidden="true"></div>
+      <div class="story-info">
+        <span class="story-anel"><img class="story-capa" src="" alt=""></span>
+        <div class="story-textos">
+          <strong id="storyTitulo"></strong>
+          <span class="story-data"></span>
+        </div>
+        <button class="story-botao story-pausar" type="button" aria-label="Pausar">
+          <i class="fa-solid fa-pause" aria-hidden="true"></i>
+        </button>
+        <button class="story-botao story-fechar" type="button" aria-label="Fechar galeria">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Toque à esquerda volta, à direita avança, como nos stories. Para
+         teclado e leitor de tela, quem faz isso são as setas laterais. -->
+    <div class="story-toque anterior" aria-hidden="true"></div>
+    <div class="story-toque proximo" aria-hidden="true"></div>
+
+    <p class="story-contador" aria-live="polite"></p>
+  </div>
+
+  <button class="story-seta proximo" type="button" aria-label="Próxima foto">
+    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+  </button>
+</div>
+
 <!-- ===================== FOOTER ===================== -->
 <footer class="site-footer">
   <!--<div class="container-xl footer-links">
@@ -504,8 +649,34 @@
   </div>
 </footer>
 
+<!-- ===================== BARRA DE ABAS (MOBILE) =====================
+     O nível 1 desce para cá no celular: os quatro menus nas laterais e o
+     CTA do público no botão central. Os links são os mesmos data-menu do
+     navbar, então o conceito.js os trata igual — e troca o CTA junto com o
+     do navbar.
+========================================================== -->
+<nav class="mobile-tabbar" aria-label="Navegação principal">
+  <a class="mobile-tab" href="#institucional" data-menu="institucional">
+    <i class="fa-solid fa-building-columns" aria-hidden="true"></i><span>Institucional</span>
+  </a>
+  <a class="mobile-tab" href="#cursos" data-menu="cursos">
+    <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i><span>Cursos</span>
+  </a>
+  <a class="mobile-tab mobile-tab-cta" id="tabCta" href="../para-voce/cursos/index.html">
+    <span class="tab-cta-circle"><i class="fa-solid fa-book-open" aria-hidden="true"></i></span>
+    <span class="tab-cta-label">Cursos Disponíveis</span>
+  </a>
+  <a class="mobile-tab" href="#programas" data-menu="programas">
+    <i class="fa-solid fa-medal" aria-hidden="true"></i><span>Programas</span>
+  </a>
+  <a class="mobile-tab" href="#eventos" data-menu="eventos">
+    <i class="fa-solid fa-calendar-days" aria-hidden="true"></i><span>Eventos</span>
+  </a>
+</nav>
+
 <script src="../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/main.js"></script>
 <script src="conceito.js"></script>
+<script src="stories.js"></script>
 
 </body></html>

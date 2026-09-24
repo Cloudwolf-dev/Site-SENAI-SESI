@@ -32,17 +32,21 @@
   var PUBLICOS = {
     voce: {
       nome: "Para você",
-      cta: { rotulo: "Cursos Disponíveis", href: "../para-voce/cursos/index.html" }
+      cta: { rotulo: "Cursos Disponíveis", href: "../para-voce/cursos/index.html", icone: "fa-book-open" }
     },
     empresa: {
       nome: "Para empresa",
-      cta: { rotulo: "Agende uma consulta", href: "#" }
+      cta: { rotulo: "Agende uma consulta", href: "#", icone: "fa-calendar-check" }
     }
   };
 
   var toggle = document.querySelector(".publico-toggle");
   var opcoesPublico = toggle ? toggle.querySelectorAll("[data-publico]") : [];
   var cta = document.getElementById("navCta");
+  var tabCta = document.getElementById("tabCta");
+  var publicoMenu = document.querySelector(".publico-menu");
+  var publicoBotao = publicoMenu ? publicoMenu.querySelector(".publico-menu-toggle") : null;
+  var publicoAtual = publicoMenu ? publicoMenu.querySelector(".publico-menu-atual") : null;
   var nivel1 = document.getElementById("menuNivel1");
   var subbar = document.querySelector(".subbar");
   var navbar = document.querySelector(".mainnav");
@@ -54,12 +58,18 @@
   if (!nivel1 || !subbar) return;
 
   var conjuntos = subbar.querySelectorAll(".submenu[data-de]");
-  var abas = nivel1.querySelectorAll("a[data-menu]");
+  // As abas do navbar e as da barra de baixo, no celular, são o mesmo nível
+  // 1: marcadas juntas, para quem gira a tela não cair num menu sem destaque.
+  var abas = document.querySelectorAll("#menuNivel1 a[data-menu], .mobile-tabbar a[data-menu]");
   var MENU_RAIZ = "inicio";
 
   var publico = document.body.getAttribute("data-publico") || "voce";
   var menu = MENU_RAIZ;
   var atalho = null;
+
+  var tituloCamada = document.getElementById("nivel2Titulo");
+  var voltarCamada = subbar.querySelector(".nivel2-voltar");
+  var camadaAberta = false;
 
   function conjuntoDe(id) {
     return subbar.querySelector('.submenu[data-de="' + id + '"]');
@@ -103,7 +113,16 @@
       cta.textContent = def.cta.rotulo;
       cta.setAttribute("href", def.cta.href);
     }
+    // O botão central da barra de baixo é o mesmo CTA, com ícone.
+    if (tabCta) {
+      tabCta.setAttribute("href", def.cta.href);
+      var rotuloTab = tabCta.querySelector(".tab-cta-label");
+      var iconeTab = tabCta.querySelector(".tab-cta-circle i");
+      if (rotuloTab) rotuloTab.textContent = def.cta.rotulo;
+      if (iconeTab) iconeTab.className = "fa-solid " + def.cta.icone;
+    }
     if (crumbRaiz) crumbRaiz.textContent = def.nome;
+    if (publicoAtual) publicoAtual.textContent = def.nome;
 
     if (gravarHash !== false) escreverHash();
   }
@@ -111,7 +130,36 @@
   if (toggle) {
     toggle.addEventListener("click", function (e) {
       var opcao = e.target.closest("[data-publico]");
-      if (opcao) trocarPublico(opcao.getAttribute("data-publico"));
+      if (!opcao) return;
+      trocarPublico(opcao.getAttribute("data-publico"));
+      // No celular o toggle é o painel do dropdown: escolher fecha.
+      abrirPublicoMenu(false);
+    });
+  }
+
+  /* --------------------------------------------------------------------
+     Dropdown do público (só no celular)
+     No desktop o botão não aparece e a classe não muda nada; no celular
+     ela é o que mostra o toggle, como painel sob o botão.
+     -------------------------------------------------------------------- */
+  function abrirPublicoMenu(abrir) {
+    if (!publicoMenu || !publicoBotao) return;
+    publicoMenu.classList.toggle("aberto", abrir);
+    publicoBotao.setAttribute("aria-expanded", abrir ? "true" : "false");
+  }
+
+  if (publicoBotao) {
+    publicoBotao.addEventListener("click", function () {
+      abrirPublicoMenu(!publicoMenu.classList.contains("aberto"));
+    });
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest(".publico-menu")) abrirPublicoMenu(false);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && publicoMenu.classList.contains("aberto")) {
+        abrirPublicoMenu(false);
+        publicoBotao.focus();
+      }
     });
   }
 
@@ -169,6 +217,37 @@
     if (gravarHash !== false) escreverHash();
   }
 
+  /* --------------------------------------------------------------------
+     Camada do nível 2 (celular)
+     No celular a faixa de atalhos não fica sob o navbar: a aba da barra de
+     baixo abre o nível 2 como uma camada de tela cheia por cima do
+     conteúdo — o passo seguinte, como nos apps —, com a lista vertical e
+     um voltar. Escolher um atalho conclui o passo e fecha a camada.
+
+     A camada é a própria .subbar, restilizada pelo CSS a partir da classe
+     no body. No desktop a classe nunca é posta, porque só as abas do
+     rodapé a abrem.
+     -------------------------------------------------------------------- */
+  function abrirCamada(abrir) {
+    if (tituloCamada) tituloCamada.textContent = rotuloMenu(menu);
+    if (camadaAberta === abrir) return;
+    camadaAberta = abrir;
+    document.body.classList.toggle("nivel2-aberto", abrir);
+    // A camada reaproveita a rolagem da lista: abrir sempre no topo dela.
+    if (abrir) {
+      var conjunto = conjuntoDe(menu);
+      if (conjunto) conjunto.scrollTop = 0;
+      if (voltarCamada) voltarCamada.focus({ preventScroll: true });
+    }
+  }
+
+  if (voltarCamada) {
+    voltarCamada.addEventListener("click", function () { abrirCamada(false); });
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && camadaAberta) abrirCamada(false);
+  });
+
   document.addEventListener("click", function (e) {
     var alvo = e.target.closest("a[data-menu], a[data-sub]");
     if (!alvo) return;
@@ -176,7 +255,16 @@
     if (destinoMenu) {
       if (!conjuntoDe(destinoMenu)) return;
       e.preventDefault();
-      ativar(destinoMenu, null);
+      var daBarraDeAbas = !!alvo.closest(".mobile-tabbar");
+      // Tocar de novo na aba da camada aberta fecha, como nos apps de abas.
+      if (daBarraDeAbas && camadaAberta && destinoMenu === menu) {
+        abrirCamada(false);
+        return;
+      }
+      // Reabrir pela aba o menu em que já se está preserva o atalho
+      // escolhido, para ele aparecer marcado na lista.
+      ativar(destinoMenu, daBarraDeAbas && destinoMenu === menu ? atalho : null);
+      abrirCamada(daBarraDeAbas);
       return;
     }
     // Num atalho, o menu é o da barra em que ele está — não o atual, que
@@ -184,6 +272,7 @@
     var barra = alvo.closest(".submenu[data-de]");
     e.preventDefault();
     ativar(barra ? barra.getAttribute("data-de") : menu, alvo.getAttribute("data-sub"));
+    abrirCamada(false);
   });
 
   /* --------------------------------------------------------------------
@@ -216,8 +305,8 @@
     ativar(conjuntoDe(m[2]) ? m[2] : MENU_RAIZ, m[3] || null, gravarHash);
   }
 
-  window.addEventListener("popstate", function () { daUrl(false); });
-  window.addEventListener("hashchange", function () { daUrl(false); });
+  window.addEventListener("popstate", function () { abrirCamada(false); daUrl(false); });
+  window.addEventListener("hashchange", function () { abrirCamada(false); daUrl(false); });
 
   encaixarBarras();
   daUrl(false);

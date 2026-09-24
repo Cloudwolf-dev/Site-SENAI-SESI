@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matrículas 2027 — Escola SESI Amapá</title>
+<meta name="description" content="Matrículas e rematrículas 2027 abertas na Escola SESI Amapá: da Educação Infantil ao Ensino Médio. Garanta sua vaga.">
+<meta name="theme-color" content="#164194">
+<link rel="icon" href="../assets/img/favicon2.png">
+<!-- Página de campanha: leve de propósito. Só a identidade do site
+     (style.css) e o CSS dela — sem Bootstrap e sem Font Awesome, que
+     juntos passam de 370 KB. Os ícones são o sprite SVG logo abaixo. -->
+<link rel="preload" as="image" href="../assets/img/placeholders/senai-edu-2.jpg" fetchpriority="high">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="campanha.css">
+</head>
+<body class="site-sesi">
+<a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+<!-- Sprite de ícones: cada <symbol> é usado com <svg><use href="#i-..."></svg>.
+     Traço de 2px no desenho de 24px, a cor vem de `currentColor`. -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-seta" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-calendario" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-local" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-telefone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-email" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></symbol>
+  <symbol id="i-conversa" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></symbol>
+  <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+  <symbol id="i-documento" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8M16 17H8M10 9H8"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="i-relogio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-notebook" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></symbol>
+  <symbol id="i-escola" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M10 9h4"/></symbol>
+  <symbol id="i-trofeu" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+  <symbol id="i-livro" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-chip" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></symbol>
+  <symbol id="i-atividade" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+  <symbol id="i-globo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <symbol id="i-porcentagem" viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
+  <symbol id="i-maleta" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+  <symbol id="i-coracao" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+  <symbol id="i-cartao" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+  <symbol id="i-blocos" viewBox="0 0 24 24"><rect x="3" y="12" width="8" height="8" rx="1"/><circle cx="16.5" cy="16" r="4"/><path d="m7 3 4 6H3z"/></symbol>
+  <symbol id="i-lapis" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></symbol>
+  <symbol id="i-capelo" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></symbol>
+  <symbol id="i-aluno" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/></symbol>
+  <symbol id="i-novo-aluno" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></symbol>
+  <symbol id="i-mais" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+</svg>
+
+<!-- ===================== NAVEGAÇÃO =====================
+     Um menu só, preso ao topo. Cada link é uma âncora para a sua seção —
+     a rolagem suave é do CSS — e o campanha.js marca qual seção está na
+     tela: ao clicar e também ao rolar à mão, que é o que a referência não
+     fazia. O destaque é uma pílula só, que desliza até o link ativo.
+========================================================== -->
+<header class="cm-nav">
+  <div class="cm-container cm-nav-linha">
+    <a class="cm-marca" href="#inicio" aria-label="Escola SESI — Início">
+      <img src="../assets/img/logos%20SESI/sesi_color.png" alt="" width="211" height="78">
+      <span>Escola de<br>Referência</span>
+    </a>
+
+    <nav class="cm-menu" aria-label="Seções da página">
+      <ul>
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#segmentos">Segmentos</a></li>
+        <li><a href="#descontos">Descontos</a></li>
+        <li><a href="#material">Material</a></li>
+        <li><a href="#diferenciais">Diferenciais</a></li>
+        <li><a href="#matricula">Matrícula</a></li>
+        <li><a href="#duvidas">Dúvidas</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+      <span class="cm-menu-pilula" aria-hidden="true"></span>
+    </nav>
+
+    <a class="btn-brand cm-nav-cta" href="#inscricao">Garanta sua vaga</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ===================== HERO ===================== -->
+<section class="cm-hero" id="inicio" data-secao>
+  <div class="cm-container cm-hero-grade">
+    <div class="cm-hero-texto">
+      <span class="cm-selo"><svg><use href="#i-calendario"/></svg>Matrículas 2027 abertas</span>
+      <h1>
+        Estude na<br>escola que
+        <span class="cm-palavra" aria-hidden="true"><span>transforma</span></span>
+        <span class="cm-sr">transforma, inspira e prepara para o futuro</span>
+      </h1>
+      <p class="cm-hero-lead">Da Educação Infantil ao Ensino Médio, a Escola SESI forma
+        estudantes com tecnologia, esporte e cultura — e prepara para o que vem depois.</p>
+      <div class="cm-hero-acoes">
+        <a class="btn-brand cm-btn-grande" href="#inscricao">Garanta sua vaga! <svg><use href="#i-seta"/></svg></a>
+        <a class="cm-btn-contorno" href="#matricula" data-aba="rematricula">Já sou aluno: rematrícula</a>
+      </div>
+      <ul class="cm-prazos">
+        <li><strong>Rematrícula</strong> 01/10 a 31/10</li>
+        <li><strong>Novas matrículas</strong> a partir de 03/11</li>
+      </ul>
+    </div>
+
+    <div class="cm-hero-foto">
+      <img src="../assets/img/placeholders/senai-edu-2.jpg" alt="Estudantes em atividade na Escola SESI" width="700" height="525" fetchpriority="high">
+      <div class="cm-hero-cartao">
+        <svg><use href="#i-trofeu"/></svg>
+        <div><strong>Escola de Referência</strong><span>Rede SESI de Educação</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SEGMENTOS ===================== -->
+<section class="cm-secao" id="segmentos" data-secao>
+  <div class="cm-container">
+    <header class="cm-titulo cm-titulo-centro">
+      <span class="cm-sobretitulo">A escola ideal para seu filho</span>
+      <h2>Do primeiro passo ao vestibular</h2>
+    </header>
+
+    <!-- Quatro colunas separadas por filete, como no wireframe. -->
+    <ul class="cm-segmentos">
+      <li>
+        <span class="cm-icone"><svg><use href="#i-blocos"/></svg></span>
+        <h3>Educação Infantil</h3>
+        <p class="cm-faixa">4 e 5 anos</p>
+        <p>Aprender brincando: linguagem, movimento e convivência nos primeiros anos.</p>
+      </li>
+      <li>
+        <span class="cm-icone"><svg><use href="#i-lapis"/></svg></span>
+        <h3>Fundamental I</h3>
+        <p class="cm-faixa">1º ao 5º ano</p>
+        <p>Alfabetização sólida, raciocínio lógico e robótica desde cedo.</p>
+      </li>
+      <li>
+        <span class="cm-icone"><svg><use href="#i-livro"/></svg></span>
+        <h3>Fundamental II</h3>
+        <p class="cm-faixa">6º ao 9º ano</p>
+        <p>Projetos, ciência e tecnologia para desenvolver autonomia.</p>
+      </li>
+      <li>
+        <span class="cm-icone"><svg><use href="#i-capelo"/></svg></span>
+        <h3>Ensino Médio</h3>
+        <p class="cm-faixa">1ª à 3ª série</p>
+        <p>Itinerários formativos e preparação para o ENEM e a vida profissional.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== DESCONTOS ===================== -->
+<section class="cm-secao cm-secao-suave" id="descontos" data-secao>
+  <div class="cm-container">
+    <header class="cm-titulo">
+      <h2>Política de desconto e convênios</h2>
+      <p>Condições especiais para famílias da indústria e parceiros. Os percentuais de cada caso são informados na secretaria.</p>
+    </header>
+
+    <div class="cm-cartoes cm-cartoes-4">
+      <article class="cm-cartao">
+        <span class="cm-icone"><svg><use href="#i-maleta"/></svg></span>
+        <h3>Dependente de industriário</h3>
+        <p>Filhos e dependentes de trabalhadores da indústria têm condição diferenciada.</p>
+      </article>
+      <article class="cm-cartao">
+        <span class="cm-icone"><svg><use href="#i-coracao"/></svg></span>
+        <h3>Irmãos</h3>
+        <p>Desconto progressivo a partir do segundo filho matriculado.</p>
+      </article>
+      <article class="cm-cartao">
+        <span class="cm-icone"><svg><use href="#i-cartao"/></svg></span>
+        <h3>Pagamento antecipado</h3>
+        <p>Quem paga a anuidade à vista ou até a data de vencimento economiza.</p>
+      </article>
+      <article class="cm-cartao">
+        <span class="cm-icone"><svg><use href="#i-porcentagem"/></svg></span>
+        <h3>Empresas conveniadas</h3>
+        <p>Empresas parceiras do SESI estendem o benefício aos colaboradores.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MATERIAL ESCOLAR ===================== -->
+<section class="cm-secao" id="material" data-secao>
+  <div class="cm-container cm-duas-colunas">
+    <div>
+      <header class="cm-titulo">
+        <h2>Material Escolar</h2>
+        <p>A Escola SESI adota material didático próprio, alinhado à BNCC e usado em toda a rede. A lista de itens de uso pessoal muda por segmento.</p>
+      </header>
+      <ul class="cm-lista-check">
+        <li><svg><use href="#i-check"/></svg>Material didático entregue na escola no início do ano</li>
+        <li><svg><use href="#i-check"/></svg>Plataforma digital com conteúdo e atividades</li>
+        <li><svg><use href="#i-check"/></svg>Lista de uso pessoal enxuta, sem marcas obrigatórias</li>
+      </ul>
+    </div>
+
+    <div class="cm-downloads">
+      <h3>Listas de material 2027</h3>
+      <a href="#" class="cm-download"><svg><use href="#i-documento"/></svg><span>Educação Infantil</span><svg class="cm-download-seta"><use href="#i-download"/></svg></a>
+      <a href="#" class="cm-download"><svg><use href="#i-documento"/></svg><span>Fundamental I</span><svg class="cm-download-seta"><use href="#i-download"/></svg></a>
+      <a href="#" class="cm-download"><svg><use href="#i-documento"/></svg><span>Fundamental II</span><svg class="cm-download-seta"><use href="#i-download"/></svg></a>
+      <a href="#" class="cm-download"><svg><use href="#i-documento"/></svg><span>Ensino Médio</span><svg class="cm-download-seta"><use href="#i-download"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DIFERENCIAIS ===================== -->
+<section class="cm-secao cm-secao-suave" id="diferenciais" data-secao>
+  <div class="cm-container">
+    <header class="cm-titulo cm-titulo-centro">
+      <h2>Premiações e diferenciais</h2>
+      <p>O que faz da Escola SESI uma escola de referência.</p>
+    </header>
+
+    <div class="cm-cartoes cm-cartoes-3">
+      <article class="cm-cartao cm-cartao-foto">
+        <img src="../assets/img/placeholders/senai-tech-2.jpg" alt="" width="700" height="525" loading="lazy">
+        <div>
+          <span class="cm-icone"><svg><use href="#i-chip"/></svg></span>
+          <h3>Robótica educacional</h3>
+          <p>Aulas de robótica na grade e equipes em torneios regionais e nacionais.</p>
+        </div>
+      </article>
+      <article class="cm-cartao cm-cartao-foto">
+        <img src="../assets/img/placeholders/senai-prog-3.jpg" alt="" width="700" height="525" loading="lazy">
+        <div>
+          <span class="cm-icone"><svg><use href="#i-trofeu"/></svg></span>
+          <h3>Olimpíadas do conhecimento</h3>
+          <p>Estudantes premiados em olimpíadas de matemática, ciências e língua portuguesa.</p>
+        </div>
+      </article>
+      <article class="cm-cartao cm-cartao-foto">
+        <img src="../assets/img/placeholders/senai-edu-4.jpg" alt="" width="700" height="525" loading="lazy">
+        <div>
+          <span class="cm-icone"><svg><use href="#i-atividade"/></svg></span>
+          <h3>Esporte e cultura</h3>
+          <p>Estrutura esportiva do SESI e atividades culturais no contraturno.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MATRÍCULA / REMATRÍCULA =====================
+     Os dois caminhos do wireframe — "Já sou aluno" e "Quero estudar no
+     SESI" — num seletor de duas posições, o mesmo formato do seletor de
+     público do conceito 2. Cada um tem os passos e os documentos dele.
+========================================================== -->
+<section class="cm-secao" id="matricula" data-secao>
+  <div class="cm-container">
+    <header class="cm-titulo cm-titulo-centro">
+      <h2>Como realizar sua matrícula ou rematrícula</h2>
+      <p>Escolha o seu caso e veja o passo a passo e os documentos importantes.</p>
+    </header>
+
+    <div class="cm-abas" role="tablist" aria-label="Tipo de matrícula">
+      <button class="cm-aba" type="button" role="tab" id="aba-rematricula" aria-controls="painel-rematricula" aria-selected="true" data-aba="rematricula">
+        <svg><use href="#i-aluno"/></svg>Já sou aluno do SESI
+      </button>
+      <button class="cm-aba" type="button" role="tab" id="aba-matricula" aria-controls="painel-matricula" aria-selected="false" tabindex="-1" data-aba="matricula">
+        <svg><use href="#i-novo-aluno"/></svg>Quero estudar no SESI
+      </button>
+    </div>
+
+    <div class="cm-painel" role="tabpanel" id="painel-rematricula" aria-labelledby="aba-rematricula">
+      <ol class="cm-passos">
+        <li><strong>Acesse o portal do responsável</strong><span>Entre com o CPF do responsável financeiro e confirme os dados do estudante.</span></li>
+        <li><strong>Atualize os documentos</strong><span>Envie apenas o que mudou desde a última matrícula.</span></li>
+        <li><strong>Assine o contrato</strong><span>A assinatura é digital e a vaga fica garantida na hora.</span></li>
+      </ol>
+      <div class="cm-documentos">
+        <h3><svg><use href="#i-documento"/></svg>Documentos importantes</h3>
+        <ul>
+          <li>Documento de identidade e CPF do responsável</li>
+          <li>Comprovante de residência atualizado</li>
+          <li>Comprovante de vínculo com a indústria (para o desconto)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cm-painel" role="tabpanel" id="painel-matricula" aria-labelledby="aba-matricula" hidden>
+      <ol class="cm-passos">
+        <li><strong>Faça a pré-inscrição</strong><span>Online ou na secretaria da escola, escolhendo o segmento e o turno.</span></li>
+        <li><strong>Agende a visita e a entrevista</strong><span>Conheça a escola e converse com a coordenação pedagógica.</span></li>
+        <li><strong>Entregue os documentos</strong><span>Com tudo conferido, a secretaria confirma a vaga.</span></li>
+        <li><strong>Assine o contrato</strong><span>Assinatura digital; o material é entregue no início das aulas.</span></li>
+      </ol>
+      <div class="cm-documentos">
+        <h3><svg><use href="#i-documento"/></svg>Documentos importantes</h3>
+        <ul>
+          <li>Certidão de nascimento ou RG e CPF do estudante</li>
+          <li>Documento de identidade e CPF do responsável</li>
+          <li>Comprovante de residência</li>
+          <li>Histórico escolar ou declaração de transferência</li>
+          <li>Cartão de vacinação (Educação Infantil e Fundamental I)</li>
+          <li>Comprovante de vínculo com a indústria (para o desconto)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== INSCRIÇÃO ===================== -->
+<!-- Sem link próprio no menu: enquanto está na tela, quem acende é
+     "Matrícula" — data-secao diz a qual link a seção pertence. -->
+<section class="cm-secao cm-secao-marca" id="inscricao" data-secao="matricula">
+  <div class="cm-container cm-duas-colunas">
+    <header class="cm-titulo">
+      <h2>Quero garantir minha vaga</h2>
+      <p>Onde me inscrever: escolha o jeito mais fácil para você.</p>
+    </header>
+
+    <div class="cm-cartoes cm-cartoes-2">
+      <article class="cm-cartao">
+        <span class="cm-icone"><svg><use href="#i-notebook"/></svg></span>
+        <h3>On-line</h3>
+        <p>Pré-inscrição em poucos minutos, de qualquer lugar.</p>
+        <a class="btn-brand" href="#">Inscrever-se on-line <svg><use href="#i-seta"/></svg></a>
+      </article>
+      <article class="cm-cartao">
+        <span class="cm-icone"><svg><use href="#i-escola"/></svg></span>
+        <h3>Presencial</h3>
+        <p>Na secretaria da escola, de segunda a sexta, das 8h às 18h.</p>
+        <a class="cm-btn-contorno" href="#contato">Ver endereço</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DÚVIDAS =====================
+     <details> com o mesmo `name`: abrir uma pergunta fecha a outra, sem
+     nenhuma linha de JS.
+========================================================== -->
+<section class="cm-secao" id="duvidas" data-secao>
+  <div class="cm-container cm-duas-colunas">
+    <header class="cm-titulo">
+      <h2>Não fique na dúvida</h2>
+      <p>As perguntas que mais recebemos nesta época. Não achou a sua? Fale com a gente.</p>
+      <a class="cm-btn-contorno" href="#contato"><svg><use href="#i-conversa"/></svg>Falar com a secretaria</a>
+    </header>
+
+    <div class="cm-faq">
+      <details name="faq" open>
+        <summary>Quem já é aluno precisa fazer a rematrícula?</summary>
+        <p>Sim. A vaga do aluno veterano é garantida até o fim do prazo de rematrícula; depois dele, as vagas restantes são abertas para novos estudantes.</p>
+      </details>
+      <details name="faq">
+        <summary>Preciso ser trabalhador da indústria para matricular meu filho?</summary>
+        <p>Não. A escola é aberta a toda a comunidade. O vínculo com a indústria dá direito às condições especiais de desconto.</p>
+      </details>
+      <details name="faq">
+        <summary>Existe prova de seleção para novos alunos?</summary>
+        <p>Não há prova classificatória. Para alguns anos, a coordenação faz uma conversa diagnóstica para acolher melhor o estudante.</p>
+      </details>
+      <details name="faq">
+        <summary>Os descontos são acumuláveis?</summary>
+        <p>Depende da combinação. A secretaria simula o valor final com você no momento da matrícula.</p>
+      </details>
+      <details name="faq">
+        <summary>A escola oferece período integral?</summary>
+        <p>Consulte a disponibilidade por segmento: as atividades de contraturno incluem esporte, reforço e cultura.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== CONTATO / RODAPÉ ===================== -->
+<footer class="site-footer cm-rodape" id="contato" data-secao>
+  <div class="cm-container cm-rodape-grade">
+    <div>
+      <img class="cm-rodape-marca" src="../assets/img/logos%20SESI/sesi_branco.png" alt="SESI" width="211" height="78" loading="lazy">
+      <h2>Endereço</h2>
+      <p><svg><use href="#i-local"/></svg>Unidade Integrada SESI/SENAI — A Banda<br>Av. Ernestino Borges, 257 - Centro, Macapá - AP</p>
+      <p><svg><use href="#i-relogio"/></svg>Secretaria: segunda a sexta, das 8h às 18h</p>
+    </div>
+    <div>
+      <h2>Contatos</h2>
+      <p><svg><use href="#i-telefone"/></svg><a href="tel:+559630848923">(96) 3084-8923</a></p>
+      <!-- A confirmar: o e-mail da secretaria da escola. -->
+      <p><svg><use href="#i-email"/></svg><a href="#">e-mail da secretaria</a></p>
+      <h2>Rede social</h2>
+      <div class="footer-social cm-social">
+        <a href="#" aria-label="Instagram"><svg><use href="#i-instagram"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg><use href="#i-facebook"/></svg></a>
+        <a href="#" aria-label="Site do SESI"><svg><use href="#i-globo"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copy">
+    <p>Copyright 2026. Todos os Direitos Reservados. SESI AMAPÁ.</p>
+    <a href="#">Política de Privacidade</a>
+  </div>
+</footer>
+
+<!-- No celular o CTA do menu some; este aparece depois do banner. -->
+<a class="cm-cta-flutuante btn-brand" href="#inscricao">Garanta sua vaga <svg><use href="#i-seta"/></svg></a>
+
+<script src="campanha.js" defer></script>
+</body>
+</html>
