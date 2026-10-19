@@ -2,67 +2,35 @@
 <html lang="pt-BR"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SENAI Amapá — Escolha seu perfil</title>
-<meta name="description" content="SENAI Amapá: educação profissional, tecnologia e inovação para a indústria. Escolha o site feito para você ou para a sua empresa.">
+<title>SENAI Amapá — protótipo</title>
+<meta name="robots" content="noindex">
 <link rel="icon" href="assets/img/favicon.png">
-<link rel="stylesheet" href="assets/vendor/bootstrap/bootstrap.min.css">
-<link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css">
-<link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/glass.css">
-<link rel="stylesheet" href="assets/css/mobile.css">
+<!-- A raiz é só a porta de entrada do protótipo: quem chega aqui vai para o
+     conceito2, que é a versão em uso. O redirecionamento é feito em três
+     camadas porque o GitHub Pages não tem redirecionamento de servidor:
+     o <meta refresh> atende quem tem JavaScript desligado, o script atende
+     quem o tem (e sem deixar esta página no histórico, para o "voltar" do
+     navegador não cair num laço), e o link cobre quem bloqueia os dois. -->
+<meta http-equiv="refresh" content="0; url=conceito2/">
+<script>location.replace("conceito2/");</script>
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: #1c2733;
+    background-color: #f4f6fa;
+  }
+  img { width: 200px; height: auto; }
+  a { color: #164194; font-weight: 700; }
+</style>
 </head>
-<body class="site-senai">
-<a class="skip-link" href="#main">Pular para o conteúdo</a>
-<!--
-<div class="topbar">
-  <div class="container-xl">
-    <div class="topbar-menu">
-      <button class="topbar-toggler" type="button" aria-expanded="false" aria-controls="topbarInstitutional" aria-label="Abrir links institucionais">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-      <ul class="topbar-links institutional" id="topbarInstitutional">
-      <li><a href="sesi-home.html"><img class="sesi-icon-min" src="assets/img/sesi_branco.png" alt="SESI Amapá"></a></li>
-      <li><a href="#">LGPD</a></li>
-      <li><a href="#">Transparência</a></li>
-      <li><a href="#">Sustentabilidade</a></li>
-      <li><a href="#">Portal ESG</a></li>
-      <li><a href="#">Intranet</a></li>
-      </ul>
-    </div>
-    <div class="accessibility-dropdown">
-      <button class="accessibility-toggle" type="button" aria-expanded="false">
-        <i class="fa-solid fa-universal-access"></i> Acessibilidade <i class="fa-solid fa-chevron-down" style="font-size:.6rem"></i>
-      </button>
-      <div class="accessibility-menu">
-        <button type="button" data-action="font-increase"><i class="fa-solid fa-magnifying-glass-plus"></i> Aumentar fonte</button>
-        <button type="button" data-action="font-decrease"><i class="fa-solid fa-magnifying-glass-minus"></i> Diminuir fonte</button>
-        <button type="button" data-action="contrast"><i class="fa-solid fa-circle-half-stroke"></i> Contraste</button>
-        <a href="#" target="_blank"><i class="fa-solid fa-hands-asl-interpreting"></i> Libras</a>
-        <a href="#" target="_blank"><i class="fa-solid fa-volume-high"></i> Leitor de Tela</a>
-      </div>
-    </div>
-  </div>
-</div>
--->
-<main id="main" class="profile-picker">
-  <a class="profile-half profile-half-voce" href="para-voce/index.html">
-    <div class="profile-half-inner">
-      <span class="profile-icon"><i class="fa-solid fa-user"></i></span>
-      <h1>Serviços para você</h1>
-      <span class="btn btn-brand profile-btn">Entrar no site</span>
-    </div>
-  </a>
-  <a class="profile-half profile-half-empresa" href="para-empresa/index.html">
-    <div class="profile-half-inner">
-      <span class="profile-icon"><i class="fa-solid fa-building"></i></span>
-      <h1>Serviços para sua empresas</h1>
-      <span class="btn btn-brand profile-btn">Entrar no site</span>
-    </div>
-  </a>
-</main>
-
-<script src="assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="assets/js/main.js"></script>
-<script src="assets/js/glass.js"></script>
-
+<body>
+  <img src="assets/img/logos%20SENAI/senai_cor_ass.png" alt="SENAI Amapá">
+  <p>Abrindo o protótipo… <a href="conceito2/">Entrar agora</a></p>
 </body></html>
