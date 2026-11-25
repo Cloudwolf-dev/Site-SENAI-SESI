@@ -813,9 +813,55 @@ html.story-aberto { overflow: hidden; }
   box-shadow: 0 0 16px rgba(var(--brand-rgb), 0.55);
 }
 
+/* --- Legenda dos destaques ---------------------------------------------
+   O destaque é um card do banner: a foto cobre o quadro, e o texto e o
+   botão do card vêm por cima, na base. Fica acima das zonas de toque, para
+   o botão receber o clique, e com mais tempo por foto — tem o que ler. */
+.story-legenda {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: 4rem 1.1rem 1.4rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.78) 40%);
+  color: #fff;
+}
+.story-legenda[hidden] { display: none; }
+.story-legenda-titulo {
+  margin: 0.7rem 0 0.4rem;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.story-legenda-texto { margin: 0 0 1rem; font-size: 0.92rem; opacity: 0.9; }
+.story-legenda .btn { display: block; width: 100%; text-align: center; }
+
+.story-viewer.com-legenda .story-foto { object-fit: cover; }
+.story-viewer.com-legenda .story-contador { display: none; }
+.story-viewer.com-legenda .story-segmento.atual > span { animation-duration: 8s; }
+
 @media (prefers-reduced-motion: reduce) {
   .story-quadro { animation: none; }
   .story-anel { transition: none; }
+}
+
+/* No celular o visualizador é a tela inteira, como nos stories: o quadro
+   9:16 com altura de 88% passava da largura da tela. As setas laterais
+   saem — quem passa as fotos é o toque nas metades do quadro. */
+@media (max-width: 575.98px) {
+  .story-viewer { gap: 0; }
+  .story-quadro {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .story-seta { display: none; }
+  .story-topo { padding-top: calc(0.75rem + env(safe-area-inset-top, 0px)); }
+  .story-legenda { padding-bottom: calc(1.4rem + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* ==========================================================================
@@ -843,17 +889,119 @@ html.story-aberto { overflow: hidden; }
 .publico-menu { position: relative; display: flex; flex: 0 0 auto; }
 .publico-menu-toggle { display: none; }
 
-/* A barra de abas e o topo da camada do nível 2 são montados sempre, mas só
-   existem no celular. */
+/* A barra de abas, o botão de opções e a folha que ele abre são montados
+   sempre, mas só existem no celular. */
 .mobile-tabbar,
+.fab-opcoes,
+.folha-fundo,
 .nivel2-topo { display: none; }
+
+/* O mesmo para o que os posts da home têm a mais que os cards: os
+   destaques no lugar do banner, o cabeçalho com o perfil e os controles do
+   carrossel. No desktop os cards seguem como estão. */
+.destaques,
+.post-avatar,
+.post-categoria,
+.post-ler,
+.news-resumo,
+.carrossel-contador,
+.carrossel-pausa,
+.carrossel-pontos { display: none; }
+
+/* -----------------------------------------------------------------------
+   Visões
+   No desktop a página é só a de Início: as outras visões são telas do
+   celular. No celular é o bloco do MOBILE que diz qual aparece.
+   ----------------------------------------------------------------------- */
+.visao:not([data-visao="inicio"]) { display: none; }
+
+/* O CTA de cada público tem a sua tela; mostra-se a do público atual. */
+body[data-publico="voce"] [data-so-publico="empresa"],
+body[data-publico="empresa"] [data-so-publico="voce"] { display: none; }
+
+.visao-cabeca { padding: 1.5rem 0 0.25rem; }
+.visao-cabeca h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+.visao-cabeca p { margin: 0; font-size: 0.95rem; }
+
+/* Uma tela de app é uma coluna de blocos curtos: o respiro de seção do
+   template, pensado para a home larga, separaria demais. */
+.section.visao-secao { padding-block: 1rem; }
+.visao .service-group-heading { margin-bottom: 0.9rem; }
+
+/* As três formas de estudar, lado a lado, como os botões de um app. */
+.modalidades {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.modalidade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  height: 100%;
+  padding: 0.95rem 0.4rem;
+  border-radius: var(--radius-md);
+  background-color: var(--cartao);
+  color: var(--cartao-tinta);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 0.4rem 1.2rem var(--cartao-sombra-perto);
+  transition: background-color var(--troca) ease, color var(--troca) ease;
+}
+.modalidade i { font-size: 1.3rem; color: var(--brand); }
+.modalidade .icon-duo { display: inline-flex; gap: 0.2rem; }
+.modalidade .icon-duo i { font-size: 0.95rem; }
+
+.visao-cursos { margin-bottom: 1.25rem; }
+.visao-botao { display: block; width: 100%; text-align: center; }
+
+/* Os serviços para empresa, como uma lista de app. */
+.visao-lista {
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+.visao-lista li { border-bottom: 1px solid var(--trilha); }
+.visao-lista a {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 0.5rem;
+  color: var(--corpo-titulo);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.visao-lista a i:first-child { width: 1.5rem; text-align: center; color: var(--brand); font-size: 1.15rem; }
+.visao-lista a::after {
+  content: "\f054";
+  margin-left: auto;
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 0.75rem;
+  opacity: 0.45;
+}
+
+/* A galeria da visão Eventos é a lista da barra de stories solta na tela:
+   o respiro em volta deixa o brilho dos anéis à mostra. */
+.eventos-galeria { padding: 0.35rem 0.25rem 0.5rem; }
 
 @media (max-width: 991.98px) {
   /* -----------------------------------------------------------------------
-     Navbar do celular: marca e o dropdown do público em cima, a busca embaixo, de
-     ponta a ponta, como a barra de endereço de um navegador. O nível 1 e o
-     CTA descem para a barra de abas no rodapé; o nível 2 continua logo
-     abaixo do navbar, trocando de conjunto conforme a aba.
+     Navbar do celular: uma linha só, com a marca à esquerda e, à direita, o
+     dropdown do público e a lupa. O nível 1 e o CTA descem para a barra de
+     abas no rodapé, e o nível 2 sai da página: vive na folha do botão de
+     opções.
      ----------------------------------------------------------------------- */
   .mainnav .container-xl {
     flex-wrap: wrap;
@@ -875,7 +1023,7 @@ html.story-aberto { overflow: hidden; }
   .marca img { height: 32px; }
 
   .publico-menu { order: 1; margin-left: auto; }
-  .nav-search { order: 2; flex: 0 0 100%; min-width: 0; }
+  .nav-search { order: 2; }
 
   /* --- Dropdown do público ---------------------------------------------
      O botão diz onde se está — "Para você" — e a seta, que gira ao abrir,
@@ -933,116 +1081,132 @@ html.story-aberto { overflow: hidden; }
     font-size: 0.8rem;
   }
 
-  /* --- Busca como barra de endereço ------------------------------------
-     O painel que abria pelo botão redondo fica sempre aberto e perde a
-     caixa: sobra só o campo, em forma de pílula, com a lupa dentro. A
-     categoria sai — no celular a busca é uma linha só. O rótulo continua
-     para o leitor de tela. */
-  .nav-search-toggle { display: none; }
+  /* --- Busca flutuante -------------------------------------------------
+     A lupa fica ao lado do público, na altura dele, e abre o mesmo painel
+     do desktop como uma caixa solta sob o navbar, da largura do conteúdo.
+     Abrir, focar o campo e fechar ao tocar fora ou no Esc é o main.js. */
+  .nav-search-toggle { width: 40px; height: 40px; }
   .search-panel {
-    display: block;
-    position: static;
-    width: auto;
-    padding: 0;
-    background: none;
-    box-shadow: none;
+    top: calc(100% + 0.6rem);
+    width: 90vw;
+    z-index: 1050;
   }
-  .search-panel .form-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-  }
-  .search-panel .form-select { display: none; }
-  .search-panel .input-group {
-    margin: 0 !important;
-    border-radius: 50rem;
-    background-color: var(--cartao);
-    border: 1px solid var(--trilha);
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
-    transition: background-color var(--troca) ease, box-shadow 0.15s ease;
-  }
-  .search-panel .input-group:focus-within {
-    box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.3);
-  }
-  .search-panel .input-group input {
-    height: 42px;
-    padding-left: 1.1rem;
-    border: 0;
-    border-radius: 50rem 0 0 50rem;
-    background: transparent;
-    color: var(--cartao-tinta);
-    font-size: 0.9rem;
-    box-shadow: none !important;
-  }
-  .search-panel .input-group input::placeholder {
-    color: var(--cartao-tinta);
-    opacity: 0.6;
-  }
-  .search-panel .input-group .btn {
-    width: 46px;
-    border: 0;
-    border-radius: 0 50rem 50rem 0;
-    background: transparent !important;
-    color: var(--brand);
-    /* O .btn-brand traz um relevo interno e sobe no hover; dentro da pílula
-       o relevo vira um risco ao lado da lupa. */
-    box-shadow: none !important;
-    transform: none !important;
-  }
-  body[data-publico="empresa"] .search-panel .input-group .btn { color: #fff; }
 
-  /* No celular o topbar quebra em duas linhas: marca e acessibilidade em
-     cima, o toggle embaixo, ocupando a largura toda — é a posição em que
-     ele se lê como seletor, e não como mais um botão perdido na barra. */
-  .topbar .container-xl { flex-wrap: wrap; row-gap: 0.5rem; gap: 0.6rem; }
-  /* Sem o `margin-left: auto` do desktop: numa linha que quebra, ele comeria
-     todo o espaço livre e empurraria a acessibilidade para uma terceira
-     linha. Aqui os três se empacotam e só o toggle desce. */
-  .topbar .topbar-menu { order: 2; margin-left: 0; }
-  .topbar .accessibility-dropdown { order: 3; }
+  /* O topbar fica com a marca do SESI e a acessibilidade. Os links
+     institucionais (LGPD, Transparência...) saem do celular: estão no
+     grupo "Mais" da folha de Início. */
+  .topbar .topbar-menu { display: none; }
+  .topbar .accessibility-dropdown { margin-left: auto; }
 
-  /* Palpite de reserva; com JS, o valor certo vem medido. */
-  .subbar { top: 116px; padding-block: 0.5rem 0.45rem; }
-  .subbar .container-xl { border-radius: var(--radius-md); padding-inline: 0.75rem; }
+  /* A faixa de atalhos também sai da página: as mesmas opções estão na
+     folha do botão de opções, que é onde a .subbar reaparece. */
+  .subbar { display: none; }
 
   /* -----------------------------------------------------------------------
-     Nível 2 como camada
-     Sob o navbar, a faixa só fica no início, onde os atalhos são o acesso
-     rápido da home. Nos outros menus ela sai dali e vira o passo seguinte
-     da aba: uma camada de tela cheia por cima do conteúdo, com voltar,
-     título e a lista vertical. A barra de abas fica por cima dela, para
-     dar para trocar de menu sem voltar antes.
+     Visões
+     A página do celular é um app de cinco telas, uma por aba, e só a da aba
+     atual aparece. Quem diz onde se está é a aba acesa e o título da tela,
+     então a migalha sai.
      ----------------------------------------------------------------------- */
-  body:not([data-menu="inicio"]) .subbar { display: none; }
+  .visao { display: none; }
+  .visao.ativa { display: block; }
 
+  .breadcrumb-bar { display: none; }
+
+  /* -----------------------------------------------------------------------
+     Botão de opções
+     Flutua no canto direito, logo acima da barra de abas, e abre as opções
+     da visão atual. Laranja da marca com borda clara, como o CTA central.
+     ----------------------------------------------------------------------- */
+  .fab-opcoes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    right: 1rem;
+    bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px) + 0.85rem);
+    z-index: 1038;
+    width: 3.25rem;
+    height: 3.25rem;
+    border: 2px solid var(--color-bg-soft);
+    border-radius: var(--radius-md);
+    background-color: var(--brand);
+    color: var(--color-bg-soft);
+    font-size: 1.2rem;
+    box-shadow: 0 0.6rem 1.4rem var(--cartao-sombra),
+                0 0.15rem 0.4rem var(--cartao-sombra-perto);
+    transition: transform 0.2s ease, opacity 0.2s ease,
+                background-color var(--troca) ease, color var(--troca) ease;
+  }
+  .fab-opcoes:active { transform: scale(0.94); }
+  .fab-opcoes:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+  /* Com a folha aberta quem fecha é ela; o botão some por baixo. */
+  body.nivel2-aberto .fab-opcoes {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+  }
+  /* "Agende uma consulta" é uma tela de contato, sem opções a abrir. */
+  body[data-publico="empresa"][data-visao="destaque"] .fab-opcoes { display: none; }
+
+  /* -----------------------------------------------------------------------
+     Folha de opções
+     O nível 2 da visão sobe da barra de abas como uma folha, por cima de
+     um fundo escurecido que fecha ao toque. A barra de abas fica por cima
+     dos dois, para dar para trocar de visão sem fechar antes.
+     ----------------------------------------------------------------------- */
   body.nivel2-aberto { overflow: hidden; }
+
+  .folha-fundo {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1034;
+    background-color: rgba(5, 15, 35, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  body.nivel2-aberto .folha-fundo { opacity: 1; pointer-events: auto; }
 
   body.nivel2-aberto .subbar {
     display: flex;
     flex-direction: column;
     position: fixed;
     /* O conceito.js escreve o `top` da faixa em linha; aqui ela não é mais
-       faixa, e o topo é o da tela. */
-    top: 0 !important;
+       faixa, e quem a prende é a base. */
+    top: auto !important;
     left: 0;
     right: 0;
     bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px));
+    max-height: calc(100vh - var(--tabbar-h) - 3rem);
+    max-height: calc(100dvh - var(--tabbar-h) - 3rem);
     z-index: 1035;
     padding: 0;
     background-color: var(--corpo);
     background-image: none;
-    animation: camada-entra 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: 0 -0.75rem 2rem var(--cartao-sombra);
+    animation: folha-sobe 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  /* A alça de arrastar das folhas de app: diz que aquilo é uma folha. */
+  body.nivel2-aberto .subbar::before {
+    content: "";
+    align-self: center;
+    flex: 0 0 auto;
+    width: 2.5rem;
+    height: 4px;
+    margin-top: 0.5rem;
+    border-radius: 2px;
+    background-color: var(--trilha);
   }
 
   body.nivel2-aberto .nivel2-topo {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.75rem;
-    padding: calc(0.8rem + env(safe-area-inset-top, 0px)) 1rem 0.8rem 0.75rem;
-    background-color: var(--superficie-nav);
+    padding: 0.35rem 0.75rem 0.6rem 1.5rem;
     border-bottom: 1px solid var(--trilha);
   }
   .nivel2-voltar {
@@ -1055,17 +1219,17 @@ html.story-aberto { overflow: hidden; }
     border: 0;
     border-radius: var(--radius-sm);
     background-color: var(--trilha);
-    color: var(--superficie-tinta);
+    color: var(--corpo-titulo);
     font-size: 1.05rem;
   }
   .nivel2-titulo {
     margin: 0;
-    color: var(--superficie-tinta);
+    color: var(--corpo-titulo);
     font-size: 1.15rem;
     font-weight: 800;
   }
 
-  /* O cartão flutuante se desfaz: a lista ocupa a camada e rola sozinha. */
+  /* O cartão flutuante se desfaz: a lista ocupa a folha e rola sozinha. */
   body.nivel2-aberto .subbar .container-xl {
     flex: 1 1 auto;
     min-height: 0;
@@ -1077,14 +1241,29 @@ html.story-aberto { overflow: hidden; }
     border-radius: 0;
     box-shadow: none;
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
-  body.nivel2-aberto .submenu.ativo {
+  /* Na folha valem os conjuntos da visão, e não o do menu ativo: em Início
+     são três: o acesso rápido, o institucional e o "Mais". */
+  body.nivel2-aberto .submenu { display: none; }
+  body.nivel2-aberto .submenu.na-folha {
+    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 0;
     padding: 0;
     overflow: visible;
     animation: none;
+  }
+  /* Com mais de um grupo, cada um ganha o título, que é o seu aria-label. */
+  body.nivel2-aberto .container-xl:has(.na-folha ~ .na-folha) .submenu.na-folha::before {
+    content: attr(aria-label);
+    padding: 1rem 0.5rem 0.35rem;
+    color: var(--brand);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
   body.nivel2-aberto .submenu > li {
     display: block;
@@ -1211,7 +1390,7 @@ html.story-aberto { overflow: hidden; }
     margin-top: calc(var(--tabbar-cta) / -2.2);
     border-radius: 50%;
     background-color: var(--brand);
-    border: 3px solid var(--superficie-nav);
+    /*border: 3px solid var(--superficie-nav);*/
     box-shadow: 0 6px 18px rgba(var(--brand-rgb), 0.4);
     color: #fff;
     transition: transform 0.15s ease, border-color var(--troca) ease;
@@ -1245,6 +1424,283 @@ html.story-aberto { overflow: hidden; }
   }
 }
 
+/* =======================================================================
+   HOME DO CELULAR COMO PERFIL DO INSTAGRAM
+   O banner vira a fileira de destaques fixados, as notícias viram posts e
+   os grupos marcados com .post-carrossel viram posts em carrossel. Os
+   posts ficam na largura de um post de verdade e centrados, para no
+   tablet não virarem fotos de tela inteira.
+   ======================================================================= */
+@media (max-width: 991.98px) {
+  /* --- Destaques -------------------------------------------------------- */
+  .hero-gallery { display: none; }
+  .destaques { display: block; padding-top: 0.75rem; }
+  .destaques-lista { padding: 0.35rem 0.25rem 0.25rem; }
+  /* O destaque de perfil tem o anel neutro, e não o colorido de "novo". */
+  .story.destaque .story-anel,
+  .story.destaque:hover .story-anel {
+    background: color-mix(in srgb, var(--corpo-titulo) 22%, transparent);
+    box-shadow: none;
+  }
+
+  /* --- Cabeçalho de post ------------------------------------------------ */
+  .post-avatar {
+    display: block;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    padding: 2px;
+    border-radius: 50%;
+    background: conic-gradient(from 210deg,
+                var(--brand),
+                color-mix(in srgb, var(--brand) 45%, #fff),
+                var(--brand-dark),
+                var(--brand));
+  }
+  .post-avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 4px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background-color: #fff;
+    object-fit: contain;
+  }
+
+  /* --- Notícias como posts ---------------------------------------------
+     Um post de verdade: de ponta a ponta da tela, sem cartão, cantos nem
+     sombra — os posts se separam por um filete, como no feed. No tablet
+     ficam na largura de um post e centrados.
+
+     O card vira uma grade, e o corpo dele some como caixa (display:
+     contents) para o título subir ao cabeçalho, no lugar do nome do perfil:
+     avatar e título em negrito, a categoria embaixo; depois a foto, a
+     legenda com o perfil e o resumo, e o "Ler notícia completa" à direita.
+     ----------------------------------------------------------------------- */
+  .secao-noticias .container-xl {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 0;
+  }
+  .secao-noticias .section-heading { width: 90%; margin-inline: auto; }
+  .secao-noticias .row {
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+    margin-inline: 0;
+  }
+  .secao-noticias .row > [class*="col-"] { flex: 0 0 100%; max-width: 100%; }
+
+  .secao-noticias .news-card,
+  .post-carrossel {
+    max-width: 470px;
+    margin-inline: auto;
+  }
+  .secao-noticias .news-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "avatar titulo"
+                         "avatar categoria"
+                         "foto foto"
+                         "legenda legenda"
+                         "ler ler";
+    align-items: center;
+    column-gap: 0.65rem;
+    border-radius: 0;
+    border-bottom: 1px solid var(--trilha);
+    box-shadow: none;
+  }
+  .secao-noticias .news-card:hover { transform: none; box-shadow: none; }
+  .secao-noticias .news-card .news-body { display: contents; }
+
+  .secao-noticias .news-card .post-avatar {
+    grid-area: avatar;
+    margin: 0.75rem 0 0.75rem 0.85rem;
+  }
+  .secao-noticias .news-card h3,
+  .secao-noticias .news-card h4 {
+    grid-area: titulo;
+    align-self: end;
+    margin: 0;
+    padding: 0.75rem 0.85rem 0 0;
+    color: var(--color-ink);
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .post-categoria {
+    display: block;
+    grid-area: categoria;
+    align-self: start;
+    padding: 0.1rem 0.85rem 0.75rem 0;
+    color: var(--color-body);
+    font-size: 0.72rem;
+  }
+
+  .secao-noticias .news-card .news-img,
+  .secao-noticias .news-featured .news-img {
+    grid-area: foto;
+    aspect-ratio: 1 / 1;
+    border-radius: 0;
+  }
+  /* A categoria subiu para o cabeçalho do post. */
+  .secao-noticias .news-badge { display: none; }
+
+  /* A legenda: o perfil em negrito e o resumo logo depois, cortado em duas
+     linhas como as legendas longas do feed. */
+  .news-resumo {
+    display: -webkit-box;
+    grid-area: legenda;
+    margin: 0;
+    padding: 0.7rem 0.85rem 0;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    color: var(--color-ink);
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+  .news-resumo::before {
+    content: "amapasenai";
+    margin-right: 0.35rem;
+    font-weight: 800;
+  }
+
+  .post-ler {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    grid-area: ler;
+    padding: 0.45rem 0.85rem 0.9rem;
+    color: var(--brand);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+  .post-ler i { font-size: 0.7rem; }
+
+  /* --- Grupos em carrossel --------------------------------------------- */
+  .post-carrossel {
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background-color: #fff;
+    box-shadow: var(--shadow-soft);
+  }
+  .service-group.post-carrossel + .service-group { margin-top: 1.75rem; }
+
+  /* Avatar, o nome do grupo em negrito — uma linha só, como o título das
+     notícias — e o "Ver todos" no lugar do "Seguir". */
+  .post-carrossel .service-group-heading {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "avatar titulo link";
+    align-items: center;
+    column-gap: 0.65rem;
+    margin: 0;
+    padding: 0.75rem 0.85rem;
+  }
+  .post-carrossel .service-group-heading .dot { display: none; }
+  .post-carrossel .post-avatar { grid-area: avatar; }
+  .page-surface .post-carrossel .service-group-heading h3 {
+    grid-area: titulo;
+    margin: 0;
+    color: var(--color-ink);
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .post-carrossel .service-group-link {
+    grid-area: link;
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .carrossel-quadro { position: relative; }
+  .post-carrossel .carrossel-trilho {
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .post-carrossel .carrossel-trilho::-webkit-scrollbar { display: none; }
+  .post-carrossel .carrossel-trilho > [class*="col-"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 0;
+    scroll-snap-align: start;
+  }
+  .post-carrossel .service-card {
+    position: relative;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .post-carrossel .service-card:hover { transform: none; box-shadow: none; }
+  .post-carrossel .service-card .service-img { aspect-ratio: 1 / 1; }
+  /* O nome do serviço vira a etiqueta sobre a foto. */
+  .post-carrossel .service-card .service-title {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    max-width: calc(100% - 4.5rem);
+    padding: 0.45rem 0.85rem;
+    border-radius: 50rem;
+    font-size: 0.82rem;
+  }
+
+  /* O contador "1/4" e a pausa, sobre a foto, como no Instagram. */
+  .carrossel-contador {
+    display: block;
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 50rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    pointer-events: none;
+  }
+  .carrossel-pausa {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 0.75rem;
+  }
+  .carrossel-pausa:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+  .carrossel-pontos {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    padding: 0.65rem 0 0.8rem;
+  }
+  .carrossel-pontos span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #c7ccd6;
+    transition: background-color 0.2s ease;
+  }
+  .carrossel-pontos span.ativo { background-color: var(--brand); }
+}
+
 /* -----------------------------------------------------------------------
    Banner em accordion sem inclinação no celular
    Empilhados, os cards são altos, e o skewX(-10deg) do template desloca as
@@ -1262,12 +1718,13 @@ html.story-aberto { overflow: hidden; }
   .accordion-content .btn-brand:focus { transform: translateY(-1px); }
 }
 
-@keyframes camada-entra {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+@keyframes folha-sobe {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 @media (prefers-reduced-motion: reduce) {
   body.nivel2-aberto .subbar { animation: none; }
+  .folha-fundo { transition: none; }
 }
 
 @media (max-width: 575.98px) {

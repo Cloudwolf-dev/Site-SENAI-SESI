@@ -137,17 +137,19 @@
      abaixo do header, agora são o segundo nível da barra: cada menu do
      nível 1 tem o seu conjunto e só ele fica visível.
 =========================================================== -->
-<div class="subbar">
-  <!-- Só aparece no celular, quando a faixa vira a camada de tela cheia
-       aberta pela barra de abas: é o topo dessa "página", com o voltar. -->
+<div class="subbar" id="nivel2Folha">
+  <!-- Só aparece no celular, quando a faixa vira a folha aberta pelo botão
+       de opções: é o topo dela, com o nome da visão e o fechar. -->
   <div class="nivel2-topo">
-    <button class="nivel2-voltar" type="button" aria-label="Voltar">
-      <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
-    </button>
     <h2 class="nivel2-titulo" id="nivel2Titulo"></h2>
+    <button class="nivel2-voltar" type="button" aria-label="Fechar opções">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
   </div>
   <div class="container-xl">
-      <ul class="submenu" data-de="inicio">
+      <!-- O aria-label de cada conjunto é também o título do grupo na folha
+           de Início, que junta o acesso rápido, o institucional e o "Mais". -->
+      <ul class="submenu" data-de="inicio" aria-label="Acesso rápido">
         <li><a class="atalho" href="#inicio/portal-do-aluno" data-sub="portal-do-aluno"><i class="fa-solid fa-bag-shopping"></i><span>Portal do Aluno</span></a></li>
         <li><a class="atalho" href="#inicio/portal-docente" data-sub="portal-docente"><i class="fa-solid fa-graduation-cap"></i><span>Portal Docente</span></a></li>
         <li><a class="atalho" href="#inicio/editais-de-cursos" data-sub="editais-de-cursos"><i class="fa-solid fa-file-lines"></i><span>Editais de Cursos</span></a></li>
@@ -159,7 +161,7 @@
         <li><a class="atalho" href="#inicio/hub-de-inovacao" data-sub="hub-de-inovacao"><i class="fa-solid fa-cube"></i><span>HUB de Inovação</span></a></li>
       </ul>
 
-      <ul class="submenu" data-de="institucional">
+      <ul class="submenu" data-de="institucional" aria-label="Institucional">
         <li><a class="atalho" href="#institucional/quem-somos" data-sub="quem-somos"><i class="fa-solid fa-industry"></i><span>Quem somos</span></a></li>
         <li><a class="atalho" href="#institucional/missao-visao-e-valores" data-sub="missao-visao-e-valores"><i class="fa-solid fa-bullseye"></i><span>Missão, Visão e Valores</span></a></li>
         <li><a class="atalho" href="#institucional/transparencia" data-sub="transparencia"><i class="fa-solid fa-scale-balanced"></i><span>Transparência</span></a></li>
@@ -167,6 +169,18 @@
         <li><a class="atalho" href="#institucional/validador" data-sub="validador"><i class="fa-solid fa-stamp"></i><span>Validador</span></a></li>
         <li><a class="atalho" href="#institucional/unidades" data-sub="unidades"><i class="fa-solid fa-location-dot"></i><span>Unidades</span></a></li>
         <li><a class="atalho" href="#institucional/fale-conosco" data-sub="fale-conosco"><i class="fa-solid fa-comments"></i><span>Fale Conosco</span></a></li>
+      </ul>
+
+      <!-- Os links institucionais do topbar, que no celular sai de cena:
+           aqui eles entram na folha de Início, no grupo "Mais". São páginas
+           próprias, e não atalhos — sem data-sub, o conceito.js deixa o link
+           navegar. A Transparência já está no grupo Institucional. Mantenha
+           esta lista igual à do topbar. -->
+      <ul class="submenu" data-de="mais" aria-label="Mais">
+        <li><a class="atalho" href="#"><i class="fa-solid fa-user-shield"></i><span>LGPD</span></a></li>
+        <li><a class="atalho" href="#"><i class="fa-solid fa-seedling"></i><span>Sustentabilidade</span></a></li>
+        <li><a class="atalho" href="#"><i class="fa-solid fa-globe"></i><span>Portal ESG</span></a></li>
+        <li><a class="atalho" href="#"><i class="fa-solid fa-network-wired"></i><span>Intranet</span></a></li>
       </ul>
 
       <ul class="submenu" data-de="cursos">
@@ -211,6 +225,27 @@
 </section>
 
 <main id="main" class="page-surface">
+
+<!-- ===================== VISÕES =====================
+     Cada .visao é uma das telas da barra de abas do celular, e só a .ativa
+     aparece. No desktop a página continua sendo só a de Início: as outras
+     visões nunca são mostradas lá, e o navbar segue trocando apenas a faixa
+     de atalhos.
+========================================================== -->
+<div class="visao ativa" data-visao="inicio">
+
+<!-- ===================== DESTAQUES (CELULAR) =====================
+     No celular o banner em accordion dá lugar aos destaques fixados de um
+     perfil do Instagram: um círculo por card, que abre o card como story.
+     A lista é montada pelo stories.js a partir do accordion logo abaixo,
+     então o conteúdo do banner continua escrito uma vez só. No desktop
+     ela não aparece, e o accordion segue como está.
+========================================================== -->
+<section class="destaques" aria-label="Destaques">
+  <div class="container-xl">
+    <ul class="stories-lista destaques-lista"></ul>
+  </div>
+</section>
 
 <!-- ===================== BANNER ===================== -->
 <section class="hero-gallery">
@@ -264,8 +299,17 @@
   </div>
 </section>
 
-<!-- ===================== NOTÍCIAS ===================== -->
-<section class="section">
+<!-- ===================== NOTÍCIAS =====================
+     No celular cada notícia vira um post do Instagram, em coluna única: o
+     título sobe para o cabeçalho, com a categoria embaixo, e o resumo
+     (.news-resumo) é a legenda do post. O avatar, a categoria e o "Ler
+     notícia completa" são postos pelo conceito.js. No desktop o resumo não
+     aparece.
+
+     Os resumos abaixo são textos provisórios do protótipo: troque pelos de
+     cada notícia.
+========================================================== -->
+<section class="section secao-noticias">
   <div class="container-xl">
     <div class="section-heading">
       <h2>Notícias</h2>
@@ -280,6 +324,7 @@
           </div>
           <div class="news-body">
             <h3>SENAI AP e Firjan promovem Fórum para conectar empresas ao mercado de óleo e gás</h3>
+            <p class="news-resumo">O encontro reúne empresas amapaenses e grandes operadoras do setor em rodadas de negócio. Veja como a sua empresa pode participar.</p>
           </div>
         </a>
       </div>
@@ -293,6 +338,7 @@
               </div>
               <div class="news-body">
                 <h4>SENAI AP retifica edital do curso técnico em Petróleo e Gás; veja as novas datas</h4>
+                <p class="news-resumo">O cronograma do processo seletivo mudou. Confira as novas datas de inscrição e de resultado antes de se candidatar.</p>
               </div>
             </a>
           </div>
@@ -304,6 +350,7 @@
               </div>
               <div class="news-body">
                 <h4>SENAI AP leva cursos gratuitos para Tartarugalzinho</h4>
+                <p class="news-resumo">A unidade móvel leva qualificação profissional gratuita ao município. Veja os cursos oferecidos e como se inscrever.</p>
               </div>
             </a>
           </div>
@@ -315,6 +362,7 @@
               </div>
               <div class="news-body">
                 <h4>Amapá define equipe que vai representar o estado na Olimpíada do Conhecimento</h4>
+                <p class="news-resumo">Os competidores vão disputar a etapa nacional pelo Amapá. Conheça a equipe e as ocupações em que cada um compete.</p>
               </div>
             </a>
           </div>
@@ -326,6 +374,7 @@
               </div>
               <div class="news-body">
                 <h4>SENAI Amapá firma parceria para qualificação de mão de obra local</h4>
+                <p class="news-resumo">O acordo amplia a oferta de cursos para trabalhadores da região. Entenda o que muda e quem pode participar.</p>
               </div>
             </a>
           </div>
@@ -336,10 +385,12 @@
 </section>
 
 <!-- ===================== SERVIÇOS ===================== -->
-<section class="section" ;">
+<!-- Os grupos marcados com .post-carrossel viram, no celular, um post em
+     carrossel que passa sozinho a cada 3 segundos (conceito.js). -->
+<section class="section">
   <div class="container-xl">
 
-    <div class="service-group">
+    <div class="service-group post-carrossel">
       <div class="service-group-heading">
         <span class="dot"></span>
         <h3>Tecnologia e Inovação</h3>
@@ -372,7 +423,7 @@
         </div>
       </div>
     </div>
-    <div class="service-group">
+    <div class="service-group post-carrossel">
       <div class="service-group-heading">
         <span class="dot"></span>
         <h3>Programas e Iniciativas</h3>
@@ -405,7 +456,7 @@
         </div>
       </div>
     </div>
-    <div class="service-group">
+    <div class="service-group post-carrossel">
       <div class="service-group-heading">
         <span class="dot"></span>
         <h3>Educação Profissional</h3>
@@ -453,6 +504,314 @@
 
   </div>
 </section>
+
+</div><!-- /visao inicio -->
+
+<!-- ===================== VISÃO: CURSOS ===================== -->
+<div class="visao" data-visao="cursos">
+  <header class="visao-cabeca">
+    <div class="container-xl">
+      <h1>Cursos</h1>
+      <p>Formação profissional do primeiro emprego ao curso técnico, perto de casa ou a distância.</p>
+    </div>
+  </header>
+
+  <section class="section visao-secao">
+    <div class="container-xl">
+      <div class="service-group-heading">
+        <span class="dot"></span>
+        <h3>Como estudar</h3>
+      </div>
+      <ul class="modalidades">
+        <li><a class="modalidade" href="#cursos/presencial" data-sub="presencial"><i class="fa-solid fa-school" aria-hidden="true"></i><span>Presencial</span></a></li>
+        <li><a class="modalidade" href="#cursos/semipresencial" data-sub="semipresencial"><span class="icon-duo" aria-hidden="true"><i class="fa-solid fa-school"></i><i class="fa-solid fa-house-laptop"></i></span><span>Semipresencial</span></a></li>
+        <li><a class="modalidade" href="#cursos/ead" data-sub="ead"><i class="fa-solid fa-house-laptop" aria-hidden="true"></i><span>EAD</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section visao-secao">
+    <div class="container-xl">
+      <div class="service-group">
+        <div class="service-group-heading">
+          <span class="dot"></span>
+          <h3>Educação Profissional</h3>
+        </div>
+        <div class="row g-4">
+          <div class="col-6 col-md-3">
+            <a class="service-card" href="#">
+              <div class="service-img"><img src="../assets/img/placeholders/senai-edu-1.jpg" alt="" loading="lazy"></div>
+              <p class="service-title">Aprendizagem Industrial</p>
+            </a>
+          </div>
+          <div class="col-6 col-md-3">
+            <a class="service-card" href="#">
+              <div class="service-img"><img src="../assets/img/placeholders/senai-edu-2.jpg" alt="" loading="lazy"></div>
+              <p class="service-title">Iniciação Profissional</p>
+            </a>
+          </div>
+          <div class="col-6 col-md-3">
+            <a class="service-card" href="#">
+              <div class="service-img"><img src="../assets/img/placeholders/senai-edu-3.jpg" alt="" loading="lazy"></div>
+              <p class="service-title">Qualificação Profissional</p>
+            </a>
+          </div>
+          <div class="col-6 col-md-3">
+            <a class="service-card" href="#">
+              <div class="service-img"><img src="../assets/img/placeholders/senai-edu-4.jpg" alt="" loading="lazy"></div>
+              <p class="service-title">Aperfeiçoamento Profissional</p>
+            </a>
+          </div>
+          <div class="col-6 col-md-3">
+            <a class="service-card" href="#">
+              <div class="service-img"><img src="../assets/img/placeholders/senai-edu-5.jpg" alt="" loading="lazy"></div>
+              <p class="service-title">Cursos Técnicos</p>
+            </a>
+          </div>
+          <div class="col-6 col-md-3">
+            <a class="service-card" href="#">
+              <div class="service-img"><img src="../assets/img/placeholders/senai-edu-6.jpg" alt="" loading="lazy"></div>
+              <p class="service-title">Cursos semipresenciais e EAD</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section visao-secao">
+    <div class="container-xl">
+      <div class="service-group-heading">
+        <span class="dot"></span>
+        <h3>Editais</h3>
+        <a href="#cursos/editais-de-cursos" class="service-group-link" data-sub="editais-de-cursos">Ver todos</a>
+      </div>
+      <a class="news-card" href="../senai-noticia.html">
+        <div class="news-img">
+          <img src="../assets/img/placeholders/senai-news-2.jpg" alt="" loading="lazy">
+          <span class="badge-brand news-badge">Editais</span>
+        </div>
+        <div class="news-body">
+          <h4>SENAI AP retifica edital do curso técnico em Petróleo e Gás; veja as novas datas</h4>
+        </div>
+      </a>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== VISÃO: CTA DO PÚBLICO =====================
+     O círculo central da barra de abas. Cada público tem o seu CTA, então a
+     visão tem um bloco para cada um, e o CSS mostra o do público atual.
+========================================================== -->
+<div class="visao" data-visao="destaque">
+  <div data-so-publico="voce">
+    <header class="visao-cabeca">
+      <div class="container-xl">
+        <h1>Cursos Disponíveis</h1>
+        <p>Turmas com inscrições abertas agora. Muitas são gratuitas.</p>
+      </div>
+    </header>
+    <section class="section visao-secao">
+      <div class="container-xl">
+        <div class="courses-grid visao-cursos">
+          <article class="course-card">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-seedling"></i> Iniciação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Informática Básica</h3>
+            <p>Introdução ao computador, internet e pacote office para o primeiro contato com o mundo do trabalho.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+              <span class="course-status course-status-free"><i class="fa-solid fa-sack-dollar"></i> Gratuito</span>
+            </div>
+          </article>
+          <article class="course-card">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-seedling"></i> Iniciação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-house-laptop"></i> Semipresencial</span>
+            </div>
+            <h3>Elétrica Básica</h3>
+            <p>Primeiros conceitos de instalações elétricas residenciais, com segurança.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+              <span class="course-status course-status-free"><i class="fa-solid fa-sack-dollar"></i> Gratuito</span>
+            </div>
+          </article>
+          <article class="course-card">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-award"></i> Qualificação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-house-laptop"></i> Semipresencial</span>
+            </div>
+            <h3>Assistente Administrativo</h3>
+            <p>Rotinas administrativas, atendimento e documentação para o mercado de trabalho.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+              <span class="course-status course-status-free"><i class="fa-solid fa-sack-dollar"></i> Gratuito</span>
+            </div>
+          </article>
+          <article class="course-card">
+            <div class="course-card-tags">
+              <span class="course-tag course-tag-category"><i class="fa-solid fa-award"></i> Qualificação Profissional</span>
+              <span class="course-tag course-tag-modality"><i class="fa-solid fa-building"></i> Presencial</span>
+            </div>
+            <h3>Eletricista Instalador Predial</h3>
+            <p>Instalações elétricas de baixa tensão em edificações residenciais e comerciais.</p>
+            <div class="course-card-foot">
+              <span class="course-status course-status-open"><i class="fa-solid fa-circle"></i> Inscrições abertas</span>
+            </div>
+          </article>
+        </div>
+        <a class="btn btn-brand visao-botao" href="../para-voce/cursos/index.html">Ver todos os cursos</a>
+      </div>
+    </section>
+  </div>
+
+  <div data-so-publico="empresa">
+    <header class="visao-cabeca">
+      <div class="container-xl">
+        <h1>Agende uma consulta</h1>
+        <p>Um consultor do SENAI vai entender a necessidade da sua empresa e indicar o caminho.</p>
+      </div>
+    </header>
+    <section class="section visao-secao">
+      <div class="container-xl">
+        <ul class="visao-lista">
+          <li><a href="../para-empresa/educacao-corporativa/index.html"><i class="fa-solid fa-users-gear" aria-hidden="true"></i><span>Educação Corporativa</span></a></li>
+          <li><a href="../para-empresa/servicos-de-tecnologia-e-inovacao/index.html"><i class="fa-solid fa-microchip" aria-hidden="true"></i><span>Tecnologia e Inovação</span></a></li>
+          <li><a href="../para-empresa/index.html"><i class="fa-solid fa-industry" aria-hidden="true"></i><span>Todos os serviços para a indústria</span></a></li>
+        </ul>
+        <a class="btn btn-brand visao-botao" href="#">Solicitar atendimento</a>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ===================== VISÃO: PROGRAMAS ===================== -->
+<div class="visao" data-visao="programas">
+  <header class="visao-cabeca">
+    <div class="container-xl">
+      <h1>Programas</h1>
+      <p>Competições, inclusão e ações itinerantes que levam o SENAI além da sala de aula.</p>
+    </div>
+  </header>
+
+  <section class="section visao-secao">
+    <div class="container-xl">
+      <div class="row g-4">
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#programas/worldskills" data-sub="worldskills">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-prog-2.jpg" alt="" loading="lazy"></div>
+            <p class="service-title">WorldSkills</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#programas/saga-senai" data-sub="saga-senai">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-tech-1.jpg" alt="" loading="lazy"></div>
+            <p class="service-title">Saga SENAI</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#programas/psai" data-sub="psai">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-prog-1.jpg" alt="" loading="lazy"></div>
+            <p class="service-title">PSAI</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#programas/programa-mais-aprendiz" data-sub="programa-mais-aprendiz">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-edu-1.jpg" alt="" loading="lazy"></div>
+            <p class="service-title">Programa + Aprendiz</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#programas/unidades-moveis" data-sub="unidades-moveis">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-prog-4.jpg" alt="" loading="lazy"></div>
+            <p class="service-title">Unidades Móveis</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#programas/olimpiada-do-conhecimento" data-sub="olimpiada-do-conhecimento">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-news-4.jpg" alt="" loading="lazy"></div>
+            <p class="service-title">Olimpíada do Conhecimento</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== VISÃO: EVENTOS =====================
+     A galeria em stories, que no desktop é a barra presa à base da tela,
+     aqui abre a visão. Os círculos não são escritos de novo: o conceito.js
+     copia os da .stories-bar, e tocar num deles abre o mesmo visualizador.
+     Os eventos continuam cadastrados num lugar só.
+========================================================== -->
+<div class="visao" data-visao="eventos">
+  <header class="visao-cabeca">
+    <div class="container-xl">
+      <h1>Eventos</h1>
+      <p>O que vem por aí e as fotos do que já aconteceu.</p>
+    </div>
+  </header>
+
+  <section class="section visao-secao">
+    <div class="container-xl">
+      <div class="service-group-heading">
+        <span class="dot"></span>
+        <h3>Galeria</h3>
+      </div>
+      <ul class="stories-lista eventos-galeria" aria-label="Fotos dos eventos"></ul>
+    </div>
+  </section>
+
+  <section class="section visao-secao">
+    <div class="container-xl">
+      <div class="service-group-heading">
+        <span class="dot"></span>
+        <h3>Inscrições abertas</h3>
+      </div>
+      <a class="news-card news-featured" href="#eventos/forum-de-oleo-e-gas" data-sub="forum-de-oleo-e-gas">
+        <div class="news-img">
+          <img src="../assets/img/placeholders/senai-banner-1.jpg" alt="" loading="lazy">
+          <span class="badge-brand news-badge">Evento</span>
+        </div>
+        <div class="news-body">
+          <h3>Fórum de Fornecedores da Cadeia de Óleo e Gás — Conectando Oportunidades</h3>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="section visao-secao">
+    <div class="container-xl">
+      <div class="service-group-heading">
+        <span class="dot"></span>
+        <h3>Na agenda do SENAI</h3>
+        <a href="#eventos/agenda-de-eventos" class="service-group-link" data-sub="agenda-de-eventos">Agenda</a>
+      </div>
+      <div class="row g-4">
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#eventos/feirao-da-empregabilidade" data-sub="feirao-da-empregabilidade">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-news-3.jpg" alt="" loading="lazy"></div>
+            <p class="service-title">Feirão da Empregabilidade</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#eventos/inova-senai" data-sub="inova-senai">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-tech-2.jpg" alt="" loading="lazy"></div>
+            <p class="service-title">Inova SENAI</p>
+          </a>
+        </div>
+        <div class="col-6 col-md-3">
+          <a class="service-card" href="#eventos/mundo-senai" data-sub="mundo-senai">
+            <div class="service-img"><img src="../assets/img/placeholders/senai-banner-3.jpg" alt="" loading="lazy"></div>
+            <p class="service-title">Mundo SENAI</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
 
 </main>
 
@@ -576,6 +935,15 @@
     <div class="story-toque anterior" aria-hidden="true"></div>
     <div class="story-toque proximo" aria-hidden="true"></div>
 
+    <!-- Só nos destaques: o texto e o botão do card do banner, por cima
+         da foto. O stories.js preenche e mostra. -->
+    <div class="story-legenda" hidden>
+      <span class="badge-brand story-legenda-selo"></span>
+      <h3 class="story-legenda-titulo"></h3>
+      <p class="story-legenda-texto"></p>
+      <a class="btn btn-brand story-legenda-link" href="#"></a>
+    </div>
+
     <p class="story-contador" aria-live="polite"></p>
   </div>
 
@@ -650,29 +1018,43 @@
 </footer>
 
 <!-- ===================== BARRA DE ABAS (MOBILE) =====================
-     O nível 1 desce para cá no celular: os quatro menus nas laterais e o
-     CTA do público no botão central. Os links são os mesmos data-menu do
-     navbar, então o conceito.js os trata igual — e troca o CTA junto com o
-     do navbar.
+     No celular a página é um app de cinco visões, como o Instagram: cada aba
+     troca o conteúdo inteiro do <main>, e não abre mais um menu. Início vem
+     primeiro porque é o que se espera de um app — antes, voltar à home era
+     tocar na marca, o que ninguém adivinha. O Institucional deixou de ser
+     aba e passou a ser um grupo dentro das opções de Início.
+
+     O círculo central é o CTA do público e também é uma visão; o conceito.js
+     troca rótulo e ícone junto com o do navbar. O href fica como reserva
+     para quem não tem JavaScript.
 ========================================================== -->
 <nav class="mobile-tabbar" aria-label="Navegação principal">
-  <a class="mobile-tab" href="#institucional" data-menu="institucional">
-    <i class="fa-solid fa-building-columns" aria-hidden="true"></i><span>Institucional</span>
+  <a class="mobile-tab" href="#inicio" data-visao="inicio">
+    <i class="fa-solid fa-house" aria-hidden="true"></i><span>Início</span>
   </a>
-  <a class="mobile-tab" href="#cursos" data-menu="cursos">
+  <a class="mobile-tab" href="#cursos" data-visao="cursos">
     <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i><span>Cursos</span>
   </a>
-  <a class="mobile-tab mobile-tab-cta" id="tabCta" href="../para-voce/cursos/index.html">
+  <a class="mobile-tab mobile-tab-cta" id="tabCta" href="../para-voce/cursos/index.html" data-visao="destaque">
     <span class="tab-cta-circle"><i class="fa-solid fa-book-open" aria-hidden="true"></i></span>
     <span class="tab-cta-label">Cursos Disponíveis</span>
   </a>
-  <a class="mobile-tab" href="#programas" data-menu="programas">
+  <a class="mobile-tab" href="#programas" data-visao="programas">
     <i class="fa-solid fa-medal" aria-hidden="true"></i><span>Programas</span>
   </a>
-  <a class="mobile-tab" href="#eventos" data-menu="eventos">
+  <a class="mobile-tab" href="#eventos" data-visao="eventos">
     <i class="fa-solid fa-calendar-days" aria-hidden="true"></i><span>Eventos</span>
   </a>
 </nav>
+
+<!-- O botão de opções da visão: flutua no canto direito, logo acima da
+     barra, e abre de baixo para cima as opções da visão em que se está — o
+     nível 2, que é a própria .subbar restilizada como folha. O rótulo
+     acompanha a visão; quem o escreve é o conceito.js. -->
+<button class="fab-opcoes" type="button" aria-expanded="false" aria-controls="nivel2Folha" aria-label="Opções de Início">
+  <i class="fa-solid fa-bars" aria-hidden="true"></i>
+</button>
+<div class="folha-fundo" aria-hidden="true"></div>
 
 <script src="../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/main.js"></script>
